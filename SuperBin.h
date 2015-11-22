@@ -19,6 +19,7 @@
 // - ispis u bazi
 //
 
+namespace dlib {
 
 class SuperBin {
  public:
@@ -34,8 +35,111 @@ class SuperBin {
   std::vector<Bit> m_number;
 
  public:
-  // SuperBin(); // creates 0
-  // SuperBin(str, base, pred)
+  /** CONSTRUCTORS **/
+  /* Default (na params): creates a bit with value of zero (0);
+   * Three params (string, base, sign): creates an object that
+   * represents a number passed by string in given base with
+   * given sign.
+   */
+  SuperBin(
+    void)
+    : m_sign(Sign::POS), m_size(1) {
+    m_number.resize(m_size, 0);
+  }
+
+  explicit
+  SuperBin(
+      std::string number
+    , unsigned int base = 10
+    , Sign sign = Sign::POS) {
+    std::string binary = fromBaseToBase(number, base, 2);
+  }
+
+  /** STATIC FUNCTIONS **/
+  /* Convert number in string (fromNumber) in a given base (fromBase) to
+   * another string (toNumber) in a given base (toBase). First version
+   * takes toNumber as a pointer and returns nothing, while the other
+   * version takes three parameters and returns toNumber as a string.
+   */
+  static void
+  fromBaseToBase(
+        const std::string &fromNumber
+      , unsigned int fromBase
+      , std::string *toNumber
+      , unsigned int toBase);
+
+  static std::string
+  fromBaseToBase(
+        const std::string &fromNumber
+      , unsigned int fromBase
+      , unsigned int toBase) {
+    std::string toNumber;
+    fromBaseToBase(fromNumber, fromBase, &toNumber, toBase);
+    return (toNumber);
+  }
+
+  /** TO STRING FUNCTIONS **/
+  std::string
+  to_base(
+      unsigned int base) { return ""; }
+
+  /* Returns a number in a string in a given base with sign (optional,
+   * default = yes), no sign (+) if number is positive (default = no),
+   * sign (-) if number is negative (default = yes).
+   *
+   * to_string_signed{_bin|_oct|_dec|_hex} are self explanatory :)
+   */
+  std::string
+  to_string_signed(
+      unsigned int base
+    , bool sign = true
+    , bool positive = false
+    , bool negative = true) {
+    std::string result("");
+
+    if (sign) {
+      if (positive && m_sign == Sign::POS) { result = "+"; }
+      if (negative && m_sign == Sign::NEG) { result = "-"; }
+    }
+
+    // tu treba drugu funkciju navesti jer se radi o internom broju
+    result += to_base(base);
+
+    return (result);
+  }
+
+  std::string
+  to_string_signed_bin(
+      bool sign = true
+    , bool positive = false
+    , bool negative = true) {
+    return(to_string_signed(2, sign, positive, negative));
+  }
+
+  std::string
+  to_string_signed_oct(
+      bool sign = true
+    , bool positive = false
+    , bool negative = true) {
+    return(to_string_signed(8, sign, positive, negative));
+  }
+
+  std::string
+  to_string_signed_dec(
+      bool sign = true
+    , bool positive = false
+    , bool negative = true) {
+    return(to_string_signed(10, sign, positive, negative));
+  }
+
+  std::string
+  to_string_signed_hex(
+      bool sign = true
+    , bool positive = false
+    , bool negative = true) {
+    return(to_string_signed(16, sign, positive, negative));
+  }
+
   // toBase(base,sign)
   //
   // <F12>output(base,sign) // ispisuje broj u bazi
@@ -43,41 +147,19 @@ class SuperBin {
   // output[_dec|_bin_|_oct|_hex] // ispisuje broj u bazi s predznakom
   // output[|_unsigned_bin|_unsigned_hex](broj bitova) // dvojni komplement
   // is_zero
-  SuperBin() : m_sign(Sign::POS), m_size(1) { m_number.resize(m_size, 0); }
-  explicit  SuperBin(std::string number
-      , unsigned int base = 10, Sign sign = Sign::POS);
-
-  void fromBaseToBase(const std::string &fromNumber, unsigned int fromBase
-      , std::string &toNumber, unsigned int toBase);
-  std::string fromBaseToBase(const std::string &fromNumber
-      , unsigned int fromBase, unsigned int toBase);
 };
 
-SuperBin::SuperBin(std::string number, unsigned int base, Sign sign)
-  : m_sign(sign) {
-  std::string binary = fromBaseToBase(number, base, 2);
 
-  for (auto i : binary) { std::cout << i; } std::cout << std::endl;
-}
 
 
 // GENERIC
+// TODO(doki): pregledati funkciju i srediti redove koje sam prelomio
 //-----------------------------------------------------------------------------
-std::string
-SuperBin::fromBaseToBase(
-    const std::string &fromNumber,
-    unsigned int fromBase,
-    unsigned int toBase) {
-  std::string toNumber;
-  fromBaseToBase(fromNumber, fromBase, toNumber, toBase);
-  return (toNumber);
-}
-
 void
 SuperBin::fromBaseToBase(
     const std::string &fromNumber,
     unsigned int fromBase,
-    std::string &toNumber,
+    std::string *toNumber,
     unsigned int toBase) {
   // do we have a stupid caller?
   if ((fromBase < 2) || (toBase < 2)) { return; }
@@ -180,7 +262,7 @@ SuperBin::fromBaseToBase(
        * each digit in front (i.e. string::insert with cbegin).
        */
       if (numerator_it == numerator->cend()) {
-        toNumber.insert(toNumber.cbegin(), num + (num < 10 ? '0' : 'A' - 10));
+        toNumber->insert(toNumber->cbegin(), num + (num < 10 ? '0' : 'A' - 10));
       }
     }
 
@@ -193,5 +275,7 @@ SuperBin::fromBaseToBase(
     result->clear();
   }
 }
+
+}  // namespace dlib
 
 #endif  // SUPERBIN_H_
