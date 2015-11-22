@@ -32,6 +32,22 @@ main(void) {
   */
 
   /* TEST za to string */
+  /*
+  {
   dlib::SuperBin sb("12", 10, dlib::SuperBin::Sign::NEG);
-  std::cout << sb.to_string_signed_bin(true, true, true) << std::endl;
+  std::cout << sb.to_string_signed_bin() << std::endl;
+  std::cout << sb.to_string_signed_oct() << std::endl;
+  std::cout << sb.to_string_signed_dec() << std::endl;
+  std::cout << sb.to_string_signed_hex() << std::endl;
+  sb.test();
+  }
+  {
+  dlib::SuperBin sb("12", 10, dlib::SuperBin::Sign::POS);
+  std::cout << sb.to_string_signed_bin() << std::endl;
+  std::cout << sb.to_string_signed_oct() << std::endl;
+  std::cout << sb.to_string_signed_dec() << std::endl;
+  std::cout << sb.to_string_signed_hex() << std::endl;
+  }
+  */
+  dlib::SuperBin::test();
 }

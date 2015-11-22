@@ -3,7 +3,7 @@ all: test
 
 test: SuperBin test.cpp
 	cpplint --verbose=0 --filter=-legal/copyright test.cpp
-	clang++ -std=c++11 -Wall -Wpedantic -g test.cpp -o test
+	clang++ -std=c++11 -Wall -Wpedantic -g test.cpp -o test -DDEBUG
 
 SuperBin: SuperBin.h
 	cpplint --verbose=0 --filter=-legal/copyright SuperBin.h

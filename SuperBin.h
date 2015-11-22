@@ -3,11 +3,15 @@
 
 #include <vector>
 #include <queue>
-#include <iostream>
 #include <string>
 
+#ifdef DEBUG
+#include <tuple>
+#include <iostream>
+#include <iomanip>
+#endif  // DEBUG
+
 // TODO(doki):
-// - srediti konstruktore
 // - u operator = dodati predznak
 // - okrenuti smjer vector<0> LSB
 // - ispisivati pomoću reverznog iteratora
@@ -16,8 +20,6 @@
 // - mul
 // - div
 // - modulo
-// - ispis u bazi
-//
 
 namespace dlib {
 
@@ -35,26 +37,6 @@ class SuperBin {
   std::vector<Bit> m_number;
 
  public:
-  /** CONSTRUCTORS **/
-  /* Default (na params): creates a bit with value of zero (0);
-   * Three params (string, base, sign): creates an object that
-   * represents a number passed by string in given base with
-   * given sign.
-   */
-  SuperBin(
-    void)
-    : m_sign(Sign::POS), m_size(1) {
-    m_number.resize(m_size, 0);
-  }
-
-  explicit
-  SuperBin(
-      std::string number
-    , unsigned int base = 10
-    , Sign sign = Sign::POS) {
-    std::string binary = fromBaseToBase(number, base, 2);
-  }
-
   /** STATIC FUNCTIONS **/
   /* Convert number in string (fromNumber) in a given base (fromBase) to
    * another string (toNumber) in a given base (toBase). First version
@@ -78,11 +60,35 @@ class SuperBin {
     return (toNumber);
   }
 
-  /** TO STRING FUNCTIONS **/
-  std::string
-  to_base(
-      unsigned int base) { return ""; }
+  /** CONSTRUCTORS **/
+  /* Default (na params): creates a bit with value of zero (0);
+   * Three params (string, base, sign): creates an object that
+   * represents a number passed by string in given base with
+   * given sign.
+   */
+  SuperBin(
+    void)
+    : m_sign(Sign::POS), m_size(1) {
+    m_number.resize(m_size, 0);
+  }
 
+  explicit
+  SuperBin(
+      std::string number
+    , unsigned int base = 10
+    , Sign sign = Sign::POS)
+    : m_sign(sign) {
+    std::string binary = fromBaseToBase(number, base, 2);
+    for (char bit : binary) { m_number.push_back(bit - '0'); }
+  }
+
+  /** TEST **/
+  /* Self explanatory. */
+  static void
+  test(
+      void);
+
+  /** TO STRING FUNCTIONS **/
   /* Returns a number in a string in a given base with sign (optional,
    * default = yes), no sign (+) if number is positive (default = no),
    * sign (-) if number is negative (default = yes).
@@ -95,15 +101,14 @@ class SuperBin {
     , bool sign = true
     , bool positive = false
     , bool negative = true) {
-    std::string result("");
+    std::string binary;
+    for (Bit bit : m_number) { binary.push_back(bit + '0'); }
+    std::string result = fromBaseToBase(binary, 2, base);
 
     if (sign) {
-      if (positive && m_sign == Sign::POS) { result = "+"; }
-      if (negative && m_sign == Sign::NEG) { result = "-"; }
+      if (positive && m_sign == Sign::POS) { result = "+" + result; }
+      if (negative && m_sign == Sign::NEG) { result = "-" + result; }
     }
-
-    // tu treba drugu funkciju navesti jer se radi o internom broju
-    result += to_base(base);
 
     return (result);
   }
@@ -140,9 +145,6 @@ class SuperBin {
     return(to_string_signed(16, sign, positive, negative));
   }
 
-  // toBase(base,sign)
-  //
-  // <F12>output(base,sign) // ispisuje broj u bazi
   // output[_dec|_bin_|_oct|_hex](sign) // ispisuje broj u bazi s/bez predznaka
   // output[_dec|_bin_|_oct|_hex] // ispisuje broj u bazi s predznakom
   // output[|_unsigned_bin|_unsigned_hex](broj bitova) // dvojni komplement
@@ -195,9 +197,6 @@ SuperBin::fromBaseToBase(
         ((fromDigit >= '0') && (fromDigit <= '9') ? '0' :
         ((fromDigit >= 'A') && (fromDigit <= 'Z') ? 'A' - 10 : 'a' - 10)));
   }
-
-  //  std::cout << "Diag: "; for (auto it: *numerator)
-  //  { std::cout << it; } std::cout << std::endl;
 
   /*
    * basic old-school maethod of conversion - while there is a result after
@@ -275,6 +274,62 @@ SuperBin::fromBaseToBase(
     result->clear();
   }
 }
+
+#ifdef DEBUG
+void
+SuperBin::test(
+    void) {
+
+  std::vector<
+    std::tuple<
+        std::string
+      , unsigned int
+      , std::string
+      , unsigned int>
+    > test_vectors = {
+        std::make_tuple("A", 16, "10", 10)
+      , std::make_tuple("1011", 2, "11", 10)
+    };
+
+  // header
+  std::cout.width(23);
+  std::cout << std::right << "Input";
+  std::cout.width(23);
+  std::cout << std::right << "Output";
+  std::cout << std::endl;
+
+  // check each test vector
+  for (auto tv : test_vectors) {
+    std::cout.width(20);
+    std::cout << std::right << std::get<0>(tv);
+    std::cout << "_";
+    std::cout.width(2);
+    std::cout << std::left << std::get<1>(tv);
+    std::cout.width(20);
+    std::cout << std::right << std::get<2>(tv);
+    std::cout << "_";
+    std::cout.width(2);
+    std::cout << std::left << std::get<3>(tv);
+
+    std::cout <<
+      (std::get<2>(tv) ==
+       fromBaseToBase(std::get<0>(tv), std::get<1>(tv), std::get<3>(tv))
+       ? "PASSED" : "FAILED")
+      << std::endl;
+  }
+
+  /*
+  std::vector<std::vector<
+      std::string
+    , unsigned int
+    , std::string
+    , unsigned int>> test_vectors;
+    */
+  // std::vector<std::vector<std::string, unsigned int>> test_vectors;
+
+//  fromBaseToBase(
+}
+#endif  // DEBUG
 
 }  // namespace dlib
 
