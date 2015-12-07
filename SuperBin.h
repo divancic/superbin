@@ -4,12 +4,7 @@
 #include <vector>
 #include <queue>
 #include <string>
-
-#ifdef DEBUG
-#include <tuple>
 #include <iostream>
-#include <iomanip>
-#endif  // DEBUG
 
 // TODO(doki):
 // - u operator = dodati predznak
@@ -32,9 +27,15 @@ class SuperBin {
   using Bit = unsigned int;
   using Digit = unsigned int;
 
-  Sign m_sign;
-  std::size_t m_size;
+  // Sign m_sign;
+  // std::size_t m_size;
+
   std::vector<Bit> m_number;
+
+  /*
+  enum class OutputFormat { BIN_SIGNED, OCT_SIGNED, DEC_SIGNED, HEX_SIGNED };
+  OutputFormat m_output_format;
+  */
 
  public:
   /** STATIC FUNCTIONS **/
@@ -60,6 +61,40 @@ class SuperBin {
     return (toNumber);
   }
 
+  /* The following functions provide simple binary operations
+   * on a binary number in std::string: not, inc, complement,...
+   */
+  static std::string
+  binary_not(
+      const std::string& number) {
+    std::string result = number;
+    for (auto &bit : result) { bit = (bit == '0' ? '1' : '0'); }
+    return result;
+  }
+
+  static std::string
+  binary_inc(
+      const std::string& number) {
+    std::string result = number;
+
+    char bcarry = 1;
+    for (auto bit = result.rbegin(); bit != result.rend(); ++bit) {
+      char bres = *bit + bcarry;
+      bcarry = ((bres & 2) == 2);
+      (*bit) = (bres & 1) + '0';
+    }
+
+    return result;
+  }
+
+  static std::string
+  binary_compl(
+      const std::string& number) {
+    std::string result = binary_inc(binary_not(number));
+    return result;
+  }
+
+
   /** CONSTRUCTORS **/
   /* Default (na params): creates a bit with value of zero (0);
    * Three params (string, base, sign): creates an object that
@@ -67,95 +102,30 @@ class SuperBin {
    * given sign.
    */
   SuperBin(
-    void)
-    : m_sign(Sign::POS), m_size(1) {
-    m_number.resize(m_size, 0);
+    void) {
+    m_number.resize(1, 0);
   }
 
   explicit
   SuperBin(
       std::string number
     , unsigned int base = 10
-    , Sign sign = Sign::POS)
-    : m_sign(sign) {
+    , Sign sign = Sign::POS) {
     std::string binary = fromBaseToBase(number, base, 2);
+
+    // add a signum bit
+    if (Sign::POS == sign) {}
+    m_number.push_back(0);
+
+    // push the other bits
     for (char bit : binary) { m_number.push_back(bit - '0'); }
   }
-
-  /** TEST **/
-  /* Self explanatory. */
-  static void
-  test(
-      void);
-
-  /** TO STRING FUNCTIONS **/
-  /* Returns a number in a string in a given base with sign (optional,
-   * default = yes), no sign (+) if number is positive (default = no),
-   * sign (-) if number is negative (default = yes).
-   *
-   * to_string_signed{_bin|_oct|_dec|_hex} are self explanatory :)
-   */
-  std::string
-  to_string_signed(
-      unsigned int base
-    , bool sign = true
-    , bool positive = false
-    , bool negative = true) {
-    std::string binary;
-    for (Bit bit : m_number) { binary.push_back(bit + '0'); }
-    std::string result = fromBaseToBase(binary, 2, base);
-
-    if (sign) {
-      if (positive && m_sign == Sign::POS) { result = "+" + result; }
-      if (negative && m_sign == Sign::NEG) { result = "-" + result; }
-    }
-
-    return (result);
-  }
-
-  std::string
-  to_string_signed_bin(
-      bool sign = true
-    , bool positive = false
-    , bool negative = true) {
-    return(to_string_signed(2, sign, positive, negative));
-  }
-
-  std::string
-  to_string_signed_oct(
-      bool sign = true
-    , bool positive = false
-    , bool negative = true) {
-    return(to_string_signed(8, sign, positive, negative));
-  }
-
-  std::string
-  to_string_signed_dec(
-      bool sign = true
-    , bool positive = false
-    , bool negative = true) {
-    return(to_string_signed(10, sign, positive, negative));
-  }
-
-  std::string
-  to_string_signed_hex(
-      bool sign = true
-    , bool positive = false
-    , bool negative = true) {
-    return(to_string_signed(16, sign, positive, negative));
-  }
-
-  // output[_dec|_bin_|_oct|_hex](sign) // ispisuje broj u bazi s/bez predznaka
-  // output[_dec|_bin_|_oct|_hex] // ispisuje broj u bazi s predznakom
-  // output[|_unsigned_bin|_unsigned_hex](broj bitova) // dvojni komplement
-  // is_zero
 };
 
 
 
 
 // GENERIC
-// TODO(doki): pregledati funkciju i srediti redove koje sam prelomio
 //-----------------------------------------------------------------------------
 void
 SuperBin::fromBaseToBase(
@@ -167,16 +137,15 @@ SuperBin::fromBaseToBase(
   if ((fromBase < 2) || (toBase < 2)) { return; }
 
   /*
-   * two buffers: for numerator and result
-   * we switch them with named pointers. at the beginning the numerator
-   * is set to the number which is going to be converted to the given
-   * base in string.
+   * we switch two buffers (numerator and result) with named pointers.
+   * at the beginning the numerator is set to the number which is going
+   * to be converted to the given base in string.
    */
   std::vector<Digit> buffer[2];
   std::vector<Digit> *numerator = &buffer[0], *result = &buffer[1];
 
   /* 
-   * BEWARE: ugly parsing code!
+   * beware: ugly parsing code!
    * checks each input digit and makes a copy in internal buffer
    */
   for (auto fromDigit : fromNumber) {
@@ -184,13 +153,18 @@ SuperBin::fromBaseToBase(
     // and is in in range (e.g. it is not "F" if base 10 is given)
     if (!(
       ((fromDigit >= '0')
-        && (fromDigit <= (fromBase > 10 ? '9' : '0' + fromBase - 1)))
+        && (fromDigit <=
+          (fromBase > 10 ? '9' : '0' + static_cast<char>(fromBase) - 1)))
+
       || (fromBase > 10 ?
         ((fromDigit >= 'A')
-         && (fromDigit <= ('A' - 10 + fromBase - 1))) : false)
+         && (fromDigit <=
+           ('A' - 10 + static_cast<char>(fromBase) - 1))) : false)
+
       || (fromBase > 10 ?
         ((fromDigit >= 'a')
-         && (fromDigit <= ('a' - 10 + fromBase - 1))) : false))) { break; }
+         && (fromDigit <=
+           ('a' - 10 + static_cast<char>(fromBase) - 1))) : false))) { break; }
 
     // pushes the numeric value ('7' -> 7, 'F' -> 15, ... ) to the buffer
     numerator->push_back(fromDigit -
@@ -274,62 +248,6 @@ SuperBin::fromBaseToBase(
     result->clear();
   }
 }
-
-#ifdef DEBUG
-void
-SuperBin::test(
-    void) {
-
-  std::vector<
-    std::tuple<
-        std::string
-      , unsigned int
-      , std::string
-      , unsigned int>
-    > test_vectors = {
-        std::make_tuple("A", 16, "10", 10)
-      , std::make_tuple("1011", 2, "11", 10)
-    };
-
-  // header
-  std::cout.width(23);
-  std::cout << std::right << "Input";
-  std::cout.width(23);
-  std::cout << std::right << "Output";
-  std::cout << std::endl;
-
-  // check each test vector
-  for (auto tv : test_vectors) {
-    std::cout.width(20);
-    std::cout << std::right << std::get<0>(tv);
-    std::cout << "_";
-    std::cout.width(2);
-    std::cout << std::left << std::get<1>(tv);
-    std::cout.width(20);
-    std::cout << std::right << std::get<2>(tv);
-    std::cout << "_";
-    std::cout.width(2);
-    std::cout << std::left << std::get<3>(tv);
-
-    std::cout <<
-      (std::get<2>(tv) ==
-       fromBaseToBase(std::get<0>(tv), std::get<1>(tv), std::get<3>(tv))
-       ? "PASSED" : "FAILED")
-      << std::endl;
-  }
-
-  /*
-  std::vector<std::vector<
-      std::string
-    , unsigned int
-    , std::string
-    , unsigned int>> test_vectors;
-    */
-  // std::vector<std::vector<std::string, unsigned int>> test_vectors;
-
-//  fromBaseToBase(
-}
-#endif  // DEBUG
 
 }  // namespace dlib
 
