@@ -61,8 +61,8 @@ class SuperBin {
     return (toNumber);
   }
 
-  /* The following functions provide simple binary operations
-   * on a binary number in std::string: not, inc, complement,...
+  /* The following functions provide simple operations
+   * on a binary number in std::string format.
    */
   static std::string
   binary_not(
