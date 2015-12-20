@@ -1,4 +1,5 @@
 #include "SuperBin.h"
+#include "SuperBinTest.h"
 #include <gtest/gtest.h>
 #include <string>
 #include <iostream>
@@ -30,13 +31,20 @@ TEST(STATIC, binary_compl) {
   EXPECT_STREQ(dlib::SuperBin::binary_compl("1111").c_str(), "0001");
 }
 
+TEST(STATIC, zero) {
+  dlib::SuperBin *sb;
+
+  sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(sb->output_bin().c_str(), "-10");
+  delete sb;
+
+  sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(sb->output_bin().c_str(), "10");
+  delete sb;
+}
+
 int
 main(int argc, char *argv[]) {
-  std::cout << dlib::SuperBin::binary_compl("1101") << std::endl;
-  std::cout << dlib::SuperBin::binary_not("1101") << std::endl;
-  std::cout << dlib::SuperBin::binary_inc("1111") << std::endl;
-  // std::cout << dlib::SuperBin::binary_dec("1100") << std::endl;
-
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
