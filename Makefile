@@ -22,8 +22,10 @@ test: test.cpp SuperBin libgtest.a
 	$(CPPLINT) $(CPPLINT_FLAGS) test.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) test.cpp -o $@ libgtest.a -lpthread
 
-SuperBin: SuperBin.h
+SuperBin.o: SuperBin.h SuperBin.cpp
 	$(CPPLINT) $(CPPLINT_FLAGS) SuperBin.h
+	$(CPPLINT) $(CPPLINT_FLAGS) SuperBin.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c SuperBin.cpp
 
 libgtest.a: $(GTEST_SOURCES)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest-all.cc
