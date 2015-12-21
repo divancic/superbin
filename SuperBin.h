@@ -78,25 +78,29 @@ class SuperBin {
    * \return String containing a signen number in binary.
    */
   std::string
-  to_string_signed_bin() const;
+  to_string_signed_bin(
+      void) const;
 
   /**
    * \return String containing a signed number in octal.
    */
   std::string
-  to_string_signed_oct() const;
+  to_string_signed_oct(
+      void) const;
 
   /**
    * \return String containing a signed number in decimal.
    */
   std::string
-  to_string_signed_dec() const;
+  to_string_signed_dec(
+      void) const;
 
   /**
    * \return String containing a signed number in hexadecimal.
    */
   std::string
-  to_string_signed_hex() const;
+  to_string_signed_hex(
+      void) const;
 
   /**
    * This method returns a number in a string in a binary format. If negative,
@@ -133,6 +137,96 @@ class SuperBin {
   std::string
   to_string_unsigned_hex(
       unsigned int no_of_bits) const;
+
+
+
+  /**************************************************************************** 
+   * CONVERTER TO INT
+   ****************************************************************************/
+
+  /**
+   * This method converts to integer.
+   *
+   * Todo(doki): size check?
+   *
+   * \return Returns an integer.
+   */
+  int
+  to_int(
+      void) const;
+
+
+
+  /**************************************************************************** 
+   * CHECK IF ZERO?
+   ****************************************************************************/
+
+  /**
+   * Zero check.
+   *
+   * \return true if zero, false otherwise.
+   */
+  bool
+  is_zero(
+      void) const;
+
+
+
+  /**************************************************************************** 
+   * ARITHMETIC FUNCTIONS
+   ****************************************************************************/
+
+  /**
+   * \return Returns a 2's complement.
+   */
+  SuperBin
+  neg(
+      void) const;
+
+  /**
+   * \param rhs Right hand side.
+   *
+   * \return Sum of two numbers.
+   */
+  SuperBin
+  add(
+      const SuperBin &rhs) const;
+
+  /**
+   * \param rhs Right hand side.
+   *
+   * \return Subtraction of two numbers.
+   */
+  SuperBin
+  sub(
+      const SuperBin &rhs) const;
+
+  /**
+   * \param rhs Right hand side.
+   *
+   * \return Multiplication of two numbers.
+   */
+  SuperBin
+  mul(
+      const SuperBin &rhs) const;
+
+  /**
+   * \param rhs Right hand side.
+   *
+   * \return Division of two numbers.
+   */
+  SuperBin
+  div(
+      const SuperBin &rhs) const;
+
+  /**
+   * \param rhs Right hand side.
+   *
+   * \return Mod of two numbers.
+   */
+  SuperBin
+  mod(
+      const SuperBin &rhs) const;
 };
 
 }  // namespace dlib
