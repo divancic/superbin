@@ -16,7 +16,16 @@ GTEST_SOURCES = $(GTEST_DIR)/src/*.cc																					\
 
 .PHONY: all clean SuperBinTest
 
-all: SuperBinTest
+all:
+ifneq ($(wildcard $(GTEST_DIR)/.*),)
+	@echo "NOTE: google test found, building SuperBin library and tests."
+	make SuperBinTest
+else
+	@echo "NOTE: google test not found, building SuperBin library only."
+	@echo "If you want tests too fetch google test like this:"
+	@echo "    git clone https://github.com/google/googletest"
+	make libSuperBin.a
+endif
 
 SuperBinTest: SuperBinTest.h SuperBinTest.cpp SuperBin.o libgtest.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) SuperBinTest.cpp -o $@ SuperBin.o libgtest.a -lpthread
