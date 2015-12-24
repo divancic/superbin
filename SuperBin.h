@@ -10,7 +10,7 @@ class SuperBin {
   /**
    * An enum describing signum.
    */
-  enum Class Sign { POS = 0, NEG = 1 };
+  enum class Sign { POS = 0, NEG = 1 };
 
  private:
   std::string m_number;
@@ -65,8 +65,8 @@ class SuperBin {
    * This function converts a number to a std::string.
    *
    * \param base the base requested.
-   * \param out_sign_pos is signum required for positive numbers.
-   * \param out_sign_neg is signum required for negative numbers.
+   * \param out_sign_pos print signum for positive numbers.
+   * \param out_sign_neg print signum for negative numbers.
    */
   std::string
   to_string_signed(
@@ -75,7 +75,7 @@ class SuperBin {
     , bool out_sign_neg = true) const;
 
   /**
-   * \return String containing a signen number in binary.
+   * \return String containing a signed number in binary.
    */
   std::string
   to_string_signed_bin(
@@ -147,7 +147,7 @@ class SuperBin {
   /**
    * This method converts to integer.
    *
-   * Todo(doki): size check?
+   * Todo(doki): size check? converter to other (larger) types?
    *
    * \return Returns an integer.
    */
@@ -158,7 +158,7 @@ class SuperBin {
 
 
   /**************************************************************************** 
-   * CHECK IF ZERO?
+   * ZERO TEST
    ****************************************************************************/
 
   /**
@@ -167,8 +167,261 @@ class SuperBin {
    * \return true if zero, false otherwise.
    */
   bool
-  is_zero(
+  tz(
       void) const;
+
+  /**
+   * Check if not zero.
+   *
+   * \return true if not zero, false otherwise.
+   */
+  bool
+  tnz(
+      void) const;
+
+
+
+  /**************************************************************************** 
+   * LOGICAL
+   ****************************************************************************/
+
+  /**
+   * c-like logical not.
+   * (zero is interpreted as false, other numbers as true)
+   *
+   * \return true if zero, false otherwise.
+   */
+  bool
+  lnot(
+      void) const;
+
+  /**
+   * c-like logical and.
+   * (zero is interpreted as false, other numbers as true)
+   *
+   * \return true if neither operand is zero.
+   */
+  bool
+  land(
+      const SuperBin &rhs) const;
+
+  /**
+   * c-like logical or.
+   * (zero is interpreted as false, other numbers as true)
+   *
+   * \return true if either operand not zero.
+   */
+  bool
+  lor(
+      const SuperBin &rhs) const;
+
+  /**
+   * c-like logical xor.
+   * (zero is interpreted as false, other numbers as true)
+   *
+   * \return true if one IS zero and the other IS NOT zero.
+   */
+  bool
+  lxor(
+      const SuperBin &rhs) const;
+
+
+
+  /**************************************************************************** 
+   * BITWISE
+   ****************************************************************************/
+
+  /**
+   * Bitwise not.
+   *
+   * \return bitwise not.
+   */
+  SuperBin
+  bnot(
+      void) const;
+
+  /**
+   * Bitwise and.
+   *
+   * \return bitwise and of two operands.
+   */
+  SuperBin
+  band(
+      const SuperBin &rhs) const;
+
+  /**
+   * Bitwise or.
+   *
+   * \return bitwise or of two operands.
+   */
+  SuperBin
+  bor(
+      const SuperBin &rhs) const;
+
+  /**
+   * Bitwise xor.
+   *
+   * \return bitwise xor of two operands.
+   */
+  SuperBin
+  bxor(
+      const SuperBin &rhs) const;
+
+
+
+  /**************************************************************************** 
+   * SHIFTS
+   ****************************************************************************/
+
+  /**
+   * Logical shift left by given number of bits.
+   *
+   * \return number shifted left by given number of bits.
+   */
+  SuperBin
+  shl(
+      unsigned int no_of_bits) const;
+
+  /**
+   * Logical shift right by given number of bits.
+   *
+   * \return number shifted right by given number of bits.
+   */
+  SuperBin
+  shr(
+      unsigned int no_of_bits) const;
+
+  /**
+   * Arithmetic shift left by given number of bits.
+   * (equal to logical shift left - added for completeness)
+   *
+   * \return number (arithmetically) shifted left by given number of bits.
+   */
+  SuperBin
+  sal(
+      unsigned int no_of_bits) const;
+
+  /**
+   * Arithmetic shift right by given number of bits.
+   * (if the number is positive, the most significant bit is
+   * set to 0, otherwise, if the number is negative the most
+   * significant bit is set to 1)
+   *
+   * \return number (arithmetically) shifted right by given number of bits.
+   */
+  SuperBin
+  sar(
+      unsigned int no_of_bits) const;
+
+
+
+  /**************************************************************************** 
+   * BIT MANIPULATORS
+   ****************************************************************************/
+
+  /**
+   * Set all bits at indexes between (and including) n and m.
+   */
+  SuperBin
+  setb(
+      unsigned int index_n
+    , unsigned int index_m) const;
+
+  /**
+   * Clear all bits at indexes between (and including) n and m.
+   */
+  SuperBin
+  clearb(
+      unsigned int index_n
+    , unsigned int index_m) const;
+
+  /**
+   * Inverse state of all bits at indexes between (and including) n and m.
+   */
+  SuperBin
+  notb(
+      unsigned int index_n
+    , unsigned int index_m) const;
+
+  /**
+   * Get all bits at indexes between (and including) n and m.
+   */
+  SuperBin
+  getb(
+      unsigned int index_n
+    , unsigned int index_m) const;
+
+
+
+  /**************************************************************************** 
+   * COMPARISONS
+   ****************************************************************************/
+
+  /**
+   * EQual.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if equal, false otherwise.
+   */
+  bool
+  eq(
+      const SuperBin &rhs) const;
+
+  /**
+   * Not Equal.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if not equal, false otherwise.
+   */
+  bool
+  ne(
+      const SuperBin &rhs) const;
+
+  /**
+   * Less Then.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if less, false otherwise.
+   */
+  bool
+  lt(
+      const SuperBin &rhs) const;
+
+  /**
+   * Less or Equal.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if less or equal, false otherwise.
+   */
+  bool
+  le(
+      const SuperBin &rhs) const;
+
+  /**
+   * Greater Then.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if greater, false otherwise.
+   */
+  bool
+  gt(
+      const SuperBin &rhs) const;
+
+  /**
+   * Greater or Equal.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if greater or equal, false otherwise.
+   */
+  bool
+  ge(
+      const SuperBin &rhs) const;
 
 
 
@@ -184,7 +437,7 @@ class SuperBin {
       void) const;
 
   /**
-   * \param rhs Right hand side.
+   * \param rhs Right hand side operand.
    *
    * \return Sum of two numbers.
    */
@@ -193,7 +446,7 @@ class SuperBin {
       const SuperBin &rhs) const;
 
   /**
-   * \param rhs Right hand side.
+   * \param rhs Right hand side operand.
    *
    * \return Subtraction of two numbers.
    */
@@ -202,7 +455,7 @@ class SuperBin {
       const SuperBin &rhs) const;
 
   /**
-   * \param rhs Right hand side.
+   * \param rhs Right hand side operand.
    *
    * \return Multiplication of two numbers.
    */
@@ -211,7 +464,7 @@ class SuperBin {
       const SuperBin &rhs) const;
 
   /**
-   * \param rhs Right hand side.
+   * \param rhs Right hand side operand.
    *
    * \return Division of two numbers.
    */
@@ -220,7 +473,7 @@ class SuperBin {
       const SuperBin &rhs) const;
 
   /**
-   * \param rhs Right hand side.
+   * \param rhs Right hand side operand.
    *
    * \return Mod of two numbers.
    */

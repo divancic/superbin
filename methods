@@ -32,11 +32,11 @@ class SuperBin {
   gt(x,y)
   ge(x,y)
 
-  //logical
-  not(x)  // 1's complement
-  and(x,y)
-  or(x,y)
-  xor(x,y)
+  //logical - c-like
+  lnot(x)  // true is 0, false otherwise
+  land(x,y)
+  lor(x,y)
+  lxor(x,y)
 
   //bit operations
   bnot(x)
@@ -51,7 +51,7 @@ class SuperBin {
   sar(x,bits)
 
   //single bit
-  setb(n_lsb,n_msb,x)
+  setb(n_lsb,n_msb)
   clrb(n_lsb,n_msb)
   notb(n_lsb,n_msb)
   getb(n_lsb,n_msb)
