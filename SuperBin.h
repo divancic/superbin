@@ -112,8 +112,6 @@ class SuperBin {
    * \param no_of_bits Number of bits to output.
    *
    * \return String containing an unsigned number in binary.
-   *
-   * \sa to_string_unsigned_hex()
    */
   std::string
   to_string_unsigned_bin(
@@ -131,8 +129,6 @@ class SuperBin {
    * \param no_of_bits Number of bits to output.
    *
    * \return String containing an unsigned number in hexadecimal format.
-   *
-   * \sa to_string_unsigned_bin()
    */
   std::string
   to_string_unsigned_hex(
@@ -199,6 +195,8 @@ class SuperBin {
    * c-like logical and.
    * (zero is interpreted as false, other numbers as true)
    *
+   * \param rhs Right hand side operand.
+   *
    * \return true if neither operand is zero.
    */
   bool
@@ -209,6 +207,8 @@ class SuperBin {
    * c-like logical or.
    * (zero is interpreted as false, other numbers as true)
    *
+   * \param rhs Right hand side operand.
+   *
    * \return true if either operand not zero.
    */
   bool
@@ -218,6 +218,8 @@ class SuperBin {
   /**
    * c-like logical xor.
    * (zero is interpreted as false, other numbers as true)
+   *
+   * \param rhs Right hand side operand.
    *
    * \return true if one IS zero and the other IS NOT zero.
    */
@@ -243,6 +245,8 @@ class SuperBin {
   /**
    * Bitwise and.
    *
+   * \param rhs Right hand side operand.
+   *
    * \return bitwise and of two operands.
    */
   SuperBin
@@ -252,6 +256,8 @@ class SuperBin {
   /**
    * Bitwise or.
    *
+   * \param rhs Right hand side operand.
+   *
    * \return bitwise or of two operands.
    */
   SuperBin
@@ -260,6 +266,8 @@ class SuperBin {
 
   /**
    * Bitwise xor.
+   *
+   * \param rhs Right hand side operand.
    *
    * \return bitwise xor of two operands.
    */
@@ -276,6 +284,8 @@ class SuperBin {
   /**
    * Logical shift left by given number of bits.
    *
+   * \param no_of_bits number of bits to shift by.
+   *
    * \return number shifted left by given number of bits.
    */
   SuperBin
@@ -284,6 +294,8 @@ class SuperBin {
 
   /**
    * Logical shift right by given number of bits.
+   *
+   * \param no_of_bits number of bits to shift by.
    *
    * \return number shifted right by given number of bits.
    */
@@ -294,6 +306,8 @@ class SuperBin {
   /**
    * Arithmetic shift left by given number of bits.
    * (equal to logical shift left - added for completeness)
+   *
+   * \param no_of_bits number of bits to shift by.
    *
    * \return number (arithmetically) shifted left by given number of bits.
    */
@@ -306,6 +320,8 @@ class SuperBin {
    * (if the number is positive, the most significant bit is
    * set to 0, otherwise, if the number is negative the most
    * significant bit is set to 1)
+   *
+   * \param no_of_bits number of bits to shift by.
    *
    * \return number (arithmetically) shifted right by given number of bits.
    */
@@ -321,6 +337,11 @@ class SuperBin {
 
   /**
    * Set all bits at indexes between (and including) n and m.
+   *
+   * \param index_n starting index
+   * \param index_m ending index
+   *
+   * \return new object with requested bits set.
    */
   SuperBin
   setb(
@@ -329,6 +350,11 @@ class SuperBin {
 
   /**
    * Clear all bits at indexes between (and including) n and m.
+   *
+   * \param index_n starting index
+   * \param index_m ending index
+   *
+   * \return new object with requested bits cleared.
    */
   SuperBin
   clearb(
@@ -337,6 +363,11 @@ class SuperBin {
 
   /**
    * Inverse state of all bits at indexes between (and including) n and m.
+   *
+   * \param index_n starting index
+   * \param index_m ending index
+   *
+   * \return new object with requested bits inverted.
    */
   SuperBin
   notb(
@@ -345,6 +376,11 @@ class SuperBin {
 
   /**
    * Get all bits at indexes between (and including) n and m.
+   *
+   * \param index_n starting index
+   * \param index_m ending index
+   *
+   * \return new object with requested bits.
    */
   SuperBin
   getb(
