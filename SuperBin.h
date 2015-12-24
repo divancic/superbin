@@ -13,9 +13,32 @@ class SuperBin {
   enum class Sign { POS = 0, NEG = 1 };
 
  private:
+  /**
+   * Number is represented by std::string object. Each character represents
+   * one binary digit. The upper bit represents signum - 0 positive or zero,
+   * 1 negative. If it is a negative, it is a 2's complement representation
+   * of the equal positive number.
+   */
   std::string m_number;
 
  public:
+  /**************************************************************************** 
+   * STATIC FUNCTIONS
+   ****************************************************************************/
+
+  /**
+   * Converts number fromNumber in base fromBase to toNumber in base toBase.
+   * Numbers are passed as a reference to std::string (fromNumber) and
+   * pointer to std::string (toNumber). Bases are passed as unsigned int.
+   *
+   * \param fromNumber number to be converted
+   * \param fromBase number to be converted is in this base
+   * \param toNumber pointer to std::string where result is going to be stored
+   * \param toBase base of the resulting number
+   *
+   * This function is static in order to be called without an object creation,
+   * e.g. dlib::SuperBin::fromBaseToBase(...);
+   */
   static void
   fromBaseToBase(
         const std::string &fromNumber
@@ -23,6 +46,19 @@ class SuperBin {
       , std::string *toNumber
       , unsigned int toBase);
 
+  /**
+   * Converts number fromNumber in base fromBase to a number in base toBase.
+   * Number is returned as a std::string object.
+   *
+   * \param fromNumber number to be converted
+   * \param fromBase number to be converted is in this base
+   * \param toBase base of the resulting number
+   *
+   * \return std::string object representing converted number
+   *
+   * This function is static in order to be called without an object creation,
+   * e.g. dlib::SuperBin::fromBaseToBase(...);
+   */
   static std::string
   fromBaseToBase(
         const std::string &fromNumber
