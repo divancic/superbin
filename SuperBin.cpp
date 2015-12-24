@@ -7,10 +7,49 @@
 
 namespace dlib {
 
+/**
+ * Default constructor: construct zero.
+ */
+SuperBin::SuperBin() {
+  m_number = "00";
+}
+
+
+/**************************************************************************** 
+ * ZERO TEST
+ ****************************************************************************/
+
+/**
+ * Zero check.
+ */
+bool
+SuperBin::tz(
+    void) const {
+  for (auto it = m_number.cbegin(); it != m_number.end(); ++it) {
+    if ((*it) != '0') { return false; }
+  }
+  return true;
+}
+
+/**
+ * Check if not zero.
+ */
+bool
+SuperBin::tnz(
+    void) const {
+  return !tz();
+}
+
+
+
+/**************************************************************************** 
+ * STATIC FUNCTIONS
+ ****************************************************************************/
+
 using Digit = unsigned int;
 
 void
-dlib::SuperBin::fromBaseToBase(
+SuperBin::fromBaseToBase(
     const std::string &fromNumber,
     unsigned int fromBase,
     std::string *toNumber,
