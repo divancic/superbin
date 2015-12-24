@@ -19,10 +19,13 @@ TEST(STATIC, fromBaseToBase) {
   EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("F",16,2).c_str(), "1111");
 }
 
-/*
-TEST(STATIC, zero) {
-  dlib::SuperBin *sb;
+TEST(ZEROTEST, tz_tnz) {
+  dlib::SuperBin sb;
 
+  EXPECT_TRUE(sb.tz());
+  EXPECT_FALSE(sb.tnz());
+
+  /*
   sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG);
   EXPECT_STREQ(sb->output_bin().c_str(), "-10");
   delete sb;
@@ -30,8 +33,8 @@ TEST(STATIC, zero) {
   sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::POS);
   EXPECT_STREQ(sb->output_bin().c_str(), "10");
   delete sb;
+  */
 }
-*/
 
 int
 main(int argc, char *argv[]) {

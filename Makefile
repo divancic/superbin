@@ -18,7 +18,9 @@ GTEST_SOURCES = $(GTEST_DIR)/src/*.cc																					\
 
 all:
 ifneq ($(wildcard $(GTEST_DIR)/.*),)
-	@echo "NOTE: google test found, building SuperBin library and tests."
+	@echo "NOTE: google test found, building SuperBin tests."
+	@echo "If you want just SuperBin library do a:"
+	@echo "    make libSuperBin.a"
 	make SuperBinTest
 else
 	@echo "NOTE: google test not found, building SuperBin library only."
