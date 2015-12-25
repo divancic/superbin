@@ -21,9 +21,14 @@ TEST(STATIC, fromBaseToBase) {
 
 TEST(ZEROTEST, tz_tnz) {
   dlib::SuperBin sb;
-
   EXPECT_TRUE(sb.tz());
   EXPECT_FALSE(sb.tnz());
+}
+
+TEST(LOGICAL, lnot) {
+  dlib::SuperBin sb;
+  EXPECT_TRUE(sb.lnot());
+}
 
   /*
   sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG);
@@ -34,7 +39,6 @@ TEST(ZEROTEST, tz_tnz) {
   EXPECT_STREQ(sb->output_bin().c_str(), "10");
   delete sb;
   */
-}
 
 int
 main(int argc, char *argv[]) {
