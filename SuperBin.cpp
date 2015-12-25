@@ -7,12 +7,45 @@
 
 namespace dlib {
 
+/**************************************************************************** 
+ * CONSTRUCTORS
+ ****************************************************************************/
+
 /**
  * Default constructor: construct zero.
  */
 SuperBin::SuperBin() {
   m_number = "00";
 }
+
+/**
+ * Full-blown constructor.
+ */
+SuperBin::SuperBin(
+    std::string number
+  , unsigned int base
+  , Sign sign) {
+  m_number = SuperBin::fromBaseToBase(number, base, 2);
+}
+
+/**
+ * Copy constructor.
+ */
+SuperBin::SuperBin(
+    const SuperBin& rhs) {
+  m_number = rhs.m_number;
+}
+
+/**
+ * Copy assignment operator.
+ */
+SuperBin&
+SuperBin::operator=(
+    const SuperBin &rhs) {
+  m_number = rhs.m_number;
+  return *this;
+}
+
 
 
 /**************************************************************************** 
@@ -38,6 +71,42 @@ bool
 SuperBin::tnz(
     void) const {
   return !tz();
+}
+
+
+
+/**************************************************************************** 
+ * LOGICAL
+ ****************************************************************************/
+
+/**
+ * Logical NOT
+ */
+bool
+SuperBin::lnot(
+    void) const {
+  return tz();
+}
+
+
+
+/**************************************************************************** 
+ * BITWISE
+ ****************************************************************************/
+
+/**
+ * Bitwise not.
+ */
+SuperBin
+SuperBin::bnot(
+    void) const {
+  SuperBin result = *this;
+
+  for (auto it = result.m_number.begin(); it != result.m_number.end(); ++it) {
+    (*it) = ((*it) == '0' ? '1' : '0');
+  }
+
+  return result;
 }
 
 

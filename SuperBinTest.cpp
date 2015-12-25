@@ -19,11 +19,29 @@ TEST(STATIC, fromBaseToBase) {
   EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("F",16,2).c_str(), "1111");
 }
 
+// constructors??
+
 TEST(ZEROTEST, tz_tnz) {
   dlib::SuperBin sb;
-
   EXPECT_TRUE(sb.tz());
   EXPECT_FALSE(sb.tnz());
+}
+
+TEST(LOGICAL, lnot) {
+  dlib::SuperBin sb;
+  EXPECT_TRUE(sb.lnot());
+}
+
+TEST(BITWISE, bnot) {
+  dlib::SuperBin sb;
+  EXPECT_TRUE(sb.tz());
+  //EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
+
+  dlib::SuperBin bnot_sb = sb.bnot();
+  EXPECT_FALSE(bnot_sb.tz());
+  //EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
+}
+
 
   /*
   sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG);
@@ -34,7 +52,6 @@ TEST(ZEROTEST, tz_tnz) {
   EXPECT_STREQ(sb->output_bin().c_str(), "10");
   delete sb;
   */
-}
 
 int
 main(int argc, char *argv[]) {
