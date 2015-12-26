@@ -10,7 +10,7 @@ class SuperBin {
   /**
    * An enum describing signum.
    */
-  enum class Sign { POS = 0, NEG = 1 };
+  enum class Sign : char { POS = '0', NEG = '1' };
 
  private:
   /**
@@ -518,6 +518,20 @@ class SuperBin {
    */
   SuperBin
   neg(
+      void) const;
+
+  /**
+   * \return Increment by one.
+   */
+  SuperBin
+  inc(
+      void) const;
+
+  /**
+   * \return Decrement by one.
+   */
+  SuperBin
+  dec(
       void) const;
 
   /**

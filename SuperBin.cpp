@@ -26,6 +26,12 @@ SuperBin::SuperBin(
   , unsigned int base
   , Sign sign) {
   m_number = SuperBin::fromBaseToBase(number, base, 2);
+
+  // insert signum bit
+  m_number.insert(m_number.begin(), '0');
+
+  // construct a 2's complement if it is a negative number
+  if (Sign::NEG == sign) { m_number = bnot().inc().m_number; }
 }
 
 /**
@@ -100,10 +106,50 @@ SuperBin::lnot(
 SuperBin
 SuperBin::bnot(
     void) const {
-  SuperBin result = *this;
+  SuperBin result(*this);
 
   for (auto it = result.m_number.begin(); it != result.m_number.end(); ++it) {
     (*it) = ((*it) == '0' ? '1' : '0');
+  }
+
+  return result;
+}
+
+
+
+/**************************************************************************** 
+ * ARITHMETIC FUNCTIONS
+ ****************************************************************************/
+
+/**
+ * Increment by one.
+ * TODO(doki): lose leading zeros when n-bit -1 goes to 0
+ */
+SuperBin
+SuperBin::inc(
+    void) const {
+  SuperBin result(*this);
+
+  // determine signum: if it is a positive number, we must ensure it
+  // will stay postive (0 is the leading digit) - see below.
+  Sign sign = (result.m_number.front() == '0') ? Sign::POS : Sign::NEG;
+
+  char bcarry = 1;
+  for (auto bit = result.m_number.rbegin();
+       bit != result.m_number.rend();
+       ++bit) {
+    char bres = *bit + bcarry;
+    bcarry = ((bres & 2) == 2);
+    (*bit) = (bres & 1) + '0';
+  }
+
+  // if the above code finished with an overflow the signum for
+  // a postive number changed so we must add '0' in front
+  // consider:
+  //  inc(00) -> 01 (decimal 0 -> 1)
+  //  inc(01) -> 010 (decimal 1 -> 2) NOT 10 (decimal -2)!!
+  if ((sign == Sign::POS) && (result.m_number.front() == '1')) {
+    result.m_number.insert(result.m_number.begin(), '0');
   }
 
   return result;

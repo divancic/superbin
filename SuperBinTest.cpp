@@ -20,6 +20,24 @@ TEST(STATIC, fromBaseToBase) {
 }
 
 // constructors??
+TEST(CONSTRUCTOR, constructors) {
+  dlib::SuperBin sb1;
+  dlib::SuperBin sb2("5");
+  dlib::SuperBin sb3("5", 10);
+  dlib::SuperBin sb4("5", 10, dlib::SuperBin::Sign::POS);
+  dlib::SuperBin sb5("7", 10, dlib::SuperBin::Sign::NEG);
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+  std::cout << "INC:" << std::endl; sb5=sb5.inc();
+}
 
 TEST(ZEROTEST, tz_tnz) {
   dlib::SuperBin sb;
@@ -40,6 +58,11 @@ TEST(BITWISE, bnot) {
   dlib::SuperBin bnot_sb = sb.bnot();
   EXPECT_FALSE(bnot_sb.tz());
   //EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
+}
+
+TEST(ARITHMETIC, inc) {
+  dlib::SuperBin sb;
+  sb.inc().inc().inc().inc();
 }
 
 
