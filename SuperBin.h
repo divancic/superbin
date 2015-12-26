@@ -10,7 +10,7 @@ class SuperBin {
   /**
    * An enum describing signum.
    */
-  enum class Sign { POS = 0, NEG = 1 };
+  enum class Sign : char { POS = '0', NEG = '1' };
 
  private:
   /**
@@ -157,13 +157,13 @@ class SuperBin {
    * be padded with 0 or 1 depending on signum. If the number is larger
    * only adequate amount of least significant bits will be returned.
    *
-   * \param no_of_bits Number of bits to output.
+   * \param no_of_bits Number of bits to output (default: 0 = all).
    *
    * \return String containing an unsigned number in binary.
    */
   std::string
   to_string_unsigned_bin(
-      unsigned int no_of_bits) const;
+      unsigned int no_of_bits = 0) const;
 
   /**
    * This method returns a number in a string in a hexadecimal format. If
@@ -174,13 +174,13 @@ class SuperBin {
    *
    * Note: one hex digit represent four bits.
    *
-   * \param no_of_bits Number of bits to output.
+   * \param no_of_bits Number of bits to output (default: 0 = all).
    *
    * \return String containing an unsigned number in hexadecimal format.
    */
   std::string
   to_string_unsigned_hex(
-      unsigned int no_of_bits) const;
+      unsigned int no_of_bits = 0) const;
 
 
 
@@ -518,6 +518,20 @@ class SuperBin {
    */
   SuperBin
   neg(
+      void) const;
+
+  /**
+   * \return Increment by one.
+   */
+  SuperBin
+  inc(
+      void) const;
+
+  /**
+   * \return Decrement by one.
+   */
+  SuperBin
+  dec(
       void) const;
 
   /**
