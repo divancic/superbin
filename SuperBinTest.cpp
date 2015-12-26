@@ -4,6 +4,10 @@
 #include <string>
 #include <iostream>
 
+
+/**************************************************************************** 
+ * STATIC FUNCTIONS
+ ****************************************************************************/
 TEST(STATIC, fromBaseToBase) {
   EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
   EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,10).c_str(), "15");
@@ -120,21 +124,47 @@ TEST(LOGICAL, lnot) {
  * BITWISE
  ****************************************************************************/
 TEST(BITWISE, bnot) {
-  dlib::SuperBin sb;
-  EXPECT_TRUE(sb.tz());
-  //EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
-
-  dlib::SuperBin bnot_sb = sb.bnot();
-  EXPECT_FALSE(bnot_sb.tz());
-  //EXPECT_STREQ(dlib::SuperBin::fromBaseToBase("1111",2,16).c_str(), "F");
+  EXPECT_STREQ(dlib::SuperBin().bnot().to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(dlib::SuperBin("A",16).bnot().to_string_unsigned_bin().c_str(), "10101");
 }
 
+
+
+/**************************************************************************** 
+ * ARITHMETIC FUNCTIONS
+ ****************************************************************************/
 TEST(ARITHMETIC, inc) {
-  dlib::SuperBin sb;
-  sb.inc().inc().inc().inc();
+  dlib::SuperBin sb("3",10,dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "101");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "110");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "111");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "000");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "001");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "010");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "011");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "0100");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "0101");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "0110");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "0111");
+  sb = sb.inc();
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "01000");
 }
 
 
+
+/**************************************************************************** 
+ * MASTER
+ ****************************************************************************/
 int
 main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

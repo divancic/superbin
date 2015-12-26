@@ -128,6 +128,7 @@ SuperBin::lnot(
 
 /**
  * Bitwise not.
+ * TODO(doki): ponašanje? npr. not(A/01010) = 10101 ili 0101??
  */
 SuperBin
 SuperBin::bnot(
