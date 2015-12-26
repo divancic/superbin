@@ -93,25 +93,15 @@ TEST(TO_STRING, unsigned_bin) {
  * ZERO TEST
  ****************************************************************************/
 TEST(ZEROTEST, tz) {
-  dlib::SuperBin sb_zero_impl;
-  EXPECT_TRUE(sb_zero_impl.tz());
-
-  dlib::SuperBin sb_zero_expl("0");
-  EXPECT_TRUE(sb_zero_expl.tz());
-
-  dlib::SuperBin sb_not_zero("1");
-  EXPECT_FALSE(sb_not_zero.tz());
+  EXPECT_TRUE(dlib::SuperBin().tz());
+  EXPECT_TRUE(dlib::SuperBin("0").tz());
+  EXPECT_FALSE(dlib::SuperBin("1").tz());
 }
 
 TEST(ZEROTEST, tnz) {
-  dlib::SuperBin sb_zero_impl;
-  EXPECT_FALSE(sb_zero_impl.tnz());
-
-  dlib::SuperBin sb_zero_expl("0");
-  EXPECT_FALSE(sb_zero_expl.tnz());
-
-  dlib::SuperBin sb_not_zero("1");
-  EXPECT_TRUE(sb_not_zero.tnz());
+  EXPECT_FALSE(dlib::SuperBin().tnz());
+  EXPECT_FALSE(dlib::SuperBin("0").tnz());
+  EXPECT_TRUE(dlib::SuperBin("1").tnz());
 }
 
 
@@ -119,20 +109,16 @@ TEST(ZEROTEST, tnz) {
 /**************************************************************************** 
  * LOGICAL
  ****************************************************************************/
-
-
-
-
-
-
-
-
-
 TEST(LOGICAL, lnot) {
-  dlib::SuperBin sb;
-  EXPECT_TRUE(sb.lnot());
+  EXPECT_TRUE(dlib::SuperBin("0").lnot());
+  EXPECT_FALSE(dlib::SuperBin("1").lnot());
 }
 
+
+
+/**************************************************************************** 
+ * BITWISE
+ ****************************************************************************/
 TEST(BITWISE, bnot) {
   dlib::SuperBin sb;
   EXPECT_TRUE(sb.tz());
@@ -148,16 +134,6 @@ TEST(ARITHMETIC, inc) {
   sb.inc().inc().inc().inc();
 }
 
-
-  /*
-  sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG);
-  EXPECT_STREQ(sb->output_bin().c_str(), "-10");
-  delete sb;
-
-  sb = new dlib::SuperBin("2", 10, dlib::SuperBin::Sign::POS);
-  EXPECT_STREQ(sb->output_bin().c_str(), "10");
-  delete sb;
-  */
 
 int
 main(int argc, char *argv[]) {
