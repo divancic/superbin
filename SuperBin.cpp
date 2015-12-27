@@ -58,6 +58,30 @@ SuperBin::operator=(
  * CONVERTERS TO STRING
  ****************************************************************************/
 /**
+ * Print number in a base with signum (optional).
+ */
+std::string
+SuperBin::to_string_signed(
+    unsigned int base
+  , bool out_sign_pos
+  , bool out_sign_neg) const {
+  // determine sign
+  Sign sign = (m_number.front() == '0') ? Sign::POS : Sign::NEG;
+
+  // if the number is negative take it out of 2's complement form
+  std::string number = (Sign::NEG == sign ? bnot().inc().m_number : m_number);
+
+  // convert to requested base
+  std::string result = fromBaseToBase(number, 2, base);
+
+  // add sign as the first character
+  if (Sign::POS == sign && out_sign_pos) { result = '+' + result; }
+  if (Sign::NEG == sign && out_sign_neg) { result = '-' + result; }
+
+  return result;
+}
+
+/**
  * Print number as is (binary).
  */
 std::string
@@ -178,6 +202,18 @@ SuperBin::inc(
   if ((sign == Sign::POS) && (result.m_number.front() == '1')) {
     result.m_number.insert(result.m_number.begin(), '0');
   }
+
+  return result;
+}
+
+/**
+ * Decrement by one.
+ * TODO(doki): lose leading zeros when n-bit +1 goes to 0
+ */
+SuperBin
+SuperBin::dec(
+    void) const {
+  SuperBin result(*this);
 
   return result;
 }
