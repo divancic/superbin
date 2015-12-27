@@ -106,6 +106,11 @@ TEST(TO_STRING, _signed) {
   EXPECT_STREQ(sb_pos.to_string_signed(10, true, true).c_str(), "+170");
   EXPECT_STREQ(sb_pos.to_string_signed(16, true, true).c_str(), "+AA");
 
+  EXPECT_STREQ(sb_pos.to_string_signed_bin().c_str(), "10101010");
+  EXPECT_STREQ(sb_pos.to_string_signed_oct().c_str(), "252");
+  EXPECT_STREQ(sb_pos.to_string_signed_dec().c_str(), "170");
+  EXPECT_STREQ(sb_pos.to_string_signed_hex().c_str(), "AA");
+
   dlib::SuperBin sb_neg("AA", 16, dlib::SuperBin::Sign::NEG);
   EXPECT_STREQ(sb_neg.to_string_signed(2).c_str(), "-10101010");
   EXPECT_STREQ(sb_neg.to_string_signed(8).c_str(), "-252");
@@ -123,6 +128,11 @@ TEST(TO_STRING, _signed) {
   EXPECT_STREQ(sb_neg.to_string_signed(8, true, false).c_str(), "252");
   EXPECT_STREQ(sb_neg.to_string_signed(10, true, false).c_str(), "170");
   EXPECT_STREQ(sb_neg.to_string_signed(16, true, false).c_str(), "AA");
+
+  EXPECT_STREQ(sb_neg.to_string_signed_bin().c_str(), "-10101010");
+  EXPECT_STREQ(sb_neg.to_string_signed_oct().c_str(), "-252");
+  EXPECT_STREQ(sb_neg.to_string_signed_dec().c_str(), "-170");
+  EXPECT_STREQ(sb_neg.to_string_signed_hex().c_str(), "-AA");
 }
 
 

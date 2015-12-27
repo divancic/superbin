@@ -58,7 +58,7 @@ SuperBin::operator=(
  * CONVERTERS TO STRING
  ****************************************************************************/
 /**
- * Print number in a base with signum (optional).
+ * Put number in requested base to std::string with signum (optional).
  */
 std::string
 SuperBin::to_string_signed(
@@ -79,6 +79,42 @@ SuperBin::to_string_signed(
   if (Sign::NEG == sign && out_sign_neg) { result = '-' + result; }
 
   return result;
+}
+
+/**
+ * Put number in binary to std::string with signum (if negative).
+ */
+std::string
+SuperBin::to_string_signed_bin(
+    void) const {
+  return to_string_signed(2);
+}
+
+/**
+ * Put number in octal to std::string with signum (if negative).
+ */
+std::string
+SuperBin::to_string_signed_oct(
+    void) const {
+  return to_string_signed(8);
+}
+
+/**
+ * Put number in decimal to std::string with signum (if negative).
+ */
+std::string
+SuperBin::to_string_signed_dec(
+    void) const {
+  return to_string_signed(10);
+}
+
+/**
+ * Put number in hexadecimal to std::string with signum (if negative).
+ */
+std::string
+SuperBin::to_string_signed_hex(
+    void) const {
+  return to_string_signed(16);
 }
 
 /**
@@ -153,6 +189,7 @@ SuperBin::lnot(
 /**
  * Bitwise not.
  * TODO(doki): ponašanje? npr. not(A/01010) = 10101 ili 0101??
+ * TODO(doki): brisanje nula? consider not(1110) = 1; not(1) = 0 ??
  */
 SuperBin
 SuperBin::bnot(
