@@ -118,7 +118,7 @@ SuperBin::to_string_signed_hex(
 }
 
 /**
- * Print number as is (binary).
+ * Print number in binary (as is) with (optional) number of digits.
  */
 std::string
 SuperBin::to_string_unsigned_bin(
