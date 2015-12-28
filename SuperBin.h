@@ -166,6 +166,23 @@ class SuperBin {
       unsigned int no_of_bits = 0) const;
 
   /**
+   * This method returns a number in a string in a octal format. If
+   * negative, the 2's complement is returned. The parameter dictates how many
+   * bits is returned. If the number is smaller than requested number of bits
+   * it will be padded with 0 or 1 depending on signum. If the number is larger
+   * only adequate amount of least significant bits will be returned.
+   *
+   * Note: one oct digit represent three bits.
+   *
+   * \param no_of_bits Number of bits to output (default: 0 = all).
+   *
+   * \return String containing an unsigned number in octal format.
+   */
+  std::string
+  to_string_unsigned_oct(
+      unsigned int no_of_bits = 0) const;
+
+  /**
    * This method returns a number in a string in a hexadecimal format. If
    * negative, the 2's complement is returned. The parameter dictates how many
    * bits is returned. If the number is smaller than requested number of bits

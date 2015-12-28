@@ -83,12 +83,72 @@ TEST(TO_STRING, unsigned_bin) {
   EXPECT_STREQ(sb_pos.to_string_unsigned_bin(9).c_str(), "010101010");
   EXPECT_STREQ(sb_pos.to_string_unsigned_bin(15).c_str(), "000000010101010");
 
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct().c_str(), "252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(1).c_str(), "0");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(2).c_str(), "2");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(3).c_str(), "2");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(4).c_str(), "12");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(5).c_str(), "12");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(6).c_str(), "52");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(7).c_str(), "052");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(8).c_str(), "252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(9).c_str(), "252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(10).c_str(), "0252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(11).c_str(), "0252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(12).c_str(), "0252");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_oct(13).c_str(), "00252");
+
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex().c_str(), "AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(1).c_str(), "0");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(2).c_str(), "2");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(3).c_str(), "2");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(4).c_str(), "A");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(5).c_str(), "0A");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(6).c_str(), "2A");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(7).c_str(), "2A");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(8).c_str(), "AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(9).c_str(), "0AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(10).c_str(), "0AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(11).c_str(), "0AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(12).c_str(), "0AA");
+  EXPECT_STREQ(sb_pos.to_string_unsigned_hex(13).c_str(), "00AA");
+
   dlib::SuperBin sb_neg("AA", 16, dlib::SuperBin::Sign::NEG);
   EXPECT_STREQ(sb_neg.to_string_unsigned_bin().c_str(), "101010110");
   EXPECT_STREQ(sb_neg.to_string_unsigned_bin(4).c_str(), "0110");
   EXPECT_STREQ(sb_neg.to_string_unsigned_bin(7).c_str(), "1010110");
   EXPECT_STREQ(sb_neg.to_string_unsigned_bin(9).c_str(), "101010110");
   EXPECT_STREQ(sb_neg.to_string_unsigned_bin(15).c_str(), "111111101010110");
+
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct().c_str(), "526");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(1).c_str(), "0");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(2).c_str(), "2");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(3).c_str(), "6");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(4).c_str(), "06");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(5).c_str(), "26");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(6).c_str(), "26");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(7).c_str(), "126");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(8).c_str(), "126");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(9).c_str(), "526");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(10).c_str(), "1526");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(11).c_str(), "3526");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(12).c_str(), "7526");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_oct(13).c_str(), "17526");
+
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex().c_str(), "156");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(1).c_str(), "0");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(2).c_str(), "2");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(3).c_str(), "6");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(4).c_str(), "6");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(5).c_str(), "16");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(6).c_str(), "16");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(7).c_str(), "56");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(8).c_str(), "56");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(9).c_str(), "156");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(10).c_str(), "356");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(11).c_str(), "756");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(12).c_str(), "F56");
+  EXPECT_STREQ(sb_neg.to_string_unsigned_hex(13).c_str(), "1F56");
 }
 
 TEST(TO_STRING, _signed) {
