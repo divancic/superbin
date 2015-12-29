@@ -222,6 +222,15 @@ TEST(LOGICAL, lnot) {
   EXPECT_FALSE(dlib::SuperBin("1").lnot());
 }
 
+TEST(LOGICAL, land) {
+  dlib::SuperBin sb_zero("0");
+  dlib::SuperBin sb_nzero("1");
+  EXPECT_TRUE(sb_nzero.land(sb_nzero));
+  EXPECT_FALSE(sb_zero.land(sb_nzero));
+  EXPECT_FALSE(sb_nzero.land(sb_zero));
+  EXPECT_FALSE(sb_zero.land(sb_zero));
+}
+
 
 
 /**************************************************************************** 

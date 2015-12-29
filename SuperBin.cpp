@@ -214,6 +214,16 @@ SuperBin::lnot(
   return tz();
 }
 
+/**
+ * Logical AND
+ */
+bool
+SuperBin::land(
+    const SuperBin &rhs) const {
+  if (tnz() && rhs.tnz()) { return true; }
+  return false;
+}
+
 
 
 /**************************************************************************** 
