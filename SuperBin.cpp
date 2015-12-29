@@ -138,40 +138,6 @@ SuperBin::to_string_unsigned_bin(
   return result;
 }
 
-/**
- * Print number in octal. Optional parameter dictates how many bits
- * is translated to octal.
- */
-std::string
-SuperBin::to_string_unsigned_oct(
-    unsigned int no_of_bits) const {
-  std::string result
-    = fromBaseToBase(to_string_unsigned_bin(no_of_bits), 2, 8);
-
-  while (result.size() < (no_of_bits / 3) + ((no_of_bits % 3) ? 1 : 0)) {
-    result.insert(result.begin(), '0');
-  }
-
-  return result;
-}
-
-/**
- * Print number in hexadecimal. Optional parameter dictates how many bits
- * is translated to hexadecimal.
- */
-std::string
-SuperBin::to_string_unsigned_hex(
-    unsigned int no_of_bits) const {
-  std::string result
-    = fromBaseToBase(to_string_unsigned_bin(no_of_bits), 2, 16);
-
-  while (result.size() < (no_of_bits / 4) + ((no_of_bits % 4) ? 1 : 0)) {
-    result.insert(result.begin(), '0');
-  }
-
-  return result;
-}
-
 
 
 /**************************************************************************** 
