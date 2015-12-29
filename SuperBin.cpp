@@ -234,6 +234,16 @@ SuperBin::lor(
   return false;
 }
 
+/**
+ * Logical XOR
+ */
+bool
+SuperBin::lxor(
+    const SuperBin &rhs) const {
+  if ((tz() && !rhs.tz()) || (!tz() && rhs.tz())) { return true; }
+  return false;
+}
+
 
 
 /**************************************************************************** 

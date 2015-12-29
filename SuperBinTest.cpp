@@ -238,6 +238,13 @@ TEST(LOGICAL, lor) {
   EXPECT_TRUE(sb.lnot().lor(sb.lnot()));
 }
 
+TEST(LOGICAL, lxor) {
+  dlib::SuperBin sb;
+  EXPECT_FALSE(sb.lxor(sb));
+  EXPECT_TRUE(sb.lxor(sb.lnot()));
+  EXPECT_TRUE(sb.lnot().lxor(sb));
+  EXPECT_FALSE(sb.lnot().lxor(sb.lnot()));
+}
 
 /**************************************************************************** 
  * BITWISE
