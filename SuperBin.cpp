@@ -220,7 +220,7 @@ SuperBin::lnot(
 bool
 SuperBin::land(
     const SuperBin &rhs) const {
-  if (tnz() && rhs.tnz()) { return true; }
+  if (!tz() && !rhs.tz()) { return true; }
   return false;
 }
 
