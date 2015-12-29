@@ -224,6 +224,16 @@ SuperBin::land(
   return false;
 }
 
+/**
+ * Logical OR
+ */
+bool
+SuperBin::lor(
+    const SuperBin &rhs) const {
+  if (!tz() || !rhs.tz()) { return true; }
+  return false;
+}
+
 
 
 /**************************************************************************** 

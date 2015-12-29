@@ -223,14 +223,20 @@ TEST(LOGICAL, lnot) {
 }
 
 TEST(LOGICAL, land) {
-  dlib::SuperBin sb_zero("0");
-  dlib::SuperBin sb_nzero("1");
-  EXPECT_TRUE(sb_nzero.land(sb_nzero));
-  EXPECT_FALSE(sb_zero.land(sb_nzero));
-  EXPECT_FALSE(sb_nzero.land(sb_zero));
-  EXPECT_FALSE(sb_zero.land(sb_zero));
+  dlib::SuperBin sb;
+  EXPECT_FALSE(sb.land(sb));
+  EXPECT_FALSE(sb.lnot().land(sb));
+  EXPECT_FALSE(sb.land(sb.lnot()));
+  EXPECT_TRUE(sb.lnot().land(sb.lnot()));
 }
 
+TEST(LOGICAL, lor) {
+  dlib::SuperBin sb;
+  EXPECT_FALSE(sb.lor(sb));
+  EXPECT_TRUE(sb.lor(sb.lnot()));
+  EXPECT_TRUE(sb.lnot().lor(sb));
+  EXPECT_TRUE(sb.lnot().lor(sb.lnot()));
+}
 
 
 /**************************************************************************** 
