@@ -252,7 +252,7 @@ class SuperBin {
    *
    * \return true if zero, false otherwise.
    */
-  bool
+  SuperBin
   lnot(
       void) const;
 

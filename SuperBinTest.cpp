@@ -218,8 +218,8 @@ TEST(ZEROTEST, tnz) {
  * LOGICAL
  ****************************************************************************/
 TEST(LOGICAL, lnot) {
-  EXPECT_TRUE(dlib::SuperBin("0").lnot());
-  EXPECT_FALSE(dlib::SuperBin("1").lnot());
+  EXPECT_STREQ(dlib::SuperBin("0").lnot().to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(dlib::SuperBin("1").lnot().to_string_unsigned_bin().c_str(), "00");
 }
 
 TEST(LOGICAL, land) {

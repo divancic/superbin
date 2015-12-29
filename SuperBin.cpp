@@ -208,10 +208,10 @@ SuperBin::tnz(
 /**
  * Logical NOT
  */
-bool
+SuperBin
 SuperBin::lnot(
     void) const {
-  return tz();
+  return (tz() ? SuperBin("1") : SuperBin("0"));
 }
 
 /**
