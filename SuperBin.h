@@ -106,6 +106,29 @@ class SuperBin {
 
 
   /**************************************************************************** 
+   * NUMBER SIZE
+   ****************************************************************************/
+
+  /**
+   * Cast into new SuperBin with the given number of bits.
+   * If the requested bitsize is greater than the current size the number will
+   * be expanded according to the signum (with ones if it is negative or with
+   * zeros if it is postivie). On the other hand, if the requested bitsize iz
+   * smaller than the current size number will be shorten optimally (e.g.
+   * 0000010 -> 010, 111111110 -> 10, etc.)
+   */
+  SuperBin
+  cast(
+      unsigned int no_of_bits = 0) const;
+
+  /**
+   * Get the current size (in bits).
+   */
+  unsigned int
+  size(
+      void) const;
+
+  /**************************************************************************** 
    * CONVERTERS TO STRING
    ****************************************************************************/
 

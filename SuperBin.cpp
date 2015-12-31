@@ -55,6 +55,47 @@ SuperBin::operator=(
 
 
 /**************************************************************************** 
+ * SIZE
+ ****************************************************************************/
+/**
+ * Cast into new SuperBin with the given number of bits.
+ */
+SuperBin
+SuperBin::cast(
+    unsigned int no_of_bits) const {
+  SuperBin result(*this);
+
+  // if the requested number of bits is larger than the current size
+  // add signum bits at the beginning until requested number equals
+  // size
+  while (no_of_bits > result.m_number.size()) {
+    result.m_number.insert(result.m_number.begin(), result.m_number[0]); }
+
+  // if the actual size is more than two bits (signum + data) and
+  // the requested number of bits is smaller than actual size and
+  // two front bits are equal (both signums, either 0 or 1
+  // then it is save to remove the bit at the front
+  while ((result.m_number.size() > 2) &&
+      (no_of_bits < result.m_number.size()) &&
+      (result.m_number[1] == result.m_number[0])) {
+    result.m_number.erase(result.m_number.begin());
+  }
+
+  return result;
+}
+
+/**
+ * Get the current size in bits.
+ */
+unsigned int
+SuperBin::size(
+    void) const {
+  return m_number.size();
+}
+
+
+
+/**************************************************************************** 
  * CONVERTERS TO STRING
  ****************************************************************************/
 /**
@@ -252,8 +293,7 @@ SuperBin::lxor(
 
 /**
  * Bitwise not.
- * TODO(doki): ponašanje? npr. not(A/01010) = 10101 ili 0101??
- * TODO(doki): brisanje nula? consider not(1110) = 1; not(1) = 0 ??
+ * TODO(doki): removing leading zeros? consider not(1110) = 1; not(1) = 0 ??
  */
 SuperBin
 SuperBin::bnot(

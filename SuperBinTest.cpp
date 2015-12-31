@@ -73,6 +73,41 @@ TEST(CONSTRUCTOR, assignment) {
 
 
 /**************************************************************************** 
+ * SIZE
+ ****************************************************************************/
+TEST(SIZE, all) {
+  dlib::SuperBin sb_pos("AA", 16, dlib::SuperBin::Sign::POS);
+  dlib::SuperBin sb_pos_16 = sb_pos.cast(16);
+  dlib::SuperBin sb_pos_32 = sb_pos.cast(32);
+  dlib::SuperBin sb_pos_opt = sb_pos_32.cast(0);
+  EXPECT_EQ(sb_pos_16.size(), 16);
+  EXPECT_EQ(sb_pos_32.size(), 32);
+  EXPECT_EQ(sb_pos_opt.size(), 9);
+  EXPECT_STREQ(sb_pos_16.to_string_unsigned_bin().c_str(), "0000000010101010");
+  EXPECT_STREQ(sb_pos_32.to_string_unsigned_bin().c_str(), "00000000000000000000000010101010");
+  EXPECT_STREQ(sb_pos_opt.to_string_unsigned_bin().c_str(), "010101010");
+
+  dlib::SuperBin sb_neg("AA", 16, dlib::SuperBin::Sign::NEG);
+  dlib::SuperBin sb_neg_16 = sb_neg.cast(16);
+  dlib::SuperBin sb_neg_32 = sb_neg.cast(32);
+  dlib::SuperBin sb_neg_opt = sb_neg_32.cast(0);
+  EXPECT_EQ(sb_neg_16.size(), 16);
+  EXPECT_EQ(sb_neg_32.size(), 32);
+  EXPECT_EQ(sb_neg_opt.size(), 9);
+  EXPECT_STREQ(sb_neg_16.to_string_unsigned_bin().c_str(), "1111111101010110");
+  EXPECT_STREQ(sb_neg_32.to_string_unsigned_bin().c_str(), "11111111111111111111111101010110");
+  EXPECT_STREQ(sb_neg_opt.to_string_unsigned_bin().c_str(), "101010110");
+
+  dlib::SuperBin sb_zero;
+  EXPECT_STREQ(sb_zero.cast(0).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb_zero.cast(8).to_string_unsigned_bin().c_str(), "00000000");
+  EXPECT_STREQ(sb_zero.cast(8).bnot().to_string_unsigned_bin().c_str(), "11111111");
+  EXPECT_STREQ(sb_zero.cast(8).bnot().cast(10).to_string_unsigned_bin().c_str(), "1111111111");
+  EXPECT_STREQ(sb_zero.cast(8).bnot().cast(10).cast().to_string_unsigned_bin().c_str(), "11");
+  EXPECT_EQ(sb_zero.size(), 2);
+}
+
+/**************************************************************************** 
  * CONVERTERS TO STRING
  ****************************************************************************/
 TEST(TO_STRING, unsigned_bin) {
