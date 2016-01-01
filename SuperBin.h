@@ -81,7 +81,7 @@ class SuperBin {
   SuperBin();
 
   /**
-   * \param number a string representation of the number to be constructed.
+   * \param number a string representation of the number to be constructed
    * \param base a number's base (default 10)
    * \param sign a sign (default positive)
    */
@@ -90,6 +90,12 @@ class SuperBin {
       std::string number
     , unsigned int base = 10
     , Sign sign = Sign::POS);
+
+  /**
+   * \param bool_value boolean value of the number to be constructed
+   */
+  SuperBin(
+      bool bool_value);
 
   /**
    * Copy constructor.

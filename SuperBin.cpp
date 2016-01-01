@@ -35,6 +35,14 @@ SuperBin::SuperBin(
 }
 
 /**
+ * Boolean constructor.
+ */
+SuperBin::SuperBin(
+    bool bool_value) {
+  m_number = bool_value ? "01" : "00";
+}
+
+/**
  * Copy constructor.
  */
 SuperBin::SuperBin(
