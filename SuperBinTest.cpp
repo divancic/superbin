@@ -294,6 +294,13 @@ TEST(BITWISE, bnot) {
   EXPECT_STREQ(dlib::SuperBin("A",16).bnot().to_string_unsigned_bin().c_str(), "10101");
 }
 
+TEST(BITWISE, band) {
+  dlib::SuperBin sb_1("3AA",16);
+  dlib::SuperBin sb_2("2A5",16);
+  dlib::SuperBin sb_3 = sb_2.band(sb_1);
+  EXPECT_STREQ(sb_3.to_string_unsigned_bin().c_str(), "01010100000");
+}
+
 
 
 /**************************************************************************** 

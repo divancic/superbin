@@ -315,7 +315,7 @@ SuperBin::lxor(
 
 /**
  * Bitwise not.
- * TODO(doki): removing leading zeros? consider not(1110) = 1; not(1) = 0 ??
+ * TODO(doki): removing leading zeros/ones? consider not(1110) = 1; not(1) = 0?
  */
 SuperBin
 SuperBin::bnot(
@@ -325,6 +325,66 @@ SuperBin::bnot(
   for (auto it = result.m_number.begin(); it != result.m_number.end(); ++it) {
     (*it) = ((*it) == '0' ? '1' : '0');
   }
+
+  return result;
+}
+
+/**
+ * Bitwise and.
+ */
+SuperBin
+SuperBin::band(
+    const SuperBin &rhs) const {
+
+
+
+  unsigned int max = (this->size() > rhs.size() ? this->size() : rhs.size());
+  SuperBin const *o1 = (this->size() > rhs.size() ? this : &rhs);
+  SuperBin const *o2 = (this->size() > rhs.size() ? &rhs : this);
+
+  SuperBin result = o2->cast(max);
+
+  for (unsigned int i = 0; i < max; ++i) {
+    result.m_number[i] &= o1->m_number[i];
+  }
+
+  return result;
+
+  // SuperBin result.cast(max);
+
+  SuperBin new_lhs = this->cast(max);
+  SuperBin new_rhs = rhs.cast(max);
+
+  std::cout << this->to_string_unsigned_bin() << std::endl;
+  std::cout << rhs.to_string_unsigned_bin() << std::endl;
+
+  for (unsigned int i = 0; i < max; ++i) {
+    new_lhs.m_number[i] = new_lhs.m_number[i] & new_rhs.m_number[i];
+  }
+
+
+  return new_lhs;
+  // return result;
+}
+
+/**
+ * Bitwise or.
+ */
+SuperBin
+SuperBin::bor(
+    const SuperBin &rhs) const {
+  SuperBin result(*this);
+
+  return result;
+}
+
+/**
+ * Bitwise xor.
+ */
+SuperBin
+SuperBin::bxor(
+    const SuperBin &rhs) const {
+  SuperBin result(*this);
 
   return result;
 }
