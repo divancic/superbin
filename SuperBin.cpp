@@ -19,7 +19,7 @@ SuperBin::SuperBin() {
 }
 
 /**
- * Full-blown constructor.
+ * Full-blown constructor (pt.1).
  */
 SuperBin::SuperBin(
     std::string number
@@ -32,6 +32,31 @@ SuperBin::SuperBin(
 
   // construct a 2's complement if it is a negative number
   if (Sign::NEG == sign) { m_number = bnot().inc().m_number; }
+}
+
+/**
+ * Full-blown constructor (pt.2)
+ *
+ * NOTE: need to have this constructor! if it would not exist, when creating
+ * object with SuperBin("...") a string would be interpreted as a const char*
+ * which is then converted to bool (rather than constructing a std::string
+ * object) and the object ends up constructed with SuperBin(bool). to
+ * explicitly construct with SuperBin(std::string, ...) one would have to
+ * call a constructor like this: ... SuperBin(std::string("..."),...
+ * i wanted to avoid this. also note this ctor is defined as delegating one
+ * (calls SuperBin(std::string, ...) to do the real work).
+ */
+SuperBin::SuperBin(
+    const char *number
+  , unsigned int base
+  , Sign sign) : SuperBin(std::string(number), base, sign) {}
+
+/**
+ * Boolean constructor.
+ */
+SuperBin::SuperBin(
+    bool bool_value) {
+  m_number = bool_value ? "01" : "00";
 }
 
 /**
@@ -252,37 +277,34 @@ SuperBin::tnz(
 SuperBin
 SuperBin::lnot(
     void) const {
-  return (tz() ? SuperBin("1") : SuperBin("0"));
+  return SuperBin(tz() ? true : false);
 }
 
 /**
  * Logical AND
  */
-bool
+SuperBin
 SuperBin::land(
     const SuperBin &rhs) const {
-  if (!tz() && !rhs.tz()) { return true; }
-  return false;
+  return SuperBin(!tz() && !rhs.tz() ? true : false);
 }
 
 /**
  * Logical OR
  */
-bool
+SuperBin
 SuperBin::lor(
     const SuperBin &rhs) const {
-  if (!tz() || !rhs.tz()) { return true; }
-  return false;
+  return SuperBin(!tz() || !rhs.tz() ? true : false);
 }
 
 /**
  * Logical XOR
  */
-bool
+SuperBin
 SuperBin::lxor(
     const SuperBin &rhs) const {
-  if ((tz() && !rhs.tz()) || (!tz() && rhs.tz())) { return true; }
-  return false;
+  return SuperBin(((tz() && !rhs.tz()) || (!tz() && rhs.tz())) ? true : false);
 }
 
 

@@ -70,6 +70,11 @@ TEST(CONSTRUCTOR, assignment) {
   EXPECT_STRNE(sb_orig.to_string_unsigned_bin().c_str(), sb_copy.to_string_unsigned_bin().c_str());
 }
 
+TEST(CONSTRUCTOR, boolean) {
+  EXPECT_STREQ(dlib::SuperBin(true).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(dlib::SuperBin(false).to_string_unsigned_bin().c_str(), "00");
+}
+
 
 
 /**************************************************************************** 
@@ -259,26 +264,26 @@ TEST(LOGICAL, lnot) {
 
 TEST(LOGICAL, land) {
   dlib::SuperBin sb;
-  EXPECT_FALSE(sb.land(sb));
-  EXPECT_FALSE(sb.lnot().land(sb));
-  EXPECT_FALSE(sb.land(sb.lnot()));
-  EXPECT_TRUE(sb.lnot().land(sb.lnot()));
+  EXPECT_STREQ(sb.land(sb).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb.lnot().land(sb).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb.land(sb.lnot()).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb.lnot().land(sb.lnot()).to_string_unsigned_bin().c_str(), "01");
 }
 
 TEST(LOGICAL, lor) {
   dlib::SuperBin sb;
-  EXPECT_FALSE(sb.lor(sb));
-  EXPECT_TRUE(sb.lor(sb.lnot()));
-  EXPECT_TRUE(sb.lnot().lor(sb));
-  EXPECT_TRUE(sb.lnot().lor(sb.lnot()));
+  EXPECT_STREQ(sb.lor(sb).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb.lor(sb.lnot()).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(sb.lnot().lor(sb).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(sb.lnot().lor(sb.lnot()).to_string_unsigned_bin().c_str(), "01");
 }
 
 TEST(LOGICAL, lxor) {
   dlib::SuperBin sb;
-  EXPECT_FALSE(sb.lxor(sb));
-  EXPECT_TRUE(sb.lxor(sb.lnot()));
-  EXPECT_TRUE(sb.lnot().lxor(sb));
-  EXPECT_FALSE(sb.lnot().lxor(sb.lnot()));
+  EXPECT_STREQ(sb.lxor(sb).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(sb.lxor(sb.lnot()).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(sb.lnot().lxor(sb).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(sb.lnot().lxor(sb.lnot()).to_string_unsigned_bin().c_str(), "00");
 }
 
 /**************************************************************************** 

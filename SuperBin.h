@@ -81,15 +81,30 @@ class SuperBin {
   SuperBin();
 
   /**
-   * \param number a string representation of the number to be constructed.
+   * \param number a string representation of the number to be constructed
    * \param base a number's base (default 10)
    * \param sign a sign (default positive)
    */
-  explicit
   SuperBin(
       std::string number
     , unsigned int base = 10
     , Sign sign = Sign::POS);
+
+  /**
+   * \param number a const char* representation of the number to be constructed
+   * \param base a number's base (default 10)
+   * \param sign a sign (default positive)
+   */
+  SuperBin(
+      const char *number
+    , unsigned int base = 10
+    , Sign sign = Sign::POS);
+
+  /**
+   * \param bool_value boolean value of the number to be constructed
+   */
+  SuperBin(
+      bool bool_value);
 
   /**
    * Copy constructor.
@@ -127,6 +142,8 @@ class SuperBin {
   unsigned int
   size(
       void) const;
+
+
 
   /**************************************************************************** 
    * CONVERTERS TO STRING
@@ -287,7 +304,7 @@ class SuperBin {
    *
    * \return true if neither operand is zero.
    */
-  bool
+  SuperBin
   land(
       const SuperBin &rhs) const;
 
@@ -299,7 +316,7 @@ class SuperBin {
    *
    * \return true if either operand not zero.
    */
-  bool
+  SuperBin
   lor(
       const SuperBin &rhs) const;
 
@@ -311,7 +328,7 @@ class SuperBin {
    *
    * \return true if one IS zero and the other IS NOT zero.
    */
-  bool
+  SuperBin
   lxor(
       const SuperBin &rhs) const;
 
