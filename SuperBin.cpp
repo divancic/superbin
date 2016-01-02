@@ -273,6 +273,7 @@ SuperBin::tnz(
 
 /**
  * Logical NOT
+ * TODO(doki): make private
  */
 SuperBin
 SuperBin::lnot(
@@ -282,6 +283,8 @@ SuperBin::lnot(
 
 /**
  * Logical AND
+ * TODO(doki): make private
+ * TODO(doki): remove?
  */
 SuperBin
 SuperBin::land(
@@ -335,36 +338,18 @@ SuperBin::bnot(
 SuperBin
 SuperBin::band(
     const SuperBin &rhs) const {
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
 
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
 
-
-  unsigned int max = (this->size() > rhs.size() ? this->size() : rhs.size());
-  SuperBin const *o1 = (this->size() > rhs.size() ? this : &rhs);
-  SuperBin const *o2 = (this->size() > rhs.size() ? &rhs : this);
-
-  SuperBin result = o2->cast(max);
-
-  for (unsigned int i = 0; i < max; ++i) {
-    result.m_number[i] &= o1->m_number[i];
-  }
+  // logical and on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    result.m_number[i] &= operand->m_number[i]; }
 
   return result;
-
-  // SuperBin result.cast(max);
-
-  SuperBin new_lhs = this->cast(max);
-  SuperBin new_rhs = rhs.cast(max);
-
-  std::cout << this->to_string_unsigned_bin() << std::endl;
-  std::cout << rhs.to_string_unsigned_bin() << std::endl;
-
-  for (unsigned int i = 0; i < max; ++i) {
-    new_lhs.m_number[i] = new_lhs.m_number[i] & new_rhs.m_number[i];
-  }
-
-
-  return new_lhs;
-  // return result;
 }
 
 /**
@@ -373,7 +358,16 @@ SuperBin::band(
 SuperBin
 SuperBin::bor(
     const SuperBin &rhs) const {
-  SuperBin result(*this);
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
+
+  // logical or on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    result.m_number[i] |= operand->m_number[i]; }
 
   return result;
 }
@@ -384,7 +378,32 @@ SuperBin::bor(
 SuperBin
 SuperBin::bxor(
     const SuperBin &rhs) const {
-  SuperBin result(*this);
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
+
+  // logical or on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    /* 1st variant:
+     * XOR(a,b) = OR(a,b) & !AND(a,b), therefore I test to see the second
+     * expression, if it is true, I'm doing OR, if it is not I simply
+     * return '0'.
+     */
+    // result.m_number[i] =
+    //   !(result.m_number[i] & operand->m_number[i] & 1) ?
+    //   result.m_number[i] |= operand->m_number[i] : '0';
+
+    /* 2nd variant:
+     * Uses C's XOR but I have two subtractions and one addition.
+     */
+    result.m_number[i] =
+      ((result.m_number[i] - '0') ^ (operand->m_number[i] - '0')) + '0';
+
+    // In the end, when compiled, second version produces better code.
+  }
 
   return result;
 }
