@@ -411,6 +411,72 @@ SuperBin::bxor(
 
 
 /**************************************************************************** 
+ * COMPARISONS
+ ****************************************************************************/
+
+/**
+ * EQual.
+ */
+bool
+SuperBin::eq(
+    const SuperBin &rhs) const {
+  if (size() != rhs.size()) { return false; }
+
+  for (int i = size(); i >= 0; --i) {
+    if (this->m_number[i] != rhs.m_number[i]) { return false; }
+  }
+
+  return true;
+}
+
+/**
+ * Not Equal.
+ */
+bool
+SuperBin::ne(
+    const SuperBin &rhs) const {
+  return (!eq(rhs));
+}
+
+/**
+ * Less Then.
+ */
+bool
+SuperBin::lt(
+    const SuperBin &rhs) const {
+  return (rhs.tz());
+}
+
+/**
+ * Less or Equal.
+ */
+bool
+SuperBin::le(
+    const SuperBin &rhs) const {
+  return (rhs.tz());
+}
+
+/**
+ * Greater Then.
+ */
+bool
+SuperBin::gt(
+    const SuperBin &rhs) const {
+  return (rhs.tz());
+}
+
+/**
+ * Greater or Equal.
+ */
+bool
+SuperBin::ge(
+    const SuperBin &rhs) const {
+  return (rhs.tz());
+}
+
+
+
+/**************************************************************************** 
  * ARITHMETIC FUNCTIONS
  ****************************************************************************/
 

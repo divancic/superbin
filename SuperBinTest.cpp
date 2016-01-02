@@ -396,6 +396,68 @@ TEST(BITWISE, bxor) {
 
 
 /**************************************************************************** 
+ * COMPARISONS
+ ****************************************************************************/
+TEST(COMPARISONS, eq) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  l = dlib::SuperBin("11110", 2);
+  r = dlib::SuperBin("0111", 2);
+  EXPECT_FALSE(l.eq(r));
+
+  l = dlib::SuperBin("11110", 2);
+  r = dlib::SuperBin("10111", 2);
+  EXPECT_FALSE(l.eq(r));
+
+  l = dlib::SuperBin("10110", 2);
+  r = dlib::SuperBin("10110", 2);
+  EXPECT_TRUE(l.eq(r));
+
+  l = dlib::SuperBin("322323423", 10);
+  r = dlib::SuperBin("133643DF", 16);
+  EXPECT_TRUE(l.eq(r));
+
+  l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
+  EXPECT_TRUE(l.eq(r));
+
+  l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
+  EXPECT_FALSE(l.eq(r));
+}
+
+TEST(COMPARISONS, neq) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  l = dlib::SuperBin("11110", 2);
+  r = dlib::SuperBin("0111", 2);
+  EXPECT_TRUE(l.ne(r));
+
+  l = dlib::SuperBin("11110", 2);
+  r = dlib::SuperBin("10111", 2);
+  EXPECT_TRUE(l.ne(r));
+
+  l = dlib::SuperBin("10110", 2);
+  r = dlib::SuperBin("10110", 2);
+  EXPECT_FALSE(l.ne(r));
+
+  l = dlib::SuperBin("322323423", 10);
+  r = dlib::SuperBin("133643DF", 16);
+  EXPECT_FALSE(l.ne(r));
+
+  l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
+  EXPECT_FALSE(l.ne(r));
+
+  l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
+  EXPECT_TRUE(l.ne(r));
+}
+
+
+/**************************************************************************** 
  * ARITHMETIC FUNCTIONS
  ****************************************************************************/
 TEST(ARITHMETIC, inc) {
