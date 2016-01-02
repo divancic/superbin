@@ -248,7 +248,7 @@ class SuperBin {
   /**
    * This method converts to integer.
    *
-   * Todo(doki): size check? converter to other (larger) types?
+   * TODO(doki): size check? converter to other (larger) types?
    *
    * \return Returns an integer.
    */

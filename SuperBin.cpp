@@ -273,6 +273,7 @@ SuperBin::tnz(
 
 /**
  * Logical NOT
+ * TODO(doki): make private
  */
 SuperBin
 SuperBin::lnot(
@@ -282,6 +283,8 @@ SuperBin::lnot(
 
 /**
  * Logical AND
+ * TODO(doki): make private
+ * TODO(doki): remove?
  */
 SuperBin
 SuperBin::land(
@@ -315,7 +318,7 @@ SuperBin::lxor(
 
 /**
  * Bitwise not.
- * TODO(doki): removing leading zeros? consider not(1110) = 1; not(1) = 0 ??
+ * TODO(doki): removing leading zeros/ones? consider not(1110) = 1; not(1) = 0?
  */
 SuperBin
 SuperBin::bnot(
@@ -324,6 +327,82 @@ SuperBin::bnot(
 
   for (auto it = result.m_number.begin(); it != result.m_number.end(); ++it) {
     (*it) = ((*it) == '0' ? '1' : '0');
+  }
+
+  return result;
+}
+
+/**
+ * Bitwise and.
+ */
+SuperBin
+SuperBin::band(
+    const SuperBin &rhs) const {
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
+
+  // logical and on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    result.m_number[i] &= operand->m_number[i]; }
+
+  return result;
+}
+
+/**
+ * Bitwise or.
+ */
+SuperBin
+SuperBin::bor(
+    const SuperBin &rhs) const {
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
+
+  // logical or on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    result.m_number[i] |= operand->m_number[i]; }
+
+  return result;
+}
+
+/**
+ * Bitwise xor.
+ */
+SuperBin
+SuperBin::bxor(
+    const SuperBin &rhs) const {
+  // find the operand with more bits
+  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+
+  // set the result to the other operand which is expanded to the number
+  // of bits of first operand
+  SuperBin result = (operand == this ? rhs : *this).cast(operand->size());
+
+  // logical or on each bit
+  for (unsigned int i = 0; i < result.size(); ++i) {
+    /* 1st variant:
+     * XOR(a,b) = OR(a,b) & !AND(a,b), therefore I test to see the second
+     * expression, if it is true, I'm doing OR, if it is not I simply
+     * return '0'.
+     */
+    // result.m_number[i] =
+    //   !(result.m_number[i] & operand->m_number[i] & 1) ?
+    //   result.m_number[i] |= operand->m_number[i] : '0';
+
+    /* 2nd variant:
+     * Uses C's XOR but I have two subtractions and one addition.
+     */
+    result.m_number[i] =
+      ((result.m_number[i] - '0') ^ (operand->m_number[i] - '0')) + '0';
+
+    // In the end, when compiled, second version produces better code.
   }
 
   return result;

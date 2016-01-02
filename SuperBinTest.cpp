@@ -294,6 +294,105 @@ TEST(BITWISE, bnot) {
   EXPECT_STREQ(dlib::SuperBin("A",16).bnot().to_string_unsigned_bin().c_str(), "10101");
 }
 
+TEST(BITWISE, band) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("0111", 2);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "00110");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("01", 2);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "00000");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "01110");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "0000000000000010");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "0101010110101010");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "0000000000000010");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.band(r).to_string_unsigned_bin().c_str(), "0101010110101010");
+}
+
+TEST(BITWISE, bor) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("0111", 2);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "01111");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("01", 2);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "01111");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "11110");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "0101010110101010");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "1111111111111110");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "0101010110101010");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.bor(r).to_string_unsigned_bin().c_str(), "1111111111111110");
+}
+
+TEST(BITWISE, bxor) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("0111", 2);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "01001");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("01", 2);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "01111");
+
+  l = dlib::SuperBin("1110", 2);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "10000");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "0101010110101000");
+
+  l = dlib::SuperBin("55AA", 16);
+  r = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "1010101001010100");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "0101010110101000");
+
+  l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("55AA", 16);
+  EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "1010101001010100");
+}
+
 
 
 /**************************************************************************** 
@@ -333,6 +432,9 @@ TEST(ARITHMETIC, inc) {
  ****************************************************************************/
 int
 main(int argc, char *argv[]) {
+  char string[10];
+  strcpy (string, "110");
+  dlib::SuperBin sb(string);
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
