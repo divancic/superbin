@@ -470,6 +470,9 @@ SuperBin::sal(
 SuperBin
 SuperBin::sar(
     unsigned int no_of_bits) const {
+  // return if requested a shift by 0 bits
+  if (!no_of_bits) { return *this; }
+
   // if a request to shift right by more bits than the number has
   if (no_of_bits >= size() - 1) {
     // return either 0 or -1 depending on signum
