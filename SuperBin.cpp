@@ -246,6 +246,7 @@ SuperBin::to_string_unsigned_hex(
 
 /**
  * Zero check.
+ * TODO(doki) make return SuperBin
  */
 bool
 SuperBin::tz(
@@ -258,6 +259,7 @@ SuperBin::tz(
 
 /**
  * Check if not zero.
+ * TODO(doki) make return SuperBin
  */
 bool
 SuperBin::tnz(
@@ -273,7 +275,6 @@ SuperBin::tnz(
 
 /**
  * Logical NOT
- * TODO(doki): make private
  */
 SuperBin
 SuperBin::lnot(
@@ -283,8 +284,6 @@ SuperBin::lnot(
 
 /**
  * Logical AND
- * TODO(doki): make private
- * TODO(doki): remove?
  */
 SuperBin
 SuperBin::land(
@@ -318,7 +317,6 @@ SuperBin::lxor(
 
 /**
  * Bitwise not.
- * TODO(doki): removing leading zeros/ones? consider not(1110) = 1; not(1) = 0?
  */
 SuperBin
 SuperBin::bnot(
@@ -379,7 +377,7 @@ SuperBin
 SuperBin::bxor(
     const SuperBin &rhs) const {
   // find the operand with more bits
-  SuperBin const *operand = (this->size() > rhs.size() ? this : &rhs);
+  SuperBin const *operand = (size() > rhs.size() ? this : &rhs);
 
   // set the result to the other operand which is expanded to the number
   // of bits of first operand
@@ -417,61 +415,174 @@ SuperBin::bxor(
 /**
  * EQual.
  */
-bool
+SuperBin
 SuperBin::eq(
     const SuperBin &rhs) const {
-  if (size() != rhs.size()) { return false; }
+  // get the reference of the operand with more bits
+  SuperBin const *operand1 = (size() > rhs.size() ? this : &rhs);
 
-  for (int i = size(); i >= 0; --i) {
-    if (this->m_number[i] != rhs.m_number[i]) { return false; }
+  // make the copy of the other operand and cast it to the same number of bits
+  SuperBin operand2 = (operand1 == this ? rhs : *this).cast(operand1->size());
+
+  // compare all bits starting from msb
+  for (unsigned int i = 0; i < operand1->size(); ++i) {
+    if (operand1->m_number[i] != operand2.m_number[i]) {
+      return SuperBin(false);
+    }
   }
 
-  return true;
+  // if we got here, all bits are equal
+  return SuperBin(true);
 }
 
 /**
  * Not Equal.
  */
-bool
+SuperBin
 SuperBin::ne(
     const SuperBin &rhs) const {
-  return (!eq(rhs));
+  return eq(rhs).lnot();
 }
 
 /**
  * Less Then.
  */
-bool
+SuperBin
 SuperBin::lt(
     const SuperBin &rhs) const {
-  return (rhs.tz());
+  return ge(rhs).lnot();
+}
+
+/**
+ * Not Less Then.
+ */
+SuperBin
+SuperBin::nlt(
+    const SuperBin &rhs) const {
+  return ge(rhs);
 }
 
 /**
  * Less or Equal.
  */
-bool
+SuperBin
 SuperBin::le(
     const SuperBin &rhs) const {
-  return (rhs.tz());
+  // case when A < 0 && B > 0 returns true
+  // TODO(doki): replace with tneg and tpos
+  if (m_number[0] == '1' && rhs.m_number[0] == '0') { return SuperBin(true); }
+
+  // case when A > 0 && B < 0 returns false
+  // TODO(doki): replace with tneg and tpos
+  if (m_number[0] == '0' && rhs.m_number[0] == '1') { return SuperBin(false); }
+
+  // get the reference of the operand with more bits
+  SuperBin const *operand1 = (size() > rhs.size() ? this : &rhs);
+
+  // make the copy of the other operand and cast it to the same number of bits
+  SuperBin operand2 = (operand1 == this ? rhs : *this).cast(operand1->size());
+
+  // compare all bits starting from msb
+  for (unsigned int i = 0; i < operand1->size(); ++i) {
+    // if they are equal, continue with next
+    if (operand1->m_number[i] == operand2.m_number[i]) { continue; }
+
+    // if the bits are not equal
+    if (operand1->m_number[i] < operand2.m_number[i]) {
+      // if the bit in the first operand is smaller (0)
+      // than the bit in the second operand (1) AND the
+      // first operand is this object than this number
+      // is smaller than the other (rhs).
+      return SuperBin(operand1 == this ? true : false);
+    } else {
+      // if the bit in the first operand is larger (1)
+      // than the bit in the second operand (0) AND the
+      // first operand is this object than this number
+      // is larger than the other (rhs).
+      return SuperBin(operand1 == this ? false : true);
+    }
+    // this also works for negative numbers (2's complement). consider:
+    // -5 (1011) and -4 (1100). if this holds 1011 and rhs holds 1100,
+    // operand1 will point to 1100, and operand2 will hold 1011. the
+    // first bit is equal so continue is executed. for the next bit,
+    // first comparison fails and we end up in else. as operand1
+    // differs from this, we return true. we can also consider the
+    // oposite: 1100 and 1011. in this case this holds 1100, and  rhs
+    // holds 1011 and therefore operand1 points to 1011 and operand2
+    // holds 1100. first bit is equal, however, when comparing the
+    // second bit, the if expression is true, operand1 points to rhs
+    // so we return false.
+  }
+
+  // if we got here, all bits are equal
+  return SuperBin(true);
+}
+
+/**
+ * Not Less or Equal.
+ */
+SuperBin
+SuperBin::nle(
+    const SuperBin &rhs) const {
+  return gt(rhs);
 }
 
 /**
  * Greater Then.
  */
-bool
+SuperBin
 SuperBin::gt(
     const SuperBin &rhs) const {
-  return (rhs.tz());
+  return le(rhs).lnot();
+}
+
+/**
+ * Not Greater Then.
+ */
+SuperBin
+SuperBin::ngt(
+    const SuperBin &rhs) const {
+  return le(rhs);
 }
 
 /**
  * Greater or Equal.
  */
-bool
+SuperBin
 SuperBin::ge(
     const SuperBin &rhs) const {
-  return (rhs.tz());
+  // case when A > 0 && B < 0 returns true
+  if (m_number[0] == '0' && rhs.m_number[0] == '1') { return SuperBin(true); }
+
+  // case when A < 0 && B > 0 returns false
+  if (m_number[0] == '1' && rhs.m_number[0] == '0') { return SuperBin(false); }
+
+  // get the reference of the operand with more bits
+  SuperBin const *operand1 = (size() > rhs.size() ? this : &rhs);
+
+  // make the copy of the other operand and cast it to the same number of bits
+  SuperBin operand2 = (operand1 == this ? rhs : *this).cast(operand1->size());
+
+  // compare all bits starting from msb - for explenation see le()
+  for (unsigned int i = 0; i < operand1->size(); ++i) {
+    if (operand1->m_number[i] == operand2.m_number[i]) { continue; }
+    if (operand1->m_number[i] > operand2.m_number[i]) {
+      return SuperBin(operand1 == this ? true : false);
+    } else {
+      return SuperBin(operand1 == this ? false : true);
+    }
+  }
+
+  return SuperBin(true);
+}
+
+/**
+ * Not Greater or Equal.
+ */
+SuperBin
+SuperBin::nge(
+    const SuperBin &rhs) const {
+  return lt(rhs);
 }
 
 
@@ -482,7 +593,6 @@ SuperBin::ge(
 
 /**
  * Increment by one.
- * TODO(doki): lose leading zeros when n-bit -1 goes to 0
  */
 SuperBin
 SuperBin::inc(
@@ -511,12 +621,11 @@ SuperBin::inc(
     result.m_number.insert(result.m_number.begin(), '0');
   }
 
-  return result;
+  return result.cast();
 }
 
 /**
  * Decrement by one.
- * TODO(doki): lose leading zeros when n-bit +1 goes to 0
  */
 SuperBin
 SuperBin::dec(

@@ -505,7 +505,7 @@ class SuperBin {
    *
    * \return true if equal, false otherwise.
    */
-  bool
+  SuperBin
   eq(
       const SuperBin &rhs) const;
 
@@ -516,7 +516,7 @@ class SuperBin {
    *
    * \return true if not equal, false otherwise.
    */
-  bool
+  SuperBin
   ne(
       const SuperBin &rhs) const;
 
@@ -527,8 +527,19 @@ class SuperBin {
    *
    * \return true if less, false otherwise.
    */
-  bool
+  SuperBin
   lt(
+      const SuperBin &rhs) const;
+
+  /**
+   * Not Less Then.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if less, false otherwise.
+   */
+  SuperBin
+  nlt(
       const SuperBin &rhs) const;
 
   /**
@@ -538,8 +549,19 @@ class SuperBin {
    *
    * \return true if less or equal, false otherwise.
    */
-  bool
+  SuperBin
   le(
+      const SuperBin &rhs) const;
+
+  /**
+   * Not Less or Equal.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if less or equal, false otherwise.
+   */
+  SuperBin
+  nle(
       const SuperBin &rhs) const;
 
   /**
@@ -549,8 +571,19 @@ class SuperBin {
    *
    * \return true if greater, false otherwise.
    */
-  bool
+  SuperBin
   gt(
+      const SuperBin &rhs) const;
+
+  /**
+   * Not Greater Then.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if greater, false otherwise.
+   */
+  SuperBin
+  ngt(
       const SuperBin &rhs) const;
 
   /**
@@ -560,8 +593,19 @@ class SuperBin {
    *
    * \return true if greater or equal, false otherwise.
    */
-  bool
+  SuperBin
   ge(
+      const SuperBin &rhs) const;
+
+  /**
+   * Not Greater or Equal.
+   *
+   * \param rhs Right hand side operand.
+   *
+   * \return true if greater or equal, false otherwise.
+   */
+  SuperBin
+  nge(
       const SuperBin &rhs) const;
 
 

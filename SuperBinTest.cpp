@@ -292,6 +292,7 @@ TEST(LOGICAL, lxor) {
 TEST(BITWISE, bnot) {
   EXPECT_STREQ(dlib::SuperBin().bnot().to_string_unsigned_bin().c_str(), "11");
   EXPECT_STREQ(dlib::SuperBin("A",16).bnot().to_string_unsigned_bin().c_str(), "10101");
+  EXPECT_STREQ(dlib::SuperBin("1110",2).bnot().to_string_unsigned_bin().c_str(), "10001");
 }
 
 TEST(BITWISE, band) {
@@ -398,63 +399,688 @@ TEST(BITWISE, bxor) {
 /**************************************************************************** 
  * COMPARISONS
  ****************************************************************************/
-TEST(COMPARISONS, eq) {
+TEST(COMPARISONS, eq_neq) {
   dlib::SuperBin l;
   dlib::SuperBin r;
 
   l = dlib::SuperBin("11110", 2);
   r = dlib::SuperBin("0111", 2);
-  EXPECT_FALSE(l.eq(r));
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "00");
 
   l = dlib::SuperBin("11110", 2);
   r = dlib::SuperBin("10111", 2);
-  EXPECT_FALSE(l.eq(r));
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "00");
 
   l = dlib::SuperBin("10110", 2);
   r = dlib::SuperBin("10110", 2);
-  EXPECT_TRUE(l.eq(r));
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("322323423", 10);
   r = dlib::SuperBin("133643DF", 16);
-  EXPECT_TRUE(l.eq(r));
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::NEG);
   r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
-  EXPECT_TRUE(l.eq(r));
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::POS);
   r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
-  EXPECT_FALSE(l.eq(r));
-}
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "00");
 
-TEST(COMPARISONS, neq) {
-  dlib::SuperBin l;
-  dlib::SuperBin r;
+  l = dlib::SuperBin("1", 2, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("1", 2, dlib::SuperBin::Sign::NEG).cast(8);
+  EXPECT_STREQ(l.eq(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("11110", 2);
   r = dlib::SuperBin("0111", 2);
-  EXPECT_TRUE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("11110", 2);
   r = dlib::SuperBin("10111", 2);
-  EXPECT_TRUE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "01");
 
   l = dlib::SuperBin("10110", 2);
   r = dlib::SuperBin("10110", 2);
-  EXPECT_FALSE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "00");
 
   l = dlib::SuperBin("322323423", 10);
   r = dlib::SuperBin("133643DF", 16);
-  EXPECT_FALSE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "00");
 
   l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::NEG);
   r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
-  EXPECT_FALSE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "00");
 
   l = dlib::SuperBin("322323423", 10, dlib::SuperBin::Sign::POS);
   r = dlib::SuperBin("133643DF", 16, dlib::SuperBin::Sign::NEG);
-  EXPECT_TRUE(l.ne(r));
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "01");
+
+  l = dlib::SuperBin("11111111", 2);
+  r = dlib::SuperBin("11", 2);
+  EXPECT_STREQ(l.ne(r).to_string_unsigned_bin().c_str(), "01");
 }
+
+TEST(COMPARISONS, le_ngt) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  // A<0, B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // A=B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A+1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A-1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A+1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A-1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A<<2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A>>2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A<<2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A>>2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.le(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.ngt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+}
+
+TEST(COMPARISONS, gt_nle) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  // A<0, B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // A=B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+   
+  // B=A+1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+
+  // B=A-1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A+1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A-1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A<<2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A>>2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A<<2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A>>2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.gt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nle(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+}
+
+TEST(COMPARISONS, ge_nlt) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  // A<0, B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // A=B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A+1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A-1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A+1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A-1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A<<2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A>>2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A<<2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A>>2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.ge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nlt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+}
+
+TEST(COMPARISONS, lt_nge) {
+  dlib::SuperBin l;
+  dlib::SuperBin r;
+
+  // A<0, B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // A=B>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A+1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A-1>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A+1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A-1<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A<<2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  // B=A>>2>0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::POS);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::POS);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A<<2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("12", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  // B=A>>2<0 & vice versa
+  l = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(true).to_string_unsigned_bin().c_str());
+
+  l = dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG);
+  r = dlib::SuperBin("6", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(l.lt(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+  EXPECT_STREQ(l.nge(r).to_string_unsigned_bin().c_str(),
+      dlib::SuperBin(false).to_string_unsigned_bin().c_str());
+}
+
 
 
 /**************************************************************************** 
@@ -464,13 +1090,21 @@ TEST(ARITHMETIC, inc) {
   dlib::SuperBin sb("3",10,dlib::SuperBin::Sign::NEG);
   EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "101");
   sb = sb.inc();
-  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "110");
+  // if not casting (optimizing the number of digits) after inc:
+  // EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "110");
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "10");
   sb = sb.inc();
-  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "111");
+  // if not casting (optimizing the number of digits) after inc:
+  // EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "111");
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "11");
   sb = sb.inc();
-  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "000");
+  // if not casting (optimizing the number of digits) after inc:
+  // EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "000");
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "00");
   sb = sb.inc();
-  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "001");
+  // if not casting (optimizing the number of digits) after inc:
+  // EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "001");
+  EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "01");
   sb = sb.inc();
   EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "010");
   sb = sb.inc();
@@ -494,9 +1128,6 @@ TEST(ARITHMETIC, inc) {
  ****************************************************************************/
 int
 main(int argc, char *argv[]) {
-  char string[10];
-  strcpy (string, "110");
-  dlib::SuperBin sb(string);
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
