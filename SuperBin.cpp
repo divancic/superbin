@@ -409,6 +409,88 @@ SuperBin::bxor(
 
 
 /**************************************************************************** 
+ * SHIFTS
+ ****************************************************************************/
+
+/**
+ * Logical shift left by given number of bits.
+ */
+SuperBin
+SuperBin::shl(
+    unsigned int no_of_bits) const {
+  SuperBin result(*this);
+
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.push_back('0');
+  }
+
+  return result;
+}
+
+/**
+ * Logical shift right by given number of bits.
+ */
+SuperBin
+SuperBin::shr(
+    unsigned int no_of_bits) const {
+  // return if requested a shift by 0 bits
+  if (!no_of_bits) { return *this; }
+
+  // return 0 if requested a shift right by more bits than the number has
+  if (no_of_bits >= size()) { return SuperBin(); }
+
+  // else make a copy
+  SuperBin result(*this);
+
+  // and pop requested number of bits from back
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.pop_back();
+  }
+
+  // add zero infront (if negative and shifting by more than zero)
+  if (result.size() == 1 || m_number[0] == '1') {
+    result.m_number.insert(result.m_number.begin(), '0');
+  }
+
+  return result;
+}
+
+/**
+ * Arithmetic shift left by given number of bits.
+ */
+SuperBin
+SuperBin::sal(
+    unsigned int no_of_bits) const {
+  return shl(no_of_bits);
+}
+
+/**
+ * Arithmetic shift right by given number of bits.
+ */
+SuperBin
+SuperBin::sar(
+    unsigned int no_of_bits) const {
+  // if a request to shift right by more bits than the number has
+  if (no_of_bits >= size() - 1) {
+    // return either 0 or -1 depending on signum
+    return SuperBin((m_number[0] == '0' ? "0" : "1"),
+        10, dlib::SuperBin::Sign::NEG);
+  }
+
+  // else simply make a copy
+  SuperBin result(*this);
+
+  // and pop requested number of bits from back
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.pop_back();
+  }
+
+  return result;
+}
+
+
+
+/**************************************************************************** 
  * COMPARISONS
  ****************************************************************************/
 
