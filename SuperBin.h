@@ -121,7 +121,7 @@ class SuperBin {
 
 
   /**************************************************************************** 
-   * NUMBER SIZE
+   * SIZE
    ****************************************************************************/
 
   /**
@@ -131,6 +131,8 @@ class SuperBin {
    * zeros if it is postivie). On the other hand, if the requested bitsize iz
    * smaller than the current size number will be shorten optimally (e.g.
    * 0000010 -> 010, 111111110 -> 10, etc.)
+   *
+   * \param no_of_bits requested bit size
    */
   SuperBin
   cast(
