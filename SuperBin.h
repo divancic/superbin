@@ -248,9 +248,16 @@ class SuperBin {
   /**
    * This method converts to integer.
    *
-   * TODO(doki): size check? converter to other (larger) types?
+   * \return Returns an integer (-MAXINT+1,+MAXINT). If the requested
+   * convers would fail (SuperBin is larger then +MAXINT or smaller than
+   * -MAXINT+1) then -MAXINT is returned.
    *
-   * \return Returns an integer.
+   *   INT SIZE |     -MAXINT |     +MAXINT |        INTERVAL |       ERROR
+   *  ----------+-------------+-------------+-----------------+-------------
+   *          8 |        -128 |        +127 |        {-,+}127 |        -128
+   *         16 |      -32768 |      +32767 |      {-,+}32767 |      -32768
+   *         32 | -2147483648 | +2147483647 | {-,+}2147483647 | -2147483648
+   *  ----------+-------------+-------------+-----------------+-------------
    */
   int
   to_int(
