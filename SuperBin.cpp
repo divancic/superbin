@@ -82,6 +82,7 @@ SuperBin::operator=(
 /**************************************************************************** 
  * SIZE
  ****************************************************************************/
+
 /**
  * Cast into new SuperBin with the given number of bits.
  */
@@ -123,6 +124,7 @@ SuperBin::size(
 /**************************************************************************** 
  * CONVERTERS TO STRING
  ****************************************************************************/
+
 /**
  * Put number in requested base to std::string with signum (optional).
  */
@@ -241,6 +243,20 @@ SuperBin::to_string_unsigned_hex(
 
 
 /**************************************************************************** 
+ * CONVERTER TO INT
+ ****************************************************************************/
+
+/**
+ * TODO(doki) implement this
+ */
+int
+SuperBin::to_int(
+    void) const {
+}
+
+
+
+/**************************************************************************** 
  * ZERO TEST
  ****************************************************************************/
 
@@ -316,7 +332,7 @@ SuperBin::lxor(
  ****************************************************************************/
 
 /**
- * Bitwise not.
+ * Bitwise NOT
  */
 SuperBin
 SuperBin::bnot(
@@ -331,7 +347,7 @@ SuperBin::bnot(
 }
 
 /**
- * Bitwise and.
+ * Bitwise AND
  */
 SuperBin
 SuperBin::band(
@@ -351,7 +367,7 @@ SuperBin::band(
 }
 
 /**
- * Bitwise or.
+ * Bitwise OR
  */
 SuperBin
 SuperBin::bor(
@@ -371,7 +387,7 @@ SuperBin::bor(
 }
 
 /**
- * Bitwise xor.
+ * Bitwise XOR
  */
 SuperBin
 SuperBin::bxor(
@@ -405,6 +421,133 @@ SuperBin::bxor(
 
   return result;
 }
+
+
+
+/**************************************************************************** 
+ * SHIFTS
+ ****************************************************************************/
+
+/**
+ * Logical shift left by given number of bits.
+ */
+SuperBin
+SuperBin::shl(
+    unsigned int no_of_bits) const {
+  SuperBin result(*this);
+
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.push_back('0');
+  }
+
+  return result;
+}
+
+/**
+ * Logical shift right by given number of bits.
+ */
+SuperBin
+SuperBin::shr(
+    unsigned int no_of_bits) const {
+  // return if requested a shift by 0 bits
+  if (!no_of_bits) { return *this; }
+
+  // return 0 if requested a shift right by more bits than the number has
+  if (no_of_bits >= size()) { return SuperBin(); }
+
+  // else make a copy
+  SuperBin result(*this);
+
+  // and pop requested number of bits from back
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.pop_back();
+  }
+
+  // add zero infront (if negative and shifting by more than zero)
+  if (result.size() == 1 || m_number[0] == '1') {
+    result.m_number.insert(result.m_number.begin(), '0');
+  }
+
+  return result;
+}
+
+/**
+ * Arithmetic shift left by given number of bits.
+ */
+SuperBin
+SuperBin::sal(
+    unsigned int no_of_bits) const {
+  return shl(no_of_bits);
+}
+
+/**
+ * Arithmetic shift right by given number of bits.
+ */
+SuperBin
+SuperBin::sar(
+    unsigned int no_of_bits) const {
+  // return if requested a shift by 0 bits
+  if (!no_of_bits) { return *this; }
+
+  // if a request to shift right by more bits than the number has
+  if (no_of_bits >= size() - 1) {
+    // return either 0 or -1 depending on signum
+    return SuperBin((m_number[0] == '0' ? "0" : "1"),
+        10, dlib::SuperBin::Sign::NEG);
+  }
+
+  // else simply make a copy
+  SuperBin result(*this);
+
+  // and pop requested number of bits from back
+  for (unsigned int i = 0; i < no_of_bits; ++i) {
+    result.m_number.pop_back();
+  }
+
+  return result;
+}
+
+
+
+/**************************************************************************** 
+ * BIT MANIPULATORS
+ ****************************************************************************/
+
+/**
+ * Set bit(s)
+ * TODO(doki) implement this
+ */
+SuperBin
+SuperBin::setb(
+    unsigned int index_n
+    unsigned int index_m) const;
+
+/**
+ * Clear bit(s)
+ * TODO(doki) implement this
+ */
+SuperBin
+SuperBin::clearb(
+    unsigned int index_n
+    unsigned int index_m) const;
+
+/**
+ * Inver bit(s)
+ * TODO(doki) implement this
+ */
+SuperBin
+SuperBin::notb(
+    unsigned int index_n
+    unsigned int index_m) const;
+
+/**
+ * Get bit(s)
+ * TODO(doki) implement this
+ */
+SuperBin
+SuperBin::getb(
+    unsigned int index_n
+    unsigned int index_m) const;
 
 
 

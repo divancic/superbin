@@ -52,6 +52,22 @@ TEST(CONSTRUCTOR, negative) {
   EXPECT_STREQ(dlib::SuperBin("11", 8, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10111");
   EXPECT_STREQ(dlib::SuperBin("11", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10101");
   EXPECT_STREQ(dlib::SuperBin("11", 16, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(dlib::SuperBin("1", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(dlib::SuperBin("2", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10");
+  EXPECT_STREQ(dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "101");
+
+  EXPECT_STREQ(dlib::SuperBin("3", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "101");
+  EXPECT_STREQ(dlib::SuperBin("4", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "100");
+  EXPECT_STREQ(dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "1011");
+
+  EXPECT_STREQ(dlib::SuperBin("7", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "1001");
+  EXPECT_STREQ(dlib::SuperBin("8", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "1000");
+  EXPECT_STREQ(dlib::SuperBin("9", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10111");
+
+  EXPECT_STREQ(dlib::SuperBin("15", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10001");
+  EXPECT_STREQ(dlib::SuperBin("16", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "10000");
+  EXPECT_STREQ(dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG).to_string_unsigned_bin().c_str(), "101111");
 }
 
 TEST(CONSTRUCTOR, copy) {
@@ -392,6 +408,355 @@ TEST(BITWISE, bxor) {
   l = dlib::SuperBin("10", 2, dlib::SuperBin::Sign::NEG);
   r = dlib::SuperBin("55AA", 16);
   EXPECT_STREQ(l.bxor(r).to_string_unsigned_bin().c_str(), "1010101001010100");
+}
+
+
+
+/**************************************************************************** 
+ * SHIFTS
+ ****************************************************************************/
+TEST(SHIFTS, shl) {
+  dlib::SuperBin o;
+
+  // Operand = 0
+  o = dlib::SuperBin();
+  EXPECT_STREQ(o.shl(0).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shl(0).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shl(1).to_string_unsigned_bin().c_str(), "000");
+  EXPECT_STREQ(o.shl(1).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "0000");
+  EXPECT_STREQ(o.shl(2).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shl(3).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(o.shl(3).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shl(4).to_string_unsigned_bin().c_str(), "000000");
+  EXPECT_STREQ(o.shl(4).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, positive
+  o = dlib::SuperBin("1");
+  EXPECT_STREQ(o.shl(0).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shl(0).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.shl(1).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.shl(1).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "0100");
+  EXPECT_STREQ(o.shl(2).to_string_signed_dec().c_str(), "4");
+  EXPECT_STREQ(o.shl(3).to_string_unsigned_bin().c_str(), "01000");
+  EXPECT_STREQ(o.shl(3).to_string_signed_dec().c_str(), "8");
+  EXPECT_STREQ(o.shl(4).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o.shl(4).to_string_signed_dec().c_str(), "16");
+
+  // Operand = multibit, positive
+  o = dlib::SuperBin("5");
+  EXPECT_STREQ(o.shl(0).to_string_unsigned_bin().c_str(), "0101");
+  EXPECT_STREQ(o.shl(0).to_string_signed_dec().c_str(), "5");
+  EXPECT_STREQ(o.shl(1).to_string_unsigned_bin().c_str(), "01010");
+  EXPECT_STREQ(o.shl(1).to_string_signed_dec().c_str(), "10");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "010100");
+  EXPECT_STREQ(o.shl(2).to_string_signed_dec().c_str(), "20");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "010100");
+  EXPECT_STREQ(o.shl(3).to_string_signed_dec().c_str(), "40");
+  EXPECT_STREQ(o.shl(3).to_string_unsigned_bin().c_str(), "0101000");
+  EXPECT_STREQ(o.shl(4).to_string_signed_dec().c_str(), "80");
+
+  // Operand = 1 bit, negative
+  o = dlib::SuperBin("1", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.shl(0).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.shl(0).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.shl(1).to_string_unsigned_bin().c_str(), "110");
+  EXPECT_STREQ(o.shl(1).to_string_signed_dec().c_str(), "-2");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "1100");
+  EXPECT_STREQ(o.shl(2).to_string_signed_dec().c_str(), "-4");
+  EXPECT_STREQ(o.shl(3).to_string_unsigned_bin().c_str(), "11000");
+  EXPECT_STREQ(o.shl(3).to_string_signed_dec().c_str(), "-8");
+  EXPECT_STREQ(o.shl(4).to_string_unsigned_bin().c_str(), "110000");
+  EXPECT_STREQ(o.shl(4).to_string_signed_dec().c_str(), "-16");
+
+  // Operand = multibit, negative
+  o = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.shl(0).to_string_unsigned_bin().c_str(), "1011");
+  EXPECT_STREQ(o.shl(0).to_string_signed_dec().c_str(), "-5");
+  EXPECT_STREQ(o.shl(1).to_string_unsigned_bin().c_str(), "10110");
+  EXPECT_STREQ(o.shl(1).to_string_signed_dec().c_str(), "-10");
+  EXPECT_STREQ(o.shl(2).to_string_unsigned_bin().c_str(), "101100");
+  EXPECT_STREQ(o.shl(2).to_string_signed_dec().c_str(), "-20");
+  EXPECT_STREQ(o.shl(3).to_string_unsigned_bin().c_str(), "1011000");
+  EXPECT_STREQ(o.shl(3).to_string_signed_dec().c_str(), "-40");
+  EXPECT_STREQ(o.shl(4).to_string_unsigned_bin().c_str(), "10110000");
+  EXPECT_STREQ(o.shl(4).to_string_signed_dec().c_str(), "-80");
+}
+
+TEST(SHIFTS, sal) {
+  dlib::SuperBin o;
+
+  // Operand = 0
+  o = dlib::SuperBin();
+  EXPECT_STREQ(o.sal(0).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sal(0).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sal(1).to_string_unsigned_bin().c_str(), "000");
+  EXPECT_STREQ(o.sal(1).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sal(2).to_string_unsigned_bin().c_str(), "0000");
+  EXPECT_STREQ(o.sal(2).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sal(3).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(o.sal(3).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sal(4).to_string_unsigned_bin().c_str(), "000000");
+  EXPECT_STREQ(o.sal(4).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, positive
+  o = dlib::SuperBin("1");
+  EXPECT_STREQ(o.sal(0).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.sal(0).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.sal(1).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.sal(1).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.sal(2).to_string_unsigned_bin().c_str(), "0100");
+  EXPECT_STREQ(o.sal(2).to_string_signed_dec().c_str(), "4");
+  EXPECT_STREQ(o.sal(3).to_string_unsigned_bin().c_str(), "01000");
+  EXPECT_STREQ(o.sal(3).to_string_signed_dec().c_str(), "8");
+  EXPECT_STREQ(o.sal(4).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o.sal(4).to_string_signed_dec().c_str(), "16");
+
+  // Operand = multibit, positive
+  o = dlib::SuperBin("5");
+  EXPECT_STREQ(o.sal(0).to_string_unsigned_bin().c_str(), "0101");
+  EXPECT_STREQ(o.sal(0).to_string_signed_dec().c_str(), "5");
+  EXPECT_STREQ(o.sal(1).to_string_unsigned_bin().c_str(), "01010");
+  EXPECT_STREQ(o.sal(1).to_string_signed_dec().c_str(), "10");
+  EXPECT_STREQ(o.sal(2).to_string_unsigned_bin().c_str(), "010100");
+  EXPECT_STREQ(o.sal(2).to_string_signed_dec().c_str(), "20");
+  EXPECT_STREQ(o.sal(3).to_string_unsigned_bin().c_str(), "0101000");
+  EXPECT_STREQ(o.sal(3).to_string_signed_dec().c_str(), "40");
+  EXPECT_STREQ(o.sal(4).to_string_unsigned_bin().c_str(), "01010000");
+  EXPECT_STREQ(o.sal(4).to_string_signed_dec().c_str(), "80");
+
+  // Operand = 1 bit, negative
+  o = dlib::SuperBin("1", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.sal(0).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sal(0).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sal(1).to_string_unsigned_bin().c_str(), "110");
+  EXPECT_STREQ(o.sal(1).to_string_signed_dec().c_str(), "-2");
+  EXPECT_STREQ(o.sal(2).to_string_unsigned_bin().c_str(), "1100");
+  EXPECT_STREQ(o.sal(2).to_string_signed_dec().c_str(), "-4");
+  EXPECT_STREQ(o.sal(3).to_string_unsigned_bin().c_str(), "11000");
+  EXPECT_STREQ(o.sal(3).to_string_signed_dec().c_str(), "-8");
+  EXPECT_STREQ(o.sal(4).to_string_unsigned_bin().c_str(), "110000");
+  EXPECT_STREQ(o.sal(4).to_string_signed_dec().c_str(), "-16");
+
+  // Operand = multibit, negative
+  o = dlib::SuperBin("5", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.sal(0).to_string_unsigned_bin().c_str(), "1011");
+  EXPECT_STREQ(o.sal(0).to_string_signed_dec().c_str(), "-5");
+  EXPECT_STREQ(o.sal(1).to_string_unsigned_bin().c_str(), "10110");
+  EXPECT_STREQ(o.sal(1).to_string_signed_dec().c_str(), "-10");
+  EXPECT_STREQ(o.sal(2).to_string_unsigned_bin().c_str(), "101100");
+  EXPECT_STREQ(o.sal(2).to_string_signed_dec().c_str(), "-20");
+  EXPECT_STREQ(o.sal(3).to_string_unsigned_bin().c_str(), "1011000");
+  EXPECT_STREQ(o.sal(3).to_string_signed_dec().c_str(), "-40");
+  EXPECT_STREQ(o.sal(4).to_string_unsigned_bin().c_str(), "10110000");
+  EXPECT_STREQ(o.sal(4).to_string_signed_dec().c_str(), "-80");
+}
+
+TEST(SHIFTS, sar) {
+  dlib::SuperBin o;
+
+  // Operand = 0
+  o = dlib::SuperBin();
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(2).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(2).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(3).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(3).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(4).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(4).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, positive
+  o = dlib::SuperBin("16");
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "16");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "01000");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "8");
+  EXPECT_STREQ(o.sar(2).to_string_unsigned_bin().c_str(), "0100");
+  EXPECT_STREQ(o.sar(2).to_string_signed_dec().c_str(), "4");
+  EXPECT_STREQ(o.sar(3).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.sar(3).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.sar(4).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.sar(4).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.sar(5).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(5).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(6).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(6).to_string_signed_dec().c_str(), "0");
+
+  // Operand = multibit, positive
+  o = dlib::SuperBin("80");
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "01010000");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "80");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "0101000");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "40");
+  EXPECT_STREQ(o.sar(2).to_string_unsigned_bin().c_str(), "010100");
+  EXPECT_STREQ(o.sar(2).to_string_signed_dec().c_str(), "20");
+  EXPECT_STREQ(o.sar(3).to_string_unsigned_bin().c_str(), "01010");
+  EXPECT_STREQ(o.sar(3).to_string_signed_dec().c_str(), "10");
+  EXPECT_STREQ(o.sar(4).to_string_unsigned_bin().c_str(), "0101");
+  EXPECT_STREQ(o.sar(4).to_string_signed_dec().c_str(), "5");
+  EXPECT_STREQ(o.sar(5).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.sar(5).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.sar(6).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.sar(6).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.sar(7).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(7).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.sar(8).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.sar(8).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, negative
+  o = dlib::SuperBin("16", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "10000");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "-16");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "1000");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "-8");
+  EXPECT_STREQ(o.sar(2).to_string_unsigned_bin().c_str(), "100");
+  EXPECT_STREQ(o.sar(2).to_string_signed_dec().c_str(), "-4");
+  EXPECT_STREQ(o.sar(3).to_string_unsigned_bin().c_str(), "10");
+  EXPECT_STREQ(o.sar(3).to_string_signed_dec().c_str(), "-2");
+  EXPECT_STREQ(o.sar(4).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(4).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(5).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(5).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(6).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(6).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(7).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(7).to_string_signed_dec().c_str(), "-1");
+
+  o = dlib::SuperBin("1", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "-1");
+
+  // Operand = multibit, negative
+  o = dlib::SuperBin("80", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.sar(0).to_string_unsigned_bin().c_str(), "10110000");
+  EXPECT_STREQ(o.sar(0).to_string_signed_dec().c_str(), "-80");
+  EXPECT_STREQ(o.sar(1).to_string_unsigned_bin().c_str(), "1011000");
+  EXPECT_STREQ(o.sar(1).to_string_signed_dec().c_str(), "-40");
+  EXPECT_STREQ(o.sar(2).to_string_unsigned_bin().c_str(), "101100");
+  EXPECT_STREQ(o.sar(2).to_string_signed_dec().c_str(), "-20");
+  EXPECT_STREQ(o.sar(3).to_string_unsigned_bin().c_str(), "10110");
+  EXPECT_STREQ(o.sar(3).to_string_signed_dec().c_str(), "-10");
+  EXPECT_STREQ(o.sar(4).to_string_unsigned_bin().c_str(), "1011");
+  EXPECT_STREQ(o.sar(4).to_string_signed_dec().c_str(), "-5");
+  EXPECT_STREQ(o.sar(5).to_string_unsigned_bin().c_str(), "101");
+  EXPECT_STREQ(o.sar(5).to_string_signed_dec().c_str(), "-3");
+  EXPECT_STREQ(o.sar(6).to_string_unsigned_bin().c_str(), "10");
+  EXPECT_STREQ(o.sar(6).to_string_signed_dec().c_str(), "-2");
+  EXPECT_STREQ(o.sar(7).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(7).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(8).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(8).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.sar(9).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.sar(9).to_string_signed_dec().c_str(), "-1");
+}
+
+TEST(SHIFTS, shr) {
+  dlib::SuperBin o;
+
+  // Operand = 0
+  o = dlib::SuperBin();
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(2).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(2).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(3).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(3).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(4).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(4).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, positive
+  o = dlib::SuperBin("16");
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "16");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "01000");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "8");
+  EXPECT_STREQ(o.shr(2).to_string_unsigned_bin().c_str(), "0100");
+  EXPECT_STREQ(o.shr(2).to_string_signed_dec().c_str(), "4");
+  EXPECT_STREQ(o.shr(3).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.shr(3).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.shr(4).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shr(4).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.shr(5).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(5).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(6).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(6).to_string_signed_dec().c_str(), "0");
+
+  // Operand = multibit, positive
+  o = dlib::SuperBin("80");
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "01010000");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "80");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "0101000");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "40");
+  EXPECT_STREQ(o.shr(2).to_string_unsigned_bin().c_str(), "010100");
+  EXPECT_STREQ(o.shr(2).to_string_signed_dec().c_str(), "20");
+  EXPECT_STREQ(o.shr(3).to_string_unsigned_bin().c_str(), "01010");
+  EXPECT_STREQ(o.shr(3).to_string_signed_dec().c_str(), "10");
+  EXPECT_STREQ(o.shr(4).to_string_unsigned_bin().c_str(), "0101");
+  EXPECT_STREQ(o.shr(4).to_string_signed_dec().c_str(), "5");
+  EXPECT_STREQ(o.shr(5).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.shr(5).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.shr(6).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shr(6).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.shr(7).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(7).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(8).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(8).to_string_signed_dec().c_str(), "0");
+
+  // Operand = 1 bit, negative
+  o = dlib::SuperBin("16", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "10000");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "-16");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "01000");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "8");
+  EXPECT_STREQ(o.shr(2).to_string_unsigned_bin().c_str(), "0100");
+  EXPECT_STREQ(o.shr(2).to_string_signed_dec().c_str(), "4");
+  EXPECT_STREQ(o.shr(3).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.shr(3).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.shr(4).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shr(4).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.shr(5).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(5).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(6).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(6).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(7).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(7).to_string_signed_dec().c_str(), "0");
+
+  o = dlib::SuperBin("1", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "11");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "-1");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "1");
+
+  // Operand = multibit, negative
+  o = dlib::SuperBin("80", 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_STREQ(o.shr(0).to_string_unsigned_bin().c_str(), "10110000");
+  EXPECT_STREQ(o.shr(0).to_string_signed_dec().c_str(), "-80");
+  EXPECT_STREQ(o.shr(1).to_string_unsigned_bin().c_str(), "01011000");
+  EXPECT_STREQ(o.shr(1).to_string_signed_dec().c_str(), "88");
+  EXPECT_STREQ(o.shr(2).to_string_unsigned_bin().c_str(), "0101100");
+  EXPECT_STREQ(o.shr(2).to_string_signed_dec().c_str(), "44");
+  EXPECT_STREQ(o.shr(3).to_string_unsigned_bin().c_str(), "010110");
+  EXPECT_STREQ(o.shr(3).to_string_signed_dec().c_str(), "22");
+  EXPECT_STREQ(o.shr(4).to_string_unsigned_bin().c_str(), "01011");
+  EXPECT_STREQ(o.shr(4).to_string_signed_dec().c_str(), "11");
+  EXPECT_STREQ(o.shr(5).to_string_unsigned_bin().c_str(), "0101");
+  EXPECT_STREQ(o.shr(5).to_string_signed_dec().c_str(), "5");
+  EXPECT_STREQ(o.shr(6).to_string_unsigned_bin().c_str(), "010");
+  EXPECT_STREQ(o.shr(6).to_string_signed_dec().c_str(), "2");
+  EXPECT_STREQ(o.shr(7).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o.shr(7).to_string_signed_dec().c_str(), "1");
+  EXPECT_STREQ(o.shr(8).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(8).to_string_signed_dec().c_str(), "0");
+  EXPECT_STREQ(o.shr(9).to_string_unsigned_bin().c_str(), "00");
+  EXPECT_STREQ(o.shr(9).to_string_signed_dec().c_str(), "0");
 }
 
 
