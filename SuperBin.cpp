@@ -594,33 +594,14 @@ SuperBin::getb(
   // but empty the bit holder
   result.m_number = "";
 
-  // extract bits and insert into result
+  // extract bits and insert them result
+  // if index_m greater or equal to the size of current number, insert signum
   for (unsigned int i = index_l; i <= index_m; ++i) {
-    if (m_number.size() - 1 - i < m_number.size()) {
-      result.m_number.insert(result.m_number.begin(),
-        m_number[m_number.size() - 1 - i]);
-    } else {
-      result.m_number.insert(result.m_number.begin(),
-        m_number[0]);
-    }
-
-      /*
     result.m_number.insert(result.m_number.begin(),
-        m_number[
-        */
-        /*
-        (m_number.size() - 1 - i < m_number.size()) ?
-        m_number.size() - 1 - i : m_number.size() - 1
-        */
-      /*
-        (m_number.size() - 1 - i < m_number.size()) ?
-        m_number.size() - 1 - i : 5
-        // m_number.size() - 1 - i
-        ]);
-        */
+        m_number[(m_number.size() - 1 > i) ?  m_number.size() - 1 - i : 0]);
   }
 
-  // if the result is signed add zero to form positive number
+  // if the result is signed add zero to form the positive number
   if (result.m_number.front() == '1') {
     result.m_number.insert(result.m_number.begin(), '0'); }
 
