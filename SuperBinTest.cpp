@@ -840,8 +840,8 @@ TEST(BIT_MANIPULATORS, getb) {
   EXPECT_STREQ(o_pos.getb(0,4).to_string_unsigned_bin().c_str(), "010001");
   EXPECT_STREQ(o_neg.getb(0,4).to_string_unsigned_bin().c_str(), "01111");
 
-  EXPECT_STREQ(o_pos.getb(0,10).to_string_unsigned_bin().c_str(), "00000");
-  EXPECT_STREQ(o_neg.getb(0,10).to_string_unsigned_bin().c_str(), "011111");
+  EXPECT_STREQ(o_pos.getb(6,10).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(o_neg.getb(6,10).to_string_unsigned_bin().c_str(), "011111");
 }
 
 

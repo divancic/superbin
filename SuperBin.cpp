@@ -596,16 +596,28 @@ SuperBin::getb(
 
   // extract bits and insert into result
   for (unsigned int i = index_l; i <= index_m; ++i) {
+    if (m_number.size() - 1 - i < m_number.size()) {
+      result.m_number.insert(result.m_number.begin(),
+        m_number[m_number.size() - 1 - i]);
+    } else {
+      result.m_number.insert(result.m_number.begin(),
+        m_number[0]);
+    }
+
+      /*
     result.m_number.insert(result.m_number.begin(),
         m_number[
+        */
         /*
         (m_number.size() - 1 - i < m_number.size()) ?
         m_number.size() - 1 - i : m_number.size() - 1
         */
+      /*
         (m_number.size() - 1 - i < m_number.size()) ?
         m_number.size() - 1 - i : 5
         // m_number.size() - 1 - i
         ]);
+        */
   }
 
   // if the result is signed add zero to form positive number
