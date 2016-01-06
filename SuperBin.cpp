@@ -252,6 +252,7 @@ SuperBin::to_string_unsigned_hex(
 int
 SuperBin::to_int(
     void) const {
+  return 0;
 }
 
 
@@ -520,6 +521,21 @@ SuperBin
 SuperBin::setb(
     unsigned int index_l
   , unsigned int index_m) const {
+  if (index_l > index_m) return *this;
+
+  // make a copy
+  SuperBin result(*this);
+
+  // cast the binary representation if index_m out of range
+  // (if index_m = 7 -> 8th bit requested -> number has to have 9 bits)
+  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+
+  // set requested bits on a copy
+  for (unsigned int i = index_l; i <= index_m; ++i) {
+    result.m_number[result.m_number.size() - 1 - i] = '1';
+  }
+
+  return result;
 }
 
 /**
@@ -529,6 +545,17 @@ SuperBin
 SuperBin::clearb(
     unsigned int index_l
   , unsigned int index_m) const {
+  if (index_l > index_m) return *this;
+
+  SuperBin result(*this);
+
+  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+
+  for (unsigned int i = index_l; i <= index_m; ++i) {
+    result.m_number[result.m_number.size() - 1 - i] = '0';
+  }
+
+  return result;
 }
 
 /**
@@ -538,6 +565,18 @@ SuperBin
 SuperBin::notb(
     unsigned int index_l
   , unsigned int index_m) const {
+  if (index_l > index_m) return *this;
+
+  SuperBin result(*this);
+
+  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+
+  for (unsigned int i = index_l; i <= index_m; ++i) {
+    result.m_number[result.m_number.size() - 1 - i] =
+      result.m_number[result.m_number.size() - 1 - i] == '0' ? '1' : '0';
+  }
+
+  return result;
 }
 
 /**
@@ -547,6 +586,33 @@ SuperBin
 SuperBin::getb(
     unsigned int index_l
   , unsigned int index_m) const {
+  if (index_l > index_m) return *this;
+
+  // construct a result
+  SuperBin result;
+
+  // but empty the bit holder
+  result.m_number = "";
+
+  // extract bits and insert into result
+  for (unsigned int i = index_l; i <= index_m; ++i) {
+    result.m_number.insert(result.m_number.begin(),
+        m_number[
+        /*
+        (m_number.size() - 1 - i < m_number.size()) ?
+        m_number.size() - 1 - i : m_number.size() - 1
+        */
+        (m_number.size() - 1 - i < m_number.size()) ?
+        m_number.size() - 1 - i : 5
+        // m_number.size() - 1 - i
+        ]);
+  }
+
+  // if the result is signed add zero to form positive number
+  if (result.m_number.front() == '1') {
+    result.m_number.insert(result.m_number.begin(), '0'); }
+
+  return result;
 }
 
 
