@@ -515,39 +515,39 @@ SuperBin::sar(
 
 /**
  * Set bit(s)
- * TODO(doki) implement this
  */
 SuperBin
 SuperBin::setb(
-    unsigned int index_n
-    unsigned int index_m) const;
+    unsigned int index_l
+  , unsigned int index_m) const {
+}
 
 /**
  * Clear bit(s)
- * TODO(doki) implement this
  */
 SuperBin
 SuperBin::clearb(
-    unsigned int index_n
-    unsigned int index_m) const;
+    unsigned int index_l
+  , unsigned int index_m) const {
+}
 
 /**
- * Inver bit(s)
- * TODO(doki) implement this
+ * Invert bit(s)
  */
 SuperBin
 SuperBin::notb(
-    unsigned int index_n
-    unsigned int index_m) const;
+    unsigned int index_l
+  , unsigned int index_m) const {
+}
 
 /**
  * Get bit(s)
- * TODO(doki) implement this
  */
 SuperBin
 SuperBin::getb(
-    unsigned int index_n
-    unsigned int index_m) const;
+    unsigned int index_l
+  , unsigned int index_m) const {
+}
 
 
 
