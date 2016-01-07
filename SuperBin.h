@@ -458,9 +458,20 @@ class SuperBin {
    * \return new object with requested bits set.
    */
   SuperBin
-  setb(
+  setbs(
       unsigned int index_n
     , unsigned int index_m) const;
+
+  /**
+   * Set bit at index.
+   *
+   * \param index index
+   *
+   * \return new object with requested bit set.
+   */
+  SuperBin
+  setb(
+      unsigned int index) const;
 
   /**
    * Clear all bits at indexes between (and including) n and m.
@@ -471,9 +482,20 @@ class SuperBin {
    * \return new object with requested bits cleared.
    */
   SuperBin
-  clearb(
+  clearbs(
       unsigned int index_n
     , unsigned int index_m) const;
+
+  /**
+   * Clear bit at index.
+   *
+   * \param index index
+   *
+   * \return new object with requested bit cleared.
+   */
+  SuperBin
+  clearb(
+      unsigned int index) const;
 
   /**
    * Inverse state of all bits at indexes between (and including) n and m.
@@ -484,9 +506,20 @@ class SuperBin {
    * \return new object with requested bits inverted.
    */
   SuperBin
-  notb(
+  notbs(
       unsigned int index_n
     , unsigned int index_m) const;
+
+  /**
+   * Inverse state of bit at index.
+   *
+   * \param index index
+   *
+   * \return new object with requested bit inverted.
+   */
+  SuperBin
+  notb(
+      unsigned int index) const;
 
   /**
    * Get all bits at indexes between (and including) n and m.
@@ -497,9 +530,20 @@ class SuperBin {
    * \return new object with requested bits.
    */
   SuperBin
-  getb(
+  getbs(
       unsigned int index_n
     , unsigned int index_m) const;
+
+  /**
+   * Get bit at index.
+   *
+   * \param index
+   *
+   * \return new object with requested bit.
+   */
+  SuperBin
+  getb(
+      unsigned int index) const;
 
 
 
