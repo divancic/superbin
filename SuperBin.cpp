@@ -515,10 +515,10 @@ SuperBin::sar(
  ****************************************************************************/
 
 /**
- * Set bit(s)
+ * Set bits
  */
 SuperBin
-SuperBin::setb(
+SuperBin::setbs(
     unsigned int index_l
   , unsigned int index_m) const {
   if (index_l > index_m) return *this;
@@ -539,10 +539,25 @@ SuperBin::setb(
 }
 
 /**
- * Clear bit(s)
+ * Set bit
  */
 SuperBin
-SuperBin::clearb(
+SuperBin::setb(
+    unsigned int index) const {
+  SuperBin result(*this);
+
+  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+
+  result.m_number[result.m_number.size() - 1 - index] = '1';
+
+  return result;
+}
+
+/**
+ * Clear bits
+ */
+SuperBin
+SuperBin::clearbs(
     unsigned int index_l
   , unsigned int index_m) const {
   if (index_l > index_m) return *this;
@@ -559,10 +574,25 @@ SuperBin::clearb(
 }
 
 /**
- * Invert bit(s)
+ * Clear bit
  */
 SuperBin
-SuperBin::notb(
+SuperBin::clearb(
+    unsigned int index) const {
+  SuperBin result(*this);
+
+  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+
+  result.m_number[result.m_number.size() - 1 - index] = '0';
+
+  return result;
+}
+
+/**
+ * Invert bits
+ */
+SuperBin
+SuperBin::notbs(
     unsigned int index_l
   , unsigned int index_m) const {
   if (index_l > index_m) return *this;
@@ -580,10 +610,26 @@ SuperBin::notb(
 }
 
 /**
- * Get bit(s)
+ * Invert bit
  */
 SuperBin
-SuperBin::getb(
+SuperBin::notb(
+    unsigned int index) const {
+  SuperBin result(*this);
+
+  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+
+  result.m_number[result.m_number.size() - 1 - index] =
+    result.m_number[result.m_number.size() - 1 - index] == '0' ? '1' : '0';
+
+  return result;
+}
+
+/**
+ * Get bits
+ */
+SuperBin
+SuperBin::getbs(
     unsigned int index_l
   , unsigned int index_m) const {
   if (index_l > index_m) return *this;
@@ -602,8 +648,28 @@ SuperBin::getb(
   }
 
   // if the result is signed add zero to form the positive number
+  /*
   if (result.m_number.front() == '1') {
     result.m_number.insert(result.m_number.begin(), '0'); }
+  */
+
+  return result;
+}
+
+/**
+ * Get bit
+ */
+SuperBin
+SuperBin::getb(
+    unsigned int index) const {
+  SuperBin result;
+  result.m_number = "0";
+
+  if (index >= m_number.size()) {
+    result.m_number[0] = m_number[0];
+  } else {
+    result.m_number[0] = m_number[m_number.size() - 1 - index];
+  }
 
   return result;
 }

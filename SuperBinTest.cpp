@@ -764,24 +764,64 @@ TEST(SHIFTS, shr) {
 /**************************************************************************** 
  * BIT MANIPULATORS
  ****************************************************************************/
-TEST(BIT_MANIPULATORS, seb) {
+TEST(BIT_MANIPULATORS, setbs) {
   dlib::SuperBin o_pos;
   dlib::SuperBin o_neg;
 
   o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
   o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
 
-  EXPECT_STREQ(o_pos.setb(2,1).to_string_unsigned_bin().c_str(), "010001");
-  EXPECT_STREQ(o_neg.setb(2,1).to_string_unsigned_bin().c_str(), "101111");
+  EXPECT_STREQ(o_pos.setbs(2,1).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.setbs(2,1).to_string_unsigned_bin().c_str(), "101111");
 
-  EXPECT_STREQ(o_pos.setb(1,1).to_string_unsigned_bin().c_str(), "010011");
-  EXPECT_STREQ(o_neg.setb(4,4).to_string_unsigned_bin().c_str(), "111111");
+  EXPECT_STREQ(o_pos.setbs(1,1).to_string_unsigned_bin().c_str(), "010011");
+  EXPECT_STREQ(o_neg.setbs(4,4).to_string_unsigned_bin().c_str(), "111111");
 
-  EXPECT_STREQ(o_pos.setb(0,4).to_string_unsigned_bin().c_str(), "011111");
-  EXPECT_STREQ(o_neg.setb(0,4).to_string_unsigned_bin().c_str(), "111111");
+  EXPECT_STREQ(o_pos.setbs(0,4).to_string_unsigned_bin().c_str(), "011111");
+  EXPECT_STREQ(o_neg.setbs(0,4).to_string_unsigned_bin().c_str(), "111111");
 
-  EXPECT_STREQ(o_pos.setb(6,10).to_string_unsigned_bin().c_str(), "011111010001");
-  EXPECT_STREQ(o_neg.setb(6,10).to_string_unsigned_bin().c_str(), "111111101111");
+  EXPECT_STREQ(o_pos.setbs(6,10).to_string_unsigned_bin().c_str(), "011111010001");
+  EXPECT_STREQ(o_neg.setbs(6,10).to_string_unsigned_bin().c_str(), "111111101111");
+}
+
+TEST(BIT_MANIPULATORS, setb) {
+  dlib::SuperBin o_pos;
+  dlib::SuperBin o_neg;
+
+  o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
+  o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
+
+  EXPECT_STREQ(o_pos.setb(0).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.setb(0).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(o_pos.setb(1).to_string_unsigned_bin().c_str(), "010011");
+  EXPECT_STREQ(o_neg.setb(4).to_string_unsigned_bin().c_str(), "111111");
+
+  EXPECT_STREQ(o_pos.setb(6).to_string_unsigned_bin().c_str(), "01010001");
+  EXPECT_STREQ(o_neg.setb(6).to_string_unsigned_bin().c_str(), "11101111");
+
+  EXPECT_STREQ(o_pos.setb(8).to_string_unsigned_bin().c_str(), "0100010001");
+  EXPECT_STREQ(o_neg.setb(8).to_string_unsigned_bin().c_str(), "1111101111");
+}
+
+TEST(BIT_MANIPULATORS, clearbs) {
+  dlib::SuperBin o_pos;
+  dlib::SuperBin o_neg;
+
+  o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
+  o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
+
+  EXPECT_STREQ(o_pos.clearbs(2,1).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.clearbs(2,1).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(o_pos.clearbs(0,0).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o_neg.clearbs(0,0).to_string_unsigned_bin().c_str(), "101110");
+
+  EXPECT_STREQ(o_pos.clearbs(0,4).to_string_unsigned_bin().c_str(), "000000");
+  EXPECT_STREQ(o_neg.clearbs(0,4).to_string_unsigned_bin().c_str(), "100000");
+
+  EXPECT_STREQ(o_pos.clearbs(6,10).to_string_unsigned_bin().c_str(), "000000010001");
+  EXPECT_STREQ(o_neg.clearbs(6,10).to_string_unsigned_bin().c_str(), "100000101111");
 }
 
 TEST(BIT_MANIPULATORS, clearb) {
@@ -791,17 +831,37 @@ TEST(BIT_MANIPULATORS, clearb) {
   o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
   o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
 
-  EXPECT_STREQ(o_pos.clearb(2,1).to_string_unsigned_bin().c_str(), "010001");
-  EXPECT_STREQ(o_neg.clearb(2,1).to_string_unsigned_bin().c_str(), "101111");
+  EXPECT_STREQ(o_pos.clearb(0).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o_neg.clearb(0).to_string_unsigned_bin().c_str(), "101110");
 
-  EXPECT_STREQ(o_pos.clearb(0,0).to_string_unsigned_bin().c_str(), "010000");
-  EXPECT_STREQ(o_neg.clearb(0,0).to_string_unsigned_bin().c_str(), "101110");
+  EXPECT_STREQ(o_pos.clearb(1).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.clearb(4).to_string_unsigned_bin().c_str(), "101111");
 
-  EXPECT_STREQ(o_pos.clearb(0,4).to_string_unsigned_bin().c_str(), "000000");
-  EXPECT_STREQ(o_neg.clearb(0,4).to_string_unsigned_bin().c_str(), "100000");
+  EXPECT_STREQ(o_pos.clearb(6).to_string_unsigned_bin().c_str(), "00010001");
+  EXPECT_STREQ(o_neg.clearb(6).to_string_unsigned_bin().c_str(), "10101111");
 
-  EXPECT_STREQ(o_pos.clearb(6,10).to_string_unsigned_bin().c_str(), "000000010001");
-  EXPECT_STREQ(o_neg.clearb(6,10).to_string_unsigned_bin().c_str(), "100000101111");
+  EXPECT_STREQ(o_pos.clearb(8).to_string_unsigned_bin().c_str(), "0000010001");
+  EXPECT_STREQ(o_neg.clearb(8).to_string_unsigned_bin().c_str(), "1011101111");
+}
+
+TEST(BIT_MANIPULATORS, notbs) {
+  dlib::SuperBin o_pos;
+  dlib::SuperBin o_neg;
+
+  o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
+  o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
+
+  EXPECT_STREQ(o_pos.notbs(2,1).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.notbs(2,1).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(o_pos.notbs(0,1).to_string_unsigned_bin().c_str(), "010010");
+  EXPECT_STREQ(o_neg.notbs(3,4).to_string_unsigned_bin().c_str(), "110111");
+
+  EXPECT_STREQ(o_pos.notbs(0,4).to_string_unsigned_bin().c_str(), "001110");
+  EXPECT_STREQ(o_neg.notbs(0,4).to_string_unsigned_bin().c_str(), "110000");
+
+  EXPECT_STREQ(o_pos.notbs(6,10).to_string_unsigned_bin().c_str(), "011111010001");
+  EXPECT_STREQ(o_neg.notbs(6,10).to_string_unsigned_bin().c_str(), "100000101111");
 }
 
 TEST(BIT_MANIPULATORS, notb) {
@@ -811,17 +871,37 @@ TEST(BIT_MANIPULATORS, notb) {
   o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
   o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
 
-  EXPECT_STREQ(o_pos.notb(2,1).to_string_unsigned_bin().c_str(), "010001");
-  EXPECT_STREQ(o_neg.notb(2,1).to_string_unsigned_bin().c_str(), "101111");
+  EXPECT_STREQ(o_pos.notb(0).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(o_neg.notb(0).to_string_unsigned_bin().c_str(), "101110");
 
-  EXPECT_STREQ(o_pos.notb(0,1).to_string_unsigned_bin().c_str(), "010010");
-  EXPECT_STREQ(o_neg.notb(3,4).to_string_unsigned_bin().c_str(), "110111");
+  EXPECT_STREQ(o_pos.notb(1).to_string_unsigned_bin().c_str(), "010011");
+  EXPECT_STREQ(o_neg.notb(4).to_string_unsigned_bin().c_str(), "111111");
 
-  EXPECT_STREQ(o_pos.notb(0,4).to_string_unsigned_bin().c_str(), "001110");
-  EXPECT_STREQ(o_neg.notb(0,4).to_string_unsigned_bin().c_str(), "110000");
+  EXPECT_STREQ(o_pos.notb(6).to_string_unsigned_bin().c_str(), "01010001");
+  EXPECT_STREQ(o_neg.notb(6).to_string_unsigned_bin().c_str(), "10101111");
 
-  EXPECT_STREQ(o_pos.notb(6,10).to_string_unsigned_bin().c_str(), "011111010001");
-  EXPECT_STREQ(o_neg.notb(6,10).to_string_unsigned_bin().c_str(), "100000101111");
+  EXPECT_STREQ(o_pos.notb(8).to_string_unsigned_bin().c_str(), "0100010001");
+  EXPECT_STREQ(o_neg.notb(8).to_string_unsigned_bin().c_str(), "1011101111");
+}
+
+TEST(BIT_MANIPULATORS, getbs) {
+  dlib::SuperBin o_pos;
+  dlib::SuperBin o_neg;
+
+  o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
+  o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
+
+  EXPECT_STREQ(o_pos.getbs(2,1).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(o_neg.getbs(2,1).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(o_pos.getbs(0,1).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(o_neg.getbs(0,1).to_string_unsigned_bin().c_str(), "11");
+
+  EXPECT_STREQ(o_pos.getbs(0,4).to_string_unsigned_bin().c_str(), "10001");
+  EXPECT_STREQ(o_neg.getbs(0,4).to_string_unsigned_bin().c_str(), "01111");
+
+  EXPECT_STREQ(o_pos.getbs(6,10).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(o_neg.getbs(6,10).to_string_unsigned_bin().c_str(), "11111");
 }
 
 TEST(BIT_MANIPULATORS, getb) {
@@ -831,19 +911,18 @@ TEST(BIT_MANIPULATORS, getb) {
   o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
   o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
 
-  EXPECT_STREQ(o_pos.notb(2,1).to_string_unsigned_bin().c_str(), "010001");
-  EXPECT_STREQ(o_neg.notb(2,1).to_string_unsigned_bin().c_str(), "101111");
+  EXPECT_STREQ(o_pos.getb(0).to_string_unsigned_bin().c_str(), "1");
+  EXPECT_STREQ(o_neg.getb(0).to_string_unsigned_bin().c_str(), "1");
 
-  EXPECT_STREQ(o_pos.getb(0,1).to_string_unsigned_bin().c_str(), "01");
-  EXPECT_STREQ(o_neg.getb(0,1).to_string_unsigned_bin().c_str(), "011");
+  EXPECT_STREQ(o_pos.getb(1).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(o_neg.getb(4).to_string_unsigned_bin().c_str(), "0");
 
-  EXPECT_STREQ(o_pos.getb(0,4).to_string_unsigned_bin().c_str(), "010001");
-  EXPECT_STREQ(o_neg.getb(0,4).to_string_unsigned_bin().c_str(), "01111");
+  EXPECT_STREQ(o_pos.getb(6).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(o_neg.getb(6).to_string_unsigned_bin().c_str(), "1");
 
-  EXPECT_STREQ(o_pos.getb(6,10).to_string_unsigned_bin().c_str(), "00000");
-  EXPECT_STREQ(o_neg.getb(6,10).to_string_unsigned_bin().c_str(), "011111");
+  EXPECT_STREQ(o_pos.getb(8).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(o_neg.getb(8).to_string_unsigned_bin().c_str(), "1");
 }
-
 
 
 /**************************************************************************** 
