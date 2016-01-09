@@ -545,6 +545,35 @@ class SuperBin {
   getb(
       unsigned int index) const;
 
+  /**
+   * Get all bits at indexes between (and including) n and m and shift the
+   * result to the right by n bits. The result is always positive (i.e.
+   * if the bit at index m equals to 1, 0 is added as the msb to make
+   * the result positive).
+   *
+   * \param index_n starting index
+   * \param index_m ending index
+   *
+   * \return new object with requested bits.
+   */
+  SuperBin
+  getubs(
+      unsigned int index_n
+    , unsigned int index_m) const;
+
+  /**
+   * Get bit at index and shift the result to the right. The result is always
+   * positive (i.e. if the bit at index equals to 1, 0 is added as the msb to
+   * make the result positive).
+   *
+   * \param index starting index
+   *
+   * \return new object with requested bits.
+   */
+  SuperBin
+  getub(
+      unsigned int index) const;
+
 
 
   /**************************************************************************** 
