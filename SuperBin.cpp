@@ -640,18 +640,13 @@ SuperBin::getbs(
   // but empty the bit holder
   result.m_number = "";
 
-  // extract bits and insert them result
-  // if index_m greater or equal to the size of current number, insert signum
+  // extract bits and insert them in result
   for (unsigned int i = index_l; i <= index_m; ++i) {
     result.m_number.insert(result.m_number.begin(),
+        // if index_m greater or equal to the size
+        // of current number, insert signum
         m_number[(m_number.size() - 1 > i) ?  m_number.size() - 1 - i : 0]);
   }
-
-  // if the result is signed add zero to form the positive number
-  /*
-  if (result.m_number.front() == '1') {
-    result.m_number.insert(result.m_number.begin(), '0'); }
-  */
 
   return result;
 }
@@ -669,6 +664,39 @@ SuperBin::getb(
     result.m_number[0] = m_number[0];
   } else {
     result.m_number[0] = m_number[m_number.size() - 1 - index];
+  }
+
+  return result;
+}
+
+/**
+ * Get bits and ensure the result is unsigned.
+ */
+SuperBin
+SuperBin::getubs(
+    unsigned int index_l
+  , unsigned int index_m) const {
+  if (index_l > index_m) return *this;
+
+  SuperBin result = getbs(index_l, index_m);
+
+  if (result.m_number.front() == '1') {
+    result.m_number.insert(result.m_number.begin(), '0');
+  }
+
+  return result;
+}
+
+/**
+ * Get bits and ensure the result is unsigned.
+ */
+SuperBin
+SuperBin::getub(
+    unsigned int index) const {
+  SuperBin result = getb(index);
+
+  if (result.m_number.front() == '1') {
+    result.m_number.insert(result.m_number.begin(), '0');
   }
 
   return result;
