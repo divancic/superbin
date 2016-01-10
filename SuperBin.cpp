@@ -888,6 +888,16 @@ SuperBin::nge(
  ****************************************************************************/
 
 /**
+ * Negate the number (return 2's complement).
+ * TODO(doki): replace all calls to bnot().inc() with neg().
+ */
+SuperBin
+SuperBin::neg(
+    void) const {
+  return (bnot().inc());
+}
+
+/**
  * Increment by one.
  */
 SuperBin
@@ -929,6 +939,59 @@ SuperBin::dec(
   SuperBin result(*this);
 
   return result;
+}
+
+/**
+ * Addition.
+ * TODO(doki): optimize me please! :)
+ */
+SuperBin
+SuperBin::add(
+    const SuperBin& rhs) const {
+  // get the reference of the operand with more bits
+  SuperBin const *operand1 = (size() > rhs.size() ? this : &rhs);
+
+  // make the copy of the other operand and cast it to the same number of bits
+  SuperBin operand2 = (operand1 == this ? rhs : *this).cast(operand1->size());
+
+  SuperBin result;
+  result.m_number = "";
+
+  // sum bit-by-bit
+  char carry = 0;
+  char bit = '0';
+  for (int i = operand2.size() - 1; i >= 0; --i) {
+    if (!carry) {
+      bit = ((operand2.m_number[i] - '0') ^
+        (operand1->m_number[i] - '0')) + '0';
+      carry = ((operand2.m_number[i] - '0') &
+        (operand1->m_number[i] - '0'));
+    } else {
+     bit = (((operand2.m_number[i] - '0') ^
+        (operand1->m_number[i] - '0')) ? 0 : 1) + '0';
+      carry = ((operand2.m_number[i] - '0') |
+        (operand1->m_number[i] - '0'));
+    }
+    result.m_number.insert(result.m_number.begin(), bit);
+  }
+  if ((result.m_number[0] == '1') && (operand1->m_number[0] == '0')
+      && (operand2.m_number[0] == '0')) {
+    result.m_number.insert(result.m_number.begin(), '0');
+  } else if ((result.m_number[0] == '0') && (operand1->m_number[0] == '1')
+      && (operand2.m_number[0] == '1')) {
+    result.m_number.insert(result.m_number.begin(), '1');
+  }
+
+  return result;
+}
+
+/**
+ * Subtraction.
+ */
+SuperBin
+SuperBin::sub(
+    const SuperBin& rhs) const {
+  return add(rhs.neg());
 }
 
 

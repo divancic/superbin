@@ -1656,6 +1656,17 @@ TEST(COMPARISONS, lt_nge) {
 /**************************************************************************** 
  * ARITHMETIC FUNCTIONS
  ****************************************************************************/
+TEST(ARITHMETIC, neg) {
+  dlib::SuperBin o_pos;
+  dlib::SuperBin o_neg;
+
+  o_pos = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::POS);
+  o_neg = dlib::SuperBin("17", 10, dlib::SuperBin::Sign::NEG);
+
+  EXPECT_STREQ(o_pos.neg().to_string_signed_dec().c_str(), "-17");
+  EXPECT_STREQ(o_neg.neg().to_string_signed_dec().c_str(), "17");
+}
+
 TEST(ARITHMETIC, inc) {
   dlib::SuperBin sb("3",10,dlib::SuperBin::Sign::NEG);
   EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "101");
@@ -1689,6 +1700,30 @@ TEST(ARITHMETIC, inc) {
   EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "0111");
   sb = sb.inc();
   EXPECT_STREQ(sb.to_string_unsigned_bin().c_str(), "01000");
+}
+
+TEST(ARITHMETIC, add) {
+  dlib::SuperBin o1, o2;
+  int k = 11;
+
+  for (int i = 0; i < k; ++i) {
+    for (int j = 0; j < k; ++j) {
+      o1 = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+      o2 = dlib::SuperBin(std::to_string(j), 10, dlib::SuperBin::Sign::POS);
+
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == i + j);
+
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == i + (-j));
+
+      o1 = o1.neg();
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == (-i) + j);
+
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == (-i) + (-j));
+    }
+  }
 }
 
 
