@@ -1726,6 +1726,29 @@ TEST(ARITHMETIC, add) {
   }
 }
 
+TEST(ARITHMETIC, mul) {
+  dlib::SuperBin o1, o2;
+  int k = 11;
+
+  for (int i = 0; i < k; ++i) {
+    for (int j = 0; j < k; ++j) {
+      o1 = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+      o2 = dlib::SuperBin(std::to_string(j), 10, dlib::SuperBin::Sign::POS);
+
+      EXPECT_TRUE(std::stoi(o1.mul(o2).to_string_signed_dec()) == i * j);
+
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == i + (-j));
+
+      o1 = o1.neg();
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == (-i) + j);
+
+      o2 = o2.neg();
+      EXPECT_TRUE(std::stoi(o1.add(o2).to_string_signed_dec()) == (-i) + (-j));
+    }
+  }
+}
 
 
 /**************************************************************************** 

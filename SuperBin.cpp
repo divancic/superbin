@@ -943,7 +943,7 @@ SuperBin::dec(
 
 /**
  * Addition.
- * TODO(doki): optimize me please! :)
+ * TODO(doki): rewrite/optimize me please! :)
  */
 SuperBin
 SuperBin::add(
@@ -992,6 +992,42 @@ SuperBin
 SuperBin::sub(
     const SuperBin& rhs) const {
   return add(rhs.neg());
+}
+
+/**
+ * Multiplication.
+ * TODO(doki): rewrite/optimize me please! :)
+ * TODO(doki): we need abs 
+ */
+SuperBin
+SuperBin::mul(
+    const SuperBin& rhs) const {
+  SuperBin result, operand1, operand2;
+
+  // make numbers positive
+  operand1 = m_number[0] == '1' ? neg() : *this;
+  operand2 = rhs.m_number[0] == '1' ? rhs.neg() : rhs;
+
+  // get the reference of the operand with less bits
+  SuperBin const *smaller =
+    (operand1.size() < operand2.size() ? &operand1 : &operand2);
+
+  // and the other operand that has more bits
+  SuperBin const *larger =
+    (smaller == &operand1 ? &operand2 : &operand1);
+
+  for (unsigned int bit = 0; bit < smaller->size(); ++bit) {
+    if (smaller->getb(bit).tnz()) {
+      result = result.add(larger->shl(bit));
+    }
+  }
+
+  if ((m_number[0] == '1' && rhs.m_number[0] == '0')
+    || (m_number[0] == '0' && rhs.m_number[0] == '1')) {
+    result = result.neg();
+  }
+
+  return result;
 }
 
 
