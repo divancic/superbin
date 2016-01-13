@@ -1,6 +1,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <limits>
 #include <iostream>
 
 #include "SuperBin.h"
@@ -247,12 +248,26 @@ SuperBin::to_string_unsigned_hex(
  ****************************************************************************/
 
 /**
- * TODO(doki) implement this
+ * Convert number to (system) int.
  */
 int
 SuperBin::to_int(
     void) const {
-  return 0;
+  unsigned int result = 0;
+
+  // is the number bigger than int?
+  if (sizeof(int) << 3 < this->cast().size()) {
+    return std::numeric_limits<int>::lowest(); }
+
+  // cast number to the size of int
+  SuperBin temp = this->cast(sizeof(int) << 3);
+
+  // convert bit-by-bit
+  for (unsigned int i = 0; i < sizeof(int) << 3; ++i) {
+    result |= ((temp.m_number[temp.size() - 1 - i] - '0') << i);
+  }
+
+  return result;
 }
 
 
@@ -1146,7 +1161,7 @@ SuperBin::fromBaseToBase(
        * each digit in front (i.e. string::insert with cbegin).
        */
       if (numerator_it == numerator->cend()) {
-        toNumber->insert(toNumber->cbegin(), num + (num < 10 ? '0' : 'A' - 10));
+        toNumber->insert(toNumber->begin(), num + (num < 10 ? '0' : 'A' - 10));
       }
     }
 
