@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <iostream>
+#include <limits>
 
 
 /**************************************************************************** 
@@ -128,6 +129,8 @@ TEST(SIZE, all) {
   EXPECT_EQ(sb_zero.size(), 2);
 }
 
+
+
 /**************************************************************************** 
  * CONVERTERS TO STRING
  ****************************************************************************/
@@ -249,6 +252,38 @@ TEST(TO_STRING, _signed) {
   EXPECT_STREQ(sb_neg.to_string_signed_oct().c_str(), "-252");
   EXPECT_STREQ(sb_neg.to_string_signed_dec().c_str(), "-170");
   EXPECT_STREQ(sb_neg.to_string_signed_hex().c_str(), "-AA");
+}
+
+
+
+/**************************************************************************** 
+ * CONVERTER TO INT
+ ****************************************************************************/
+TEST(TO_INT, to_int) {
+  dlib::SuperBin o;
+  long int i;
+
+  for (i = 0; i < 1111; ++i) {
+    o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+    EXPECT_TRUE(o.to_int() == i);
+    o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::NEG);
+    EXPECT_TRUE(o.to_int() == -i);
+  }
+
+  i = std::numeric_limits<int>::max();
+  o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+  EXPECT_TRUE(o.to_int() == i);
+  o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_TRUE(o.to_int() == -i);
+
+  for (i = static_cast<long int>(std::numeric_limits<int>::max()) + 1;
+      i < static_cast<long int>(std::numeric_limits<int>::max()) + 1111;
+      ++i) {
+  o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+  EXPECT_TRUE(o.to_int() == std::numeric_limits<int>::lowest());
+  o = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::NEG);
+  EXPECT_TRUE(o.to_int() == std::numeric_limits<int>::lowest());
+  }
 }
 
 
