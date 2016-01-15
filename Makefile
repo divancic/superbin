@@ -4,7 +4,8 @@ CPPLINT_FLAGS	+= --verbose=0 --filter=-legal/copyright
 
 CXX						= clang++
 CPPFLAGS			+=
-CXXFLAGS			+= -std=c++11 -Wall -Wextra -Wpedantic -g
+CXXFLAGS			+= -std=c++11 -Wall -g -I$(GTEST_DIR)/include
+#CXXFLAGS			+= -Wpedantic -Wextra 
 #CXXFLAGS			+= -Wno-vla-extension -Wno-unused-variable
 
 GTEST_DIR			= googletest/googletest
@@ -42,7 +43,7 @@ SuperBin.o: SuperBin.h SuperBin.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c SuperBin.cpp
 
 libgtest.a: $(GTEST_SOURCES)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest-all.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest-all.cc
 	$(AR) $(ARFLAGS) $@ gtest-all.o
 	rm gtest-all.o
 
