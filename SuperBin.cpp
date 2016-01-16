@@ -1019,9 +1019,9 @@ SuperBin::mul(
     const SuperBin& rhs) const {
   SuperBin result, operand1, operand2;
 
-  // make numbers positive
-  operand1 = m_number[0] == '1' ? neg() : *this;
-  operand2 = rhs.m_number[0] == '1' ? rhs.neg() : rhs;
+  // make numbers positive and cast them
+  operand1 = (m_number[0] == '1' ? neg() : *this).cast();
+  operand2 = (rhs.m_number[0] == '1' ? rhs.neg() : rhs).cast();
 
   // get the reference of the operand with less bits
   SuperBin const *smaller =
@@ -1037,6 +1037,55 @@ SuperBin::mul(
     }
   }
 
+  if ((m_number[0] == '1' && rhs.m_number[0] == '0')
+    || (m_number[0] == '0' && rhs.m_number[0] == '1')) {
+    result = result.neg();
+  }
+
+  return result;
+}
+
+/**
+ * Division.
+ * TODO(doki): div with zero??
+ */
+SuperBin
+SuperBin::div(
+    const SuperBin& rhs) const {
+  SuperBin result;
+
+  // make numbers positive and cast them
+  SuperBin dividend = (m_number[0] == '1' ? neg() : *this).cast();
+  SuperBin divisor = (rhs.m_number[0] == '1' ? rhs.neg() : rhs).cast();
+
+  // if divident smaller then divisor return zero
+  if (dividend.lt(divisor).tnz()) return SuperBin();
+
+  // calculate the difference of operands in bits
+  int count = dividend.size() - divisor.size();
+
+  // if the divisor becomes larger then dividend when adjusted
+  // to the left (left shift by count) decrease count by one
+  count -= (dividend.lt(divisor.shl(count)).tnz()) ? 1 : 0;
+
+  for (; count >= 0; --count) {
+    // make room for another bit in result
+    result = result.shl(1);
+
+    // adjust to the left and try to subtract divisor
+    // (shifted to the left by count) from divident
+    if (dividend.ge(divisor.shl(count)).tnz()) {
+      // if dividend larger then divisor (after shifitng)
+      // subtract them and put binary one at lsb position
+      // of the result, otherwise binary zero is left in
+      // the result's lsb position
+      dividend = dividend.sub(divisor.shl(count));
+      result.m_number[result.size() - 1] = '1';
+    }
+  }
+
+  // adjust the signum of the result - if operands were
+  // of different signum, the result is negative
   if ((m_number[0] == '1' && rhs.m_number[0] == '0')
     || (m_number[0] == '0' && rhs.m_number[0] == '1')) {
     result = result.neg();
