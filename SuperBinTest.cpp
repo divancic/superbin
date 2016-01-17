@@ -1763,7 +1763,7 @@ TEST(ARITHMETIC, add) {
 
 TEST(ARITHMETIC, mul) {
   dlib::SuperBin o1, o2;
-  int k = 1111;
+  int k = 555;
 
   for (int i = 0; i < k; ++i) {
     for (int j = 0; j < k; ++j) {
@@ -1787,7 +1787,7 @@ TEST(ARITHMETIC, mul) {
 
 TEST(ARITHMETIC, div) {
   dlib::SuperBin o1, o2;
-  int k = 1111;
+  int k = 555;
 
   for (int i = 0; i < k; ++i) {
     for (int j = 1; j < k; ++j) {
@@ -1802,7 +1802,22 @@ TEST(ARITHMETIC, div) {
   }
 }
 
+TEST(ARITHMETIC, mod) {
+  dlib::SuperBin o1, o2;
+  int k = 555;
 
+  for (int i = 0; i < k; ++i) {
+    for (int j = 1; j < k; ++j) {
+      o1 = dlib::SuperBin(std::to_string(i), 10, dlib::SuperBin::Sign::POS);
+      o2 = dlib::SuperBin(std::to_string(j), 10, dlib::SuperBin::Sign::POS);
+
+      EXPECT_TRUE(std::stoi(o1.mod(o2).to_string_signed_dec()) == i % j);
+      EXPECT_TRUE(std::stoi(o1.mod(o2.neg()).to_string_signed_dec()) == i % (-j));
+      EXPECT_TRUE(std::stoi(o1.neg().mod(o2).to_string_signed_dec()) == (-i) % j);
+      EXPECT_TRUE(std::stoi(o1.neg().mod(o2.neg()).to_string_signed_dec()) == (-i) % (-j));
+    }
+  }
+}
 
 /**************************************************************************** 
  * MASTER

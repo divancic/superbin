@@ -278,7 +278,6 @@ SuperBin::to_int(
 
 /**
  * Zero check.
- * TODO(doki) make return SuperBin
  */
 bool
 SuperBin::tz(
@@ -291,7 +290,6 @@ SuperBin::tz(
 
 /**
  * Check if not zero.
- * TODO(doki) make return SuperBin
  */
 bool
 SuperBin::tnz(
@@ -1092,6 +1090,46 @@ SuperBin::div(
   }
 
   return result;
+}
+
+/**
+ * Modulo.
+ * TODO(doki): div with zero??
+ */
+SuperBin
+SuperBin::mod(
+    const SuperBin& rhs) const {
+  SuperBin result;
+
+  // make numbers positive and cast them
+  SuperBin dividend = (m_number[0] == '1' ? neg() : *this).cast();
+  SuperBin divisor = (rhs.m_number[0] == '1' ? rhs.neg() : rhs).cast();
+
+  // if divident smaller then divisor return dividend
+  if (dividend.lt(divisor).tnz()) return *this;
+
+  // calculate the difference of operands in bits
+  int count = dividend.size() - divisor.size();
+
+  // if the divisor becomes larger then dividend when adjusted
+  // to the left (left shift by count) decrease count by one
+  count -= (dividend.lt(divisor.shl(count)).tnz()) ? 1 : 0;
+
+  for (; count >= 0; --count) {
+    // result = result.shl(1);
+    // adjust to the left and try to subtract divisor
+    // (shifted to the left by count) from divident
+    if (dividend.ge(divisor.shl(count)).tnz()) {
+      dividend = dividend.sub(divisor.shl(count));
+      // result.m_number[result.size() - 1] = '1';
+    }
+  }
+
+  // adjust the signum of the result - if operands were
+  // of different signum, the result is negative
+  if (m_number[0] == '1') { dividend = dividend.neg(); }
+
+  return dividend;
 }
 
 
