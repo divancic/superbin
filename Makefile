@@ -15,27 +15,39 @@ GTEST_SOURCES = $(GTEST_DIR)/src/*.cc																					\
 								$(GTEST_DIR)/src/*.h																					\
 								$(GTEST_HEADERS)
 
-.PHONY: all clean SuperBinTest
+.PHONY: all clean SuperBinTest ADELintTest
 
 all:
 ifneq ($(wildcard $(GTEST_DIR)/.*),)
 	@echo "NOTE: google test found, building SuperBin tests."
 	@echo "If you want just SuperBin library do a:"
 	@echo "    make libSuperBin.a"
-	make SuperBinTest
+	make SuperBinTest ADELintTest
 else
 	@echo "NOTE: google test not found, building SuperBin library only."
 	@echo "If you want tests too fetch google test like this:"
 	@echo "    git clone https://github.com/google/googletest"
-	make libSuperBin.a
+	make libSuperBin.a libADELint.a
 endif
 
-SuperBinTest: SuperBinTest.h SuperBinTest.cpp SuperBin.o libgtest.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) SuperBinTest.cpp -o $@ SuperBin.o libgtest.a -lpthread
+ADELintTest: ADELintTest.cpp ADELint.o SuperBin.o libgtest.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) ADELintTest.cpp -o $@ ADELint.o SuperBin.o libgtest.a -lpthread
+
+libADELint.a: ADELint.o
+	$(AR) $(ARFLAGS) $@ libADELint.o
+	rm ADELint.o
+
+ADELint.o: ADELint.h ADELint.cpp
+	$(CPPLINT) $(CPPLINT_FLAGS) ADELint.h
+	$(CPPLINT) $(CPPLINT_FLAGS) ADELint.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ADELint.cpp
 
 libSuperBin.a: SuperBin.o
 	$(AR) $(ARFLAGS) $@ SuperBin.o
 	rm SuperBin.o
+
+SuperBinTest: SuperBinTest.h SuperBinTest.cpp SuperBin.o libgtest.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) SuperBinTest.cpp -o $@ SuperBin.o libgtest.a -lpthread
 
 SuperBin.o: SuperBin.h SuperBin.cpp
 	$(CPPLINT) $(CPPLINT_FLAGS) SuperBin.h
@@ -48,4 +60,6 @@ libgtest.a: $(GTEST_SOURCES)
 	rm gtest-all.o
 
 clean:
-	rm -f libgtest.a SuperBin.o libSuperBin.a SuperBinTest
+	rm -f libgtest.a
+	rm -f SuperBin.o libSuperBin.a SuperBinTest
+	rm -f ADELint.o libADELint.a ADELintTest
