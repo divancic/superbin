@@ -18,7 +18,6 @@ class ADELint : public SuperBin {
 
 
   // CONVERTERS TO STRING
-  /*
   std::string to_string_signed_bin(void) const;
   std::string to_string_signed_oct(void) const;
   std::string to_string_signed_dec(void) const;
@@ -28,15 +27,14 @@ class ADELint : public SuperBin {
   std::string to_string_unsigned_oct(int no_of_bits = 0) const;
   std::string to_string_unsigned_hex(int no_of_bits = 0) const;
 
-  friend std::string to_string_signed_bin(const ADELint &lhs);
-  friend std::string to_string_signed_oct(const ADELint &lhs);
-  friend std::string to_string_signed_dec(const ADELint &lhs);
-  friend std::string to_string_signed_hex(const ADELint &lhs);
+  friend std::string to_string_signed_bin(const ADELint &op);
+  friend std::string to_string_signed_oct(const ADELint &op);
+  friend std::string to_string_signed_dec(const ADELint &op);
+  friend std::string to_string_signed_hex(const ADELint &op);
 
-  friend std::string to_string_unsigned_bin(const ADELint &lhs, int no_of_bits);
-  friend std::string to_string_unsigned_oct(const ADELint &lhs, int no_of_bits);
-  friend std::string to_string_unsigned_hex(const ADELint &lhs, int no_of_bits);
-  */
+  friend std::string to_string_unsigned_bin(const ADELint &op, int no_of_bits);
+  friend std::string to_string_unsigned_oct(const ADELint &op, int no_of_bits);
+  friend std::string to_string_unsigned_hex(const ADELint &op, int no_of_bits);
 
 
 

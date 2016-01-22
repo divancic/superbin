@@ -12,7 +12,7 @@ class SuperBin {
    */
   enum class Sign : char { POS = '0', NEG = '1' };
 
- private:
+ protected:
   /**
    * Number is represented by std::string object. Each character represents
    * one binary digit. The upper bit represents signum - 0 positive or zero,
