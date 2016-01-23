@@ -218,32 +218,125 @@ mod(const ADELint &lhs, const ADELint &rhs) {
  * COMPARISONS
  ****************************************************************************/
 
+ADELint
+ADELint::equal(const ADELint &rhs) const {
+  return ADELint(SuperBin::eq(rhs));
+}
+
+ADELint
+ADELint::not_equal(const ADELint &rhs) const {
+  return ADELint(SuperBin::ne(rhs));
+}
+
+ADELint
+ADELint::less_then(const ADELint &rhs) const {
+  return ADELint(SuperBin::lt(rhs));
+}
+
+ADELint
+ADELint::less_or_equal(const ADELint &rhs) const {
+  return ADELint(SuperBin::le(rhs));
+}
+
+ADELint
+ADELint::greater_then(const ADELint &rhs) const {
+  return ADELint(SuperBin::gt(rhs));
+}
+
+ADELint
+ADELint::greater_or_equal(const ADELint &rhs) const {
+  return ADELint(SuperBin::ge(rhs));
+}
+
+ADELint
+equal(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.equal(rhs);
+}
+
+ADELint
+not_equal(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.not_equal(rhs);
+}
+
+ADELint
+less_then(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.less_then(rhs);
+}
+
+ADELint
+less_or_equal(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.less_or_equal(rhs);
+}
+
+ADELint
+greater_then(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.greater_then(rhs);
+}
+
+ADELint
+greater_or_equal(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.greater_or_equal(rhs);
+}
 
 
 
-
-
-
-/**************************************************************************** 
- * ZERO TEST
- ****************************************************************************/
 /**************************************************************************** 
  * LOGICAL
  ****************************************************************************/
+
+ADELint
+ADELint::lnot(void) const {
+  return ADELint(SuperBin::lnot());
+}
+
+ADELint
+ADELint::land(const ADELint &rhs) const {
+  return ADELint(SuperBin::land(rhs));
+}
+
+ADELint
+ADELint::lor(const ADELint &rhs) const {
+  return ADELint(SuperBin::lor(rhs));
+}
+
+ADELint
+ADELint::lxor(const ADELint &rhs) const {
+  return ADELint(SuperBin::lxor(rhs));
+}
+
+ADELint
+lnot(const ADELint &op) {
+  return op.lnot();
+}
+
+ADELint
+land(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.land(rhs);
+}
+
+ADELint
+lor(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.lor(rhs);
+}
+
+ADELint
+lxor(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.lxor(rhs);
+}
+
+
+
 /**************************************************************************** 
  * BITWISE
  ****************************************************************************/
+
 /**************************************************************************** 
  * SHIFTS
  ****************************************************************************/
+
 /**************************************************************************** 
  * BIT MANIPULATORS
  ****************************************************************************/
-
-
-
-
-
 
 
 }  // namespace dlib
