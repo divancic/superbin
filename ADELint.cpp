@@ -10,6 +10,13 @@ namespace dlib {
  ****************************************************************************/
 
 /**
+ * A private constructor that constructs from the base class.
+ */
+ADELint::ADELint(const SuperBin& base) {
+  m_number = base.to_string_unsigned_bin();
+}
+
+/**
  * Default constructor: constructs 0
  */
 ADELint::ADELint() : SuperBin() {}
@@ -107,17 +114,17 @@ to_string_signed_hex(const ADELint &op) {
 }
 
 std::string
-to_string_unsigned_bin(const ADELint &op, int no_of_bits) {
+to_string_unsigned_bin(const ADELint &op, int no_of_bits = 0) {
   return op.to_string_unsigned_bin(no_of_bits);
 }
 
 std::string
-to_string_unsigned_oct(const ADELint &op, int no_of_bits) {
+to_string_unsigned_oct(const ADELint &op, int no_of_bits = 0) {
   return op.to_string_unsigned_oct(no_of_bits);
 }
 
 std::string
-to_string_unsigned_hex(const ADELint &op, int no_of_bits) {
+to_string_unsigned_hex(const ADELint &op, int no_of_bits = 0) {
   return op.to_string_unsigned_hex(no_of_bits);
 }
 
@@ -143,14 +150,73 @@ to_int(const ADELint &op) {
  * ARITHMETIC
  ****************************************************************************/
 
+ADELint
+ADELint::neg(void) const {
+  return ADELint(SuperBin::neg());
+}
+
+ADELint
+ADELint::add(const ADELint &rhs) const {
+  return ADELint(SuperBin::add(rhs));
+}
+
+ADELint
+ADELint::sub(const ADELint &rhs) const {
+  return ADELint(SuperBin::sub(rhs));
+}
+
+ADELint
+ADELint::mul(const ADELint &rhs) const {
+  return ADELint(SuperBin::mul(rhs));
+}
+
+// TODO(doki): test if rhs == 0?
+ADELint
+ADELint::div(const ADELint &rhs) const {
+  return ADELint(SuperBin::div(rhs));
+}
+
+// TODO(doki): test if rhs == 0?
+ADELint
+ADELint::mod(const ADELint &rhs) const {
+  return ADELint(SuperBin::mod(rhs));
+}
+
+ADELint
+neg(const ADELint &op) {
+  return op.neg();
+}
+
+ADELint
+add(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.add(rhs);
+}
+
+ADELint
+sub(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.sub(rhs);
+}
+
+ADELint
+mul(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.mul(rhs);
+}
+
+ADELint
+div(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.div(rhs);
+}
+
+ADELint
+mod(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.mod(rhs);
+}
 
 
 
-
-
-
-
-
+/**************************************************************************** 
+ * COMPARISONS
+ ****************************************************************************/
 
 
 
@@ -173,10 +239,6 @@ to_int(const ADELint &op) {
 /**************************************************************************** 
  * BIT MANIPULATORS
  ****************************************************************************/
-/**************************************************************************** 
- * COMPARISONS
- ****************************************************************************/
-
 
 
 

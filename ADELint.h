@@ -7,6 +7,10 @@
 namespace dlib {
 
 class ADELint : public SuperBin {
+ private:
+  // PRIVATE CONSTRUCTOR
+  explicit ADELint(const SuperBin& base);
+
  public:
   // CONSTRUCTORS
   ADELint();
@@ -32,9 +36,12 @@ class ADELint : public SuperBin {
   friend std::string to_string_signed_dec(const ADELint &op);
   friend std::string to_string_signed_hex(const ADELint &op);
 
-  friend std::string to_string_unsigned_bin(const ADELint &op, int no_of_bits);
-  friend std::string to_string_unsigned_oct(const ADELint &op, int no_of_bits);
-  friend std::string to_string_unsigned_hex(const ADELint &op, int no_of_bits);
+  friend std::string
+    to_string_unsigned_bin(const ADELint &op, int no_of_bits);
+  friend std::string
+    to_string_unsigned_oct(const ADELint &op, int no_of_bits);
+  friend std::string
+    to_string_unsigned_hex(const ADELint &op, int no_of_bits);
 
 
 
