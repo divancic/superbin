@@ -330,6 +330,48 @@ lxor(const ADELint &lhs, const ADELint &rhs) {
  * BITWISE
  ****************************************************************************/
 
+ADELint
+ADELint::bnot(void) const {
+  return ADELint(SuperBin::bnot());
+}
+
+ADELint
+ADELint::band(const ADELint &rhs) const {
+  return ADELint(SuperBin::band(rhs));
+}
+
+ADELint
+ADELint::bor(const ADELint &rhs) const {
+  return ADELint(SuperBin::bor(rhs));
+}
+
+ADELint
+ADELint::bxor(const ADELint &rhs) const {
+  return ADELint(SuperBin::bxor(rhs));
+}
+
+ADELint
+bnot(const ADELint &op) {
+  return op.bnot();
+}
+
+ADELint
+band(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.band(rhs);
+}
+
+ADELint
+bor(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.bor(rhs);
+}
+
+ADELint
+bxor(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.bxor(rhs);
+}
+
+
+
 /**************************************************************************** 
  * SHIFTS
  ****************************************************************************/
