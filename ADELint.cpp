@@ -376,6 +376,38 @@ bxor(const ADELint &lhs, const ADELint &rhs) {
  * SHIFTS
  ****************************************************************************/
 
+ADELint
+ADELint::logical_shift_left(const ADELint& no_of_bits) const {
+  return ADELint(SuperBin::shl(no_of_bits.to_int()));
+}
+
+ADELint
+ADELint::logical_shift_right(const ADELint& no_of_bits) const {
+  return ADELint(SuperBin::shr(no_of_bits.to_int()));
+}
+
+ADELint
+ADELint::arithmetic_shift_right(const ADELint& no_of_bits) const {
+  return ADELint(SuperBin::sar(no_of_bits.to_int()));
+}
+
+ADELint
+logical_shift_left(const ADELint& op, const ADELint& no_of_bits) {
+  return op.logical_shift_left(no_of_bits);
+}
+
+ADELint
+logical_shift_right(const ADELint& op, const ADELint& no_of_bits) {
+  return op.logical_shift_right(no_of_bits);
+}
+
+ADELint
+arithmetic_shift_right(const ADELint& op, const ADELint& no_of_bits) {
+  return op.arithmetic_shift_right(no_of_bits);
+}
+
+
+
 /**************************************************************************** 
  * BIT MANIPULATORS
  ****************************************************************************/

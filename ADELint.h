@@ -113,13 +113,16 @@ class ADELint : public SuperBin {
 
 
   // SHIFTS
-  ADELint logical_shift_left(ADELint no_of_bits) const;
-  ADELint logical_shift_right(ADELint no_of_bits) const;
-  ADELint arithmetic_shift_right(ADELint no_of_bits) const;
+  ADELint logical_shift_left(const ADELint& no_of_bits) const;
+  ADELint logical_shift_right(const ADELint& no_of_bits) const;
+  ADELint arithmetic_shift_right(const ADELint& no_of_bits) const;
 
-  friend ADELint logical_shift_left(const ADELint &lhs, ADELint no_of_bits);
-  friend ADELint logical_shift_right(const ADELint &lhs, ADELint no_of_bits);
-  friend ADELint arithmetic_shift_right(const ADELint &lhs, ADELint no_of_bits);
+  friend ADELint
+    logical_shift_left(const ADELint& lhs, const ADELint& no_of_bits);
+  friend ADELint
+    logical_shift_right(const ADELint& lhs, const ADELint& no_of_bits);
+  friend ADELint
+    arithmetic_shift_right(const ADELint& lhs, const ADELint& no_of_bits);
 
 
 
