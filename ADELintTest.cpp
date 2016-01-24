@@ -377,6 +377,22 @@ TEST(LOGICAL, lxor) {
  * BITWISE
  ****************************************************************************/
 
+TEST(BITWISE, not_and_or_xor) {
+  for (auto i = 1; i < loops; ++i) {
+    ADELint a(to_string(i));
+    ADELint b = bnot(a);
+    EXPECT_STREQ(to_string_signed_dec(band(a, b)).c_str(), "0");
+    EXPECT_STREQ(to_string_signed_dec(band(a, a)).c_str(), to_string(i).c_str());
+    EXPECT_STREQ(to_string_signed_dec(bor(b, b)).c_str(), to_string(-(i+1)).c_str());
+    EXPECT_STREQ(to_string_signed_dec(bor(a, b)).c_str(), "-1");
+    EXPECT_STREQ(to_string_signed_dec(bor(a, a)).c_str(), to_string(i).c_str());
+    EXPECT_STREQ(to_string_signed_dec(bor(b, b)).c_str(), to_string(-(i+1)).c_str());
+    EXPECT_STREQ(to_string_signed_dec(bxor(a, b)).c_str(), "-1");
+    EXPECT_STREQ(to_string_signed_dec(bxor(a, a)).c_str(), "0");
+    EXPECT_STREQ(to_string_signed_dec(bxor(b, b)).c_str(), "0");
+  }
+}
+
 
 
 /**************************************************************************** 
