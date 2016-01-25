@@ -399,6 +399,59 @@ TEST(BITWISE, not_and_or_xor) {
  * SHIFTS
  ****************************************************************************/
 
+TEST(SHIFT, logical_shift_left) {
+  for (long long int i = 0; i < (sizeof(long long int) << 3) - 1 - 8; ++i) {
+    ADELint n(to_string(i));
+
+    // zero
+    ADELint a;
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_left(a, n)).c_str(), "0");
+
+    // positive one
+    a = ADELint("1", 10, +1);
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_left(a, n)).c_str()
+        , to_string(static_cast<long long int>(+1) << i).c_str());
+
+    // negative one
+    a = ADELint("1", 10, -1);
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_left(a, n)).c_str()
+        , to_string(static_cast<long long int>(-1) << i).c_str());
+
+    // multibit positive
+    a = ADELint("AA", 16, +1);
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_left(a, n)).c_str()
+        , to_string(static_cast<long long int>(+0xAA) << i).c_str());
+
+    // multibit negative
+    a = ADELint("AA", 16, -1);
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_left(a, n)).c_str()
+        , to_string(static_cast<long long int>(-0xAA) << i).c_str());
+  }
+}
+
+TEST(SHIFT, logical_shift_right) {
+  for (int i = 0; i < (sizeof(int) << 3) - 1 - 8; ++i) {
+    ADELint n(to_string(i));
+
+    // zero
+    ADELint a;
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_right(a, n)).c_str(), "0");
+
+    // positive one (second to highest bit -> not to make it negative)
+    a = logical_shift_left(ADELint("1", 10, +1), ADELint(to_string((sizeof(int) << 3) - 2)));
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_right(a, n)).c_str()
+        , to_string((static_cast<int>(+1) << ((sizeof(int) << 3) - 2)) >> i).c_str());
+
+    // negative one
+    a = ADELint("1", 2, -1);
+    for (int j = 0; j < ((sizeof(int) << 3) - 2); j++) {
+      a = bor(logical_shift_left(a, ADELint(to_string(1))), ADELint(to_string(1)));
+    }
+    EXPECT_STREQ(to_string_signed_dec(logical_shift_right(a, n)).c_str()
+        , to_string(static_cast<int>((static_cast<long>(1) << ((sizeof(int) << 3) - i)) - 1)).c_str());
+  }
+}
+
 
 
 /**************************************************************************** 
