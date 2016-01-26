@@ -442,13 +442,36 @@ TEST(SHIFT, logical_shift_right) {
     EXPECT_STREQ(to_string_signed_dec(logical_shift_right(a, n)).c_str()
         , to_string((static_cast<int>(+1) << ((sizeof(int) << 3) - 2)) >> i).c_str());
 
-    // negative one
+    // negative one -> should rewrite this not to make it compiler specific
     a = ADELint("1", 2, -1);
     for (int j = 0; j < ((sizeof(int) << 3) - 2); j++) {
       a = bor(logical_shift_left(a, ADELint(to_string(1))), ADELint(to_string(1)));
     }
     EXPECT_STREQ(to_string_signed_dec(logical_shift_right(a, n)).c_str()
         , to_string(static_cast<int>((static_cast<long>(1) << ((sizeof(int) << 3) - i)) - 1)).c_str());
+  }
+}
+
+TEST(SHIFT, arithmetic_shift_right) {
+  for (int i = 0; i < (sizeof(int) << 3) - 1 - 8; ++i) {
+    ADELint n(to_string(i));
+
+    // zero
+    ADELint a;
+    EXPECT_STREQ(to_string_signed_dec(arithmetic_shift_right(a, n)).c_str(), "0");
+
+    // positive one (second to highest bit -> not to make it negative)
+    a = logical_shift_left(ADELint("1", 10, +1), ADELint(to_string((sizeof(int) << 3) - 2)));
+    EXPECT_STREQ(to_string_signed_dec(arithmetic_shift_right(a, n)).c_str()
+        , to_string((static_cast<int>(+1) << ((sizeof(int) << 3) - 2)) >> i).c_str());
+
+    // negative one -> should rewrite this not to make it compiler specific
+    a = ADELint("1", 2, -1);
+    for (int j = 0; j < ((sizeof(int) << 3) - 2); j++) {
+      a = bor(logical_shift_left(a, ADELint(to_string(1))), ADELint(to_string(1)));
+    }
+    EXPECT_STREQ(to_string_signed_dec(arithmetic_shift_right(a, n)).c_str()
+        , to_string((-1 >> i) >> i).c_str());
   }
 }
 
