@@ -114,17 +114,17 @@ to_string_signed_hex(const ADELint &op) {
 }
 
 std::string
-to_string_unsigned_bin(const ADELint &op, int no_of_bits = 0) {
+to_string_unsigned_bin(const ADELint &op, int no_of_bits) {
   return op.to_string_unsigned_bin(no_of_bits);
 }
 
 std::string
-to_string_unsigned_oct(const ADELint &op, int no_of_bits = 0) {
+to_string_unsigned_oct(const ADELint &op, int no_of_bits) {
   return op.to_string_unsigned_oct(no_of_bits);
 }
 
 std::string
-to_string_unsigned_hex(const ADELint &op, int no_of_bits = 0) {
+to_string_unsigned_hex(const ADELint &op, int no_of_bits) {
   return op.to_string_unsigned_hex(no_of_bits);
 }
 
@@ -412,5 +412,105 @@ arithmetic_shift_right(const ADELint& op, const ADELint& no_of_bits) {
  * BIT MANIPULATORS
  ****************************************************************************/
 
+ADELint
+ADELint::set_bit(const ADELint& pos) const {
+  return set_bits(pos, pos);
+}
+
+ADELint
+ADELint::clear_bit(const ADELint& pos) const {
+  return clear_bits(pos, pos);
+}
+
+ADELint
+ADELint::not_bit(const ADELint& pos) const {
+  return not_bits(pos, pos);
+}
+
+ADELint
+ADELint::get_bit(const ADELint& pos) const {
+  return get_bits(pos, pos);
+}
+
+ADELint
+ADELint::get_bit_unsigned(const ADELint& pos) const {
+  return get_bits_unsigned(pos, pos);
+}
+
+ADELint
+ADELint::set_bits(const ADELint& pos_l, const ADELint& pos_m) const {
+  return ADELint(SuperBin::setbs(dlib::to_int(pos_l), dlib::to_int(pos_m)));
+}
+
+ADELint
+ADELint::clear_bits(const ADELint& pos_l, const ADELint& pos_m) const {
+  return ADELint(SuperBin::clearbs(dlib::to_int(pos_l), dlib::to_int(pos_m)));
+}
+
+ADELint
+ADELint::not_bits(const ADELint& pos_l, const ADELint& pos_m) const {
+  return ADELint(SuperBin::notbs(dlib::to_int(pos_l), dlib::to_int(pos_m)));
+}
+
+ADELint
+ADELint::get_bits(const ADELint& pos_l, const ADELint& pos_m) const {
+  return ADELint(SuperBin::getbs(dlib::to_int(pos_l), dlib::to_int(pos_m)));
+}
+
+ADELint
+ADELint::get_bits_unsigned(const ADELint& pos_l, const ADELint& pos_m) const {
+  return ADELint(SuperBin::getubs(dlib::to_int(pos_l), dlib::to_int(pos_m)));
+}
+
+ADELint
+set_bit(const ADELint& op, const ADELint& pos) {
+  return op.set_bit(pos);
+}
+
+ADELint
+clear_bit(const ADELint& op, const ADELint& pos) {
+  return op.clear_bit(pos);
+}
+
+ADELint
+not_bit(const ADELint& op, const ADELint& pos) {
+  return op.not_bit(pos);
+}
+
+ADELint
+get_bit(const ADELint& op, const ADELint& pos) {
+  return op.get_bit(pos);
+}
+
+ADELint
+get_bit_unsigned(const ADELint& op, const ADELint& pos) {
+  return op.get_bit_unsigned(pos);
+}
+
+ADELint
+set_bits(const ADELint& op, const ADELint& pos_l, const ADELint& pos_m) {
+  return op.set_bits(pos_l, pos_m);
+}
+
+ADELint
+clear_bits(const ADELint& op, const ADELint& pos_l, const ADELint& pos_m) {
+  return op.clear_bits(pos_l, pos_m);
+}
+
+ADELint
+not_bits(const ADELint& op, const ADELint& pos_l, const ADELint& pos_m) {
+  return op.not_bits(pos_l, pos_m);
+}
+
+ADELint
+get_bits(const ADELint& op, const ADELint& pos_l, const ADELint& pos_m) {
+  return op.get_bits(pos_l, pos_m);
+}
+
+ADELint
+get_bits_unsigned(const ADELint& op,
+    const ADELint& pos_l, const ADELint& pos_m) {
+  return op.get_bits_unsigned(pos_l, pos_m);
+}
 
 }  // namespace dlib

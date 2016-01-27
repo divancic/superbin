@@ -12,61 +12,61 @@ using namespace std;
  * CONSTRUCTORS
  ****************************************************************************/
 TEST(CONSTRUCTOR, zero) {
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint(), 0).c_str(), "00");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint()).c_str(), "00");
 }
 
 TEST(CONSTRUCTOR, bases) {
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11"    ), 0).c_str(), "01011");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2), 0).c_str(), "011");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8), 0).c_str(), "01001");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10), 0).c_str(), "01011");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16), 0).c_str(), "010001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11"    )).c_str(), "01011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2)).c_str(), "011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8)).c_str(), "01001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10)).c_str(), "01011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16)).c_str(), "010001");
 }
 
 TEST(CONSTRUCTOR, positive) {
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2), 0).c_str(), "011");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8), 0).c_str(), "01001");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10), 0).c_str(), "01011");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16), 0).c_str(), "010001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2)).c_str(), "011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8)).c_str(), "01001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10)).c_str(), "01011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16)).c_str(), "010001");
 }
 
 TEST(CONSTRUCTOR, negative) {
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2, -1), 0).c_str(), "101");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8, -1), 0).c_str(), "10111");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10, -1), 0).c_str(), "10101");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16, -1), 0).c_str(), "101111");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  2, -1)).c_str(), "101");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11",  8, -1)).c_str(), "10111");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 10, -1)).c_str(), "10101");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("11", 16, -1)).c_str(), "101111");
 
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("01", 10, -1), 0).c_str(), "11");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("02", 10, -1), 0).c_str(), "10");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("03", 10, -1), 0).c_str(), "101");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("01", 10, -1)).c_str(), "11");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("02", 10, -1)).c_str(), "10");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("03", 10, -1)).c_str(), "101");
 
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("03", 10, -1), 0).c_str(), "101");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("04", 10, -1), 0).c_str(), "100");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("05", 10, -1), 0).c_str(), "1011");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("03", 10, -1)).c_str(), "101");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("04", 10, -1)).c_str(), "100");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("05", 10, -1)).c_str(), "1011");
 
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("07", 10, -1), 0).c_str(), "1001");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("08", 10, -1), 0).c_str(), "1000");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("09", 10, -1), 0).c_str(), "10111");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("07", 10, -1)).c_str(), "1001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("08", 10, -1)).c_str(), "1000");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("09", 10, -1)).c_str(), "10111");
 
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("15", 10, -1), 0).c_str(), "10001");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("16", 10, -1), 0).c_str(), "10000");
-  EXPECT_STREQ(to_string_unsigned_bin(ADELint("17", 10, -1), 0).c_str(), "101111");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("15", 10, -1)).c_str(), "10001");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("16", 10, -1)).c_str(), "10000");
+  EXPECT_STREQ(to_string_unsigned_bin(ADELint("17", 10, -1)).c_str(), "101111");
 }
 
 TEST(CONSTRUCTOR, copy) {
   ADELint orig("11", 2, -1);
   ADELint copy(orig);
-  EXPECT_STREQ(to_string_unsigned_bin(orig, 0).c_str(), to_string_unsigned_bin(copy, 0).c_str());
+  EXPECT_STREQ(to_string_unsigned_bin(orig).c_str(), to_string_unsigned_bin(copy).c_str());
   copy = neg(orig);
-  EXPECT_STRNE(to_string_unsigned_bin(orig, 0).c_str(), to_string_unsigned_bin(copy, 0).c_str());
+  EXPECT_STRNE(to_string_unsigned_bin(orig).c_str(), to_string_unsigned_bin(copy).c_str());
 }
 
 TEST(CONSTRUCTOR, assignment) {
   ADELint orig("11", 2, -1);
   ADELint copy = orig;
-  EXPECT_STREQ(to_string_unsigned_bin(orig, 0).c_str(), to_string_unsigned_bin(copy, 0).c_str());
+  EXPECT_STREQ(to_string_unsigned_bin(orig).c_str(), to_string_unsigned_bin(copy).c_str());
   copy = neg(orig);
-  EXPECT_STRNE(to_string_unsigned_bin(orig, 0).c_str(), to_string_unsigned_bin(copy, 0).c_str());
+  EXPECT_STRNE(to_string_unsigned_bin(orig).c_str(), to_string_unsigned_bin(copy).c_str());
 }
 
 
@@ -82,13 +82,13 @@ TEST(CONVERTER, to_string) {
   EXPECT_STREQ(to_string_signed_dec(pos).c_str(), "170");
   EXPECT_STREQ(to_string_signed_hex(pos).c_str(), "AA");
 
-  EXPECT_STREQ(to_string_unsigned_bin(pos, 0).c_str(), "010101010");
+  EXPECT_STREQ(to_string_unsigned_bin(pos).c_str(), "010101010");
   EXPECT_STREQ(to_string_unsigned_bin(pos, 4).c_str(), "1010");
   EXPECT_STREQ(to_string_unsigned_bin(pos, 7).c_str(), "0101010");
   EXPECT_STREQ(to_string_unsigned_bin(pos, 9).c_str(), "010101010");
   EXPECT_STREQ(to_string_unsigned_bin(pos, 15).c_str(), "000000010101010");
 
-  EXPECT_STREQ(to_string_unsigned_oct(pos, 0).c_str(), "252");
+  EXPECT_STREQ(to_string_unsigned_oct(pos).c_str(), "252");
   EXPECT_STREQ(to_string_unsigned_oct(pos, 1).c_str(), "0");
   EXPECT_STREQ(to_string_unsigned_oct(pos, 2).c_str(), "2");
   EXPECT_STREQ(to_string_unsigned_oct(pos, 3).c_str(), "2");
@@ -103,8 +103,7 @@ TEST(CONVERTER, to_string) {
   EXPECT_STREQ(to_string_unsigned_oct(pos, 12).c_str(), "0252");
   EXPECT_STREQ(to_string_unsigned_oct(pos, 13).c_str(), "00252");
 
-  // TODO(doki): friend functions and defaults
-  EXPECT_STREQ(to_string_unsigned_hex(pos, 0).c_str(), "AA");
+  EXPECT_STREQ(to_string_unsigned_hex(pos).c_str(), "AA");
   EXPECT_STREQ(to_string_unsigned_hex(pos, 1).c_str(), "0");
   EXPECT_STREQ(to_string_unsigned_hex(pos, 2).c_str(), "2");
   EXPECT_STREQ(to_string_unsigned_hex(pos, 3).c_str(), "2");
@@ -125,13 +124,13 @@ TEST(CONVERTER, to_string) {
   EXPECT_STREQ(to_string_signed_dec(neg).c_str(), "-170");
   EXPECT_STREQ(to_string_signed_hex(neg).c_str(), "-AA");
 
-  EXPECT_STREQ(to_string_unsigned_bin(neg, 0).c_str(), "101010110");
+  EXPECT_STREQ(to_string_unsigned_bin(neg).c_str(), "101010110");
   EXPECT_STREQ(to_string_unsigned_bin(neg, 4).c_str(), "0110");
   EXPECT_STREQ(to_string_unsigned_bin(neg, 7).c_str(), "1010110");
   EXPECT_STREQ(to_string_unsigned_bin(neg, 9).c_str(), "101010110");
   EXPECT_STREQ(to_string_unsigned_bin(neg, 15).c_str(), "111111101010110");
 
-  EXPECT_STREQ(to_string_unsigned_oct(neg, 0).c_str(), "526");
+  EXPECT_STREQ(to_string_unsigned_oct(neg).c_str(), "526");
   EXPECT_STREQ(to_string_unsigned_oct(neg, 1).c_str(), "0");
   EXPECT_STREQ(to_string_unsigned_oct(neg, 2).c_str(), "2");
   EXPECT_STREQ(to_string_unsigned_oct(neg, 3).c_str(), "6");
@@ -146,7 +145,7 @@ TEST(CONVERTER, to_string) {
   EXPECT_STREQ(to_string_unsigned_oct(neg, 12).c_str(), "7526");
   EXPECT_STREQ(to_string_unsigned_oct(neg, 13).c_str(), "17526");
 
-  EXPECT_STREQ(to_string_unsigned_hex(neg, 0).c_str(), "156");
+  EXPECT_STREQ(to_string_unsigned_hex(neg).c_str(), "156");
   EXPECT_STREQ(to_string_unsigned_hex(neg, 1).c_str(), "0");
   EXPECT_STREQ(to_string_unsigned_hex(neg, 2).c_str(), "2");
   EXPECT_STREQ(to_string_unsigned_hex(neg, 3).c_str(), "6");
@@ -278,15 +277,15 @@ TEST(COMPARISONS, equal) {
       ADELint a = ADELint(to_string(i));
       ADELint b = ADELint(to_string(j));
 
-      EXPECT_STREQ(to_string_unsigned_bin(equal(a, b), 0).c_str(), (i == j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(equal(neg(a), b), 0).c_str(), (-i == j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(equal(a, neg(b)), 0).c_str(), (i == -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(equal(neg(a), neg(b)), 0).c_str(), (-i == -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(equal(a, b)).c_str(), (i == j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(equal(neg(a), b)).c_str(), (-i == j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(equal(a, neg(b))).c_str(), (i == -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(equal(neg(a), neg(b))).c_str(), (-i == -j ? "01" : "00"));
 
-      EXPECT_STREQ(to_string_unsigned_bin(not_equal(a, b), 0).c_str(), (i != j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(not_equal(neg(a), b), 0).c_str(), (-i != j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(not_equal(a, neg(b)), 0).c_str(), (i != -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(not_equal(neg(a), neg(b)), 0).c_str(), (-i != -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(not_equal(a, b)).c_str(), (i != j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(not_equal(neg(a), b)).c_str(), (-i != j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(not_equal(a, neg(b))).c_str(), (i != -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(not_equal(neg(a), neg(b))).c_str(), (-i != -j ? "01" : "00"));
     }
   }
 }
@@ -297,15 +296,15 @@ TEST(COMPARISONS, less) {
       ADELint a = ADELint(to_string(i));
       ADELint b = ADELint(to_string(j));
 
-      EXPECT_STREQ(to_string_unsigned_bin(less_then(a, b), 0).c_str(), (i < j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_then(neg(a), b), 0).c_str(), (-i < j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_then(a, neg(b)), 0).c_str(), (i < -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_then(neg(a), neg(b)), 0).c_str(), (-i < -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_then(a, b)).c_str(), (i < j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_then(neg(a), b)).c_str(), (-i < j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_then(a, neg(b))).c_str(), (i < -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_then(neg(a), neg(b))).c_str(), (-i < -j ? "01" : "00"));
 
-      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(a, b), 0).c_str(), (i <= j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(neg(a), b), 0).c_str(), (-i <= j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(a, neg(b)), 0).c_str(), (i <= -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(neg(a), neg(b)), 0).c_str(), (-i <= -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(a, b)).c_str(), (i <= j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(neg(a), b)).c_str(), (-i <= j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(a, neg(b))).c_str(), (i <= -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(less_or_equal(neg(a), neg(b))).c_str(), (-i <= -j ? "01" : "00"));
     }
   }
 }
@@ -316,15 +315,15 @@ TEST(COMPARISONS, greater) {
       ADELint a = ADELint(to_string(i));
       ADELint b = ADELint(to_string(j));
 
-      EXPECT_STREQ(to_string_unsigned_bin(greater_then(a, b), 0).c_str(), (i > j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_then(neg(a), b), 0).c_str(), (-i > j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_then(a, neg(b)), 0).c_str(), (i > -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_then(neg(a), neg(b)), 0).c_str(), (-i > -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_then(a, b)).c_str(), (i > j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_then(neg(a), b)).c_str(), (-i > j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_then(a, neg(b))).c_str(), (i > -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_then(neg(a), neg(b))).c_str(), (-i > -j ? "01" : "00"));
 
-      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(a, b), 0).c_str(), (i >= j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(neg(a), b), 0).c_str(), (-i >= j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(a, neg(b)), 0).c_str(), (i >= -j ? "01" : "00"));
-      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(neg(a), neg(b)), 0).c_str(), (-i >= -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(a, b)).c_str(), (i >= j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(neg(a), b)).c_str(), (-i >= j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(a, neg(b))).c_str(), (i >= -j ? "01" : "00"));
+      EXPECT_STREQ(to_string_unsigned_bin(greater_or_equal(neg(a), neg(b))).c_str(), (-i >= -j ? "01" : "00"));
     }
   }
 }

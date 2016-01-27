@@ -6,6 +6,16 @@
 
 namespace dlib {
 
+
+// FORWARD DECLARATIONS: needed because of default parameters
+// in friend functions (friends cannot have defaults inside a
+// class)
+class ADELint;
+std::string to_string_unsigned_bin(const ADELint &op, int no_of_bits = 0);
+std::string to_string_unsigned_oct(const ADELint &op, int no_of_bits = 0);
+std::string to_string_unsigned_hex(const ADELint &op, int no_of_bits = 0);
+
+
 class ADELint : public SuperBin {
  private:
   // PRIVATE CONSTRUCTOR
@@ -31,24 +41,29 @@ class ADELint : public SuperBin {
   std::string to_string_unsigned_oct(int no_of_bits = 0) const;
   std::string to_string_unsigned_hex(int no_of_bits = 0) const;
 
-  friend std::string to_string_signed_bin(const ADELint &op);
-  friend std::string to_string_signed_oct(const ADELint &op);
-  friend std::string to_string_signed_dec(const ADELint &op);
-  friend std::string to_string_signed_hex(const ADELint &op);
+  friend std::string to_string_signed_bin(
+      const ADELint &op);
+  friend std::string to_string_signed_oct(
+      const ADELint &op);
+  friend std::string to_string_signed_dec(
+      const ADELint &op);
+  friend std::string to_string_signed_hex(
+      const ADELint &op);
 
-  friend std::string
-    to_string_unsigned_bin(const ADELint &op, int no_of_bits);
-  friend std::string
-    to_string_unsigned_oct(const ADELint &op, int no_of_bits);
-  friend std::string
-    to_string_unsigned_hex(const ADELint &op, int no_of_bits);
+  friend std::string to_string_unsigned_bin(
+      const ADELint &op, int no_of_bits);
+  friend std::string to_string_unsigned_oct(
+      const ADELint &op, int no_of_bits);
+  friend std::string to_string_unsigned_hex(
+      const ADELint &op, int no_of_bits);
 
 
 
   // CONVERTER TO INT
   int to_int(void) const;
 
-  friend int to_int(const ADELint &lhs);
+  friend int to_int(
+      const ADELint &op);
 
 
 
@@ -60,12 +75,18 @@ class ADELint : public SuperBin {
   ADELint div(const ADELint &rhs) const;
   ADELint mod(const ADELint &rhs) const;
 
-  friend ADELint neg(const ADELint &lhs);
-  friend ADELint add(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint sub(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint mul(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint div(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint mod(const ADELint &lhs, const ADELint &rhs);
+  friend ADELint neg(
+      const ADELint &op);
+  friend ADELint add(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint sub(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint mul(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint div(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint mod(
+      const ADELint &lhs, const ADELint &rhs);
 
 
 
@@ -77,12 +98,18 @@ class ADELint : public SuperBin {
   ADELint greater_then(const ADELint &rhs) const;
   ADELint greater_or_equal(const ADELint &rhs) const;
 
-  friend ADELint equal(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint not_equal(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint less_then(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint less_or_equal(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint greater_then(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint greater_or_equal(const ADELint &lhs, const ADELint &rhs);
+  friend ADELint equal(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint not_equal(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint less_then(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint less_or_equal(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint greater_then(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint greater_or_equal(
+      const ADELint &lhs, const ADELint &rhs);
 
 
 
@@ -92,10 +119,14 @@ class ADELint : public SuperBin {
   ADELint lor(const ADELint &rhs) const;
   ADELint lxor(const ADELint &rhs) const;
 
-  friend ADELint lnot(const ADELint &lhs);
-  friend ADELint land(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint lor(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint lxor(const ADELint &lhs, const ADELint &rhs);
+  friend ADELint lnot(
+      const ADELint &op);
+  friend ADELint land(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint lor(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint lxor(
+      const ADELint &lhs, const ADELint &rhs);
 
 
 
@@ -105,10 +136,14 @@ class ADELint : public SuperBin {
   ADELint bor(const ADELint &rhs) const;
   ADELint bxor(const ADELint &rhs) const;
 
-  friend ADELint bnot(const ADELint &lhs);
-  friend ADELint band(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint bor(const ADELint &lhs, const ADELint &rhs);
-  friend ADELint bxor(const ADELint &lhs, const ADELint &rhs);
+  friend ADELint bnot(
+      const ADELint &op);
+  friend ADELint band(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint bor(
+      const ADELint &lhs, const ADELint &rhs);
+  friend ADELint bxor(
+      const ADELint &lhs, const ADELint &rhs);
 
 
 
@@ -118,39 +153,48 @@ class ADELint : public SuperBin {
   ADELint arithmetic_shift_right(const ADELint& no_of_bits) const;
 
   friend ADELint
-    logical_shift_left(const ADELint& lhs, const ADELint& no_of_bits);
+    logical_shift_left(const ADELint& op, const ADELint& no_of_bits);
   friend ADELint
-    logical_shift_right(const ADELint& lhs, const ADELint& no_of_bits);
+    logical_shift_right(const ADELint& op, const ADELint& no_of_bits);
   friend ADELint
-    arithmetic_shift_right(const ADELint& lhs, const ADELint& no_of_bits);
+    arithmetic_shift_right(const ADELint& op, const ADELint& no_of_bits);
 
 
 
-  // BIT
-  ADELint set_bit(ADELint index) const;
-  ADELint clear_bit(ADELint index) const;
-  ADELint not_bit(ADELint index) const;
-  ADELint get_bit(ADELint index) const;
-  ADELint get_bit_unsigned(ADELint index) const;
+  // BIT MANIPULATORS
+  ADELint set_bit(const ADELint& pos) const;
+  ADELint clear_bit(const ADELint& pos) const;
+  ADELint not_bit(const ADELint& pos) const;
+  ADELint get_bit(const ADELint& pos) const;
+  ADELint get_bit_unsigned(const ADELint& pos) const;
 
-  ADELint set_bits(ADELint index_l, ADELint index_m) const;
-  ADELint clear_bits(ADELint index_l, ADELint index_m) const;
-  ADELint not_bits(ADELint index_l, ADELint index_m) const;
-  ADELint get_bits(ADELint index_l, ADELint index_m) const;
-  ADELint get_bits_unsigned(ADELint index_l, ADELint index_m) const;
+  ADELint set_bits(const ADELint& pos_l, const ADELint& pos_m) const;
+  ADELint clear_bits(const ADELint& pos_l, const ADELint& pos_m) const;
+  ADELint not_bits(const ADELint& pos_l, const ADELint& pos_m) const;
+  ADELint get_bits(const ADELint& pos_l, const ADELint& pos_m) const;
+  ADELint get_bits_unsigned(const ADELint& pos_l, const ADELint& pos_m) const;
 
-  friend ADELint set_bit(const ADELint &lhs, ADELint index);
-  friend ADELint clear_bit(const ADELint &lhs, ADELint index);
-  friend ADELint not_bit(const ADELint &lhs, ADELint index);
-  friend ADELint get_bit(const ADELint &lhs, ADELint index);
-  friend ADELint get_bit_unsigned(const ADELint &lhs, ADELint index);
+  friend ADELint set_bit(
+      const ADELint& op, const ADELint& pos);
+  friend ADELint clear_bit(
+      const ADELint& op, const ADELint& pos);
+  friend ADELint not_bit(
+      const ADELint& op, const ADELint& pos);
+  friend ADELint get_bit(
+      const ADELint& op, const ADELint& pos);
+  friend ADELint get_bit_unsigned(
+      const ADELint& op, const ADELint& pos);
 
-  friend ADELint set_bits(const ADELint &lhs, ADELint pos_l, ADELint pos_m);
-  friend ADELint clear_bits(const ADELint &lhs, ADELint pos_l, ADELint pos_m);
-  friend ADELint not_bits(const ADELint &lhs, ADELint pos_l, ADELint pos_m);
-  friend ADELint get_bits(const ADELint &lhs, ADELint pos_l, ADELint pos_m);
-  friend ADELint
-    get_bits_unsigned(const ADELint &lhs, ADELint pos_l, ADELint pos_m);
+  friend ADELint set_bits(const ADELint& op,
+      const ADELint& pos_l, const ADELint& pos_m);
+  friend ADELint clear_bits(const ADELint& op,
+      const ADELint& pos_l, const ADELint& pos_m);
+  friend ADELint not_bits(const ADELint& op,
+      const ADELint& pos_l, const ADELint& pos_m);
+  friend ADELint get_bits(const ADELint& op,
+      const ADELint& pos_l, const ADELint& pos_m);
+  friend ADELint get_bits_unsigned(const ADELint& op,
+      const ADELint& pos_l, const ADELint& pos_m);
 };
 
 };  // namespace dlib
