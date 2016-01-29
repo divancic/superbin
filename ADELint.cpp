@@ -170,16 +170,14 @@ ADELint::mul(const ADELint &rhs) const {
   return ADELint(SuperBin::mul(rhs));
 }
 
-// TODO(doki): test if rhs == 0?
 ADELint
 ADELint::div(const ADELint &rhs) const {
-  return ADELint(SuperBin::div(rhs));
+  return ADELint(::dlib::to_int(rhs) ? SuperBin::div(rhs) : "");
 }
 
-// TODO(doki): test if rhs == 0?
 ADELint
 ADELint::mod(const ADELint &rhs) const {
-  return ADELint(SuperBin::mod(rhs));
+  return ADELint(::dlib::to_int(rhs) ? SuperBin::mod(rhs) : "");
 }
 
 ADELint
