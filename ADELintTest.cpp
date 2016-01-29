@@ -550,11 +550,93 @@ TEST(BIT_MANIPULATORS, clear) {
   EXPECT_STREQ(clear_bit(n, ADELint("8")).to_string_unsigned_bin().c_str(), "1011101111");
 }
 
-/*
- not_bit
- get_bit
- get_bit_unsigned
- */
+TEST(BIT_MANIPULATORS, invert) {
+  ADELint p("17", 10, +1);
+  ADELint n("17", 10, -1);
+
+  EXPECT_STREQ(not_bits(p, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(not_bits(n, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(not_bits(p, ADELint("0"),ADELint("1")).to_string_unsigned_bin().c_str(), "010010");
+  EXPECT_STREQ(not_bits(n, ADELint("3"),ADELint("4")).to_string_unsigned_bin().c_str(), "110111");
+
+  EXPECT_STREQ(not_bits(p, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "001110");
+  EXPECT_STREQ(not_bits(n, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "110000");
+
+  EXPECT_STREQ(not_bits(p, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "011111010001");
+  EXPECT_STREQ(not_bits(n, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "100000101111");
+
+  EXPECT_STREQ(not_bit(p, ADELint("0")).to_string_unsigned_bin().c_str(), "010000");
+  EXPECT_STREQ(not_bit(n, ADELint("0")).to_string_unsigned_bin().c_str(), "101110");
+
+  EXPECT_STREQ(not_bit(p, ADELint("1")).to_string_unsigned_bin().c_str(), "010011");
+  EXPECT_STREQ(not_bit(n, ADELint("4")).to_string_unsigned_bin().c_str(), "111111");
+
+  EXPECT_STREQ(not_bit(p, ADELint("6")).to_string_unsigned_bin().c_str(), "01010001");
+  EXPECT_STREQ(not_bit(n, ADELint("6")).to_string_unsigned_bin().c_str(), "10101111");
+
+  EXPECT_STREQ(not_bit(p, ADELint("8")).to_string_unsigned_bin().c_str(), "0100010001");
+  EXPECT_STREQ(not_bit(n, ADELint("8")).to_string_unsigned_bin().c_str(), "1011101111");
+}
+
+TEST(BIT_MANIPULATORS, get) {
+  ADELint p("17", 10, +1);
+  ADELint n("17", 10, -1);
+
+  EXPECT_STREQ(get_bits(p, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(get_bits(n, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(get_bits(p, ADELint("0"),ADELint("1")).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(get_bits(n, ADELint("0"),ADELint("1")).to_string_unsigned_bin().c_str(), "11");
+
+  EXPECT_STREQ(get_bits(p, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "10001");
+  EXPECT_STREQ(get_bits(n, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "01111");
+
+  EXPECT_STREQ(get_bits(p, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(get_bits(n, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "11111");
+
+  EXPECT_STREQ(get_bit(p, ADELint("0")).to_string_unsigned_bin().c_str(), "1");
+  EXPECT_STREQ(get_bit(n, ADELint("0")).to_string_unsigned_bin().c_str(), "1");
+
+  EXPECT_STREQ(get_bit(p, ADELint("1")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit(n, ADELint("4")).to_string_unsigned_bin().c_str(), "0");
+
+  EXPECT_STREQ(get_bit(p, ADELint("6")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit(n, ADELint("6")).to_string_unsigned_bin().c_str(), "1");
+
+  EXPECT_STREQ(get_bit(p, ADELint("8")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit(n, ADELint("8")).to_string_unsigned_bin().c_str(), "1");
+}
+
+TEST(BIT_MANIPULATORS, get_unsigned) {
+  ADELint p("17", 10, +1);
+  ADELint n("17", 10, -1);
+
+  EXPECT_STREQ(get_bits_unsigned(p, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(get_bits_unsigned(n, ADELint("2"), ADELint("1")).to_string_unsigned_bin().c_str(), "101111");
+
+  EXPECT_STREQ(get_bits_unsigned(p, ADELint("0"),ADELint("1")).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(get_bits_unsigned(n, ADELint("0"),ADELint("1")).to_string_unsigned_bin().c_str(), "011");
+
+  EXPECT_STREQ(get_bits_unsigned(p, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "010001");
+  EXPECT_STREQ(get_bits_unsigned(n, ADELint("0"),ADELint("4")).to_string_unsigned_bin().c_str(), "01111");
+
+  EXPECT_STREQ(get_bits_unsigned(p, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "00000");
+  EXPECT_STREQ(get_bits_unsigned(n, ADELint("6"),ADELint("10")).to_string_unsigned_bin().c_str(), "011111");
+
+  EXPECT_STREQ(get_bit_unsigned(p, ADELint("0")).to_string_unsigned_bin().c_str(), "01");
+  EXPECT_STREQ(get_bit_unsigned(n, ADELint("0")).to_string_unsigned_bin().c_str(), "01");
+
+  EXPECT_STREQ(get_bit_unsigned(p, ADELint("1")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit_unsigned(n, ADELint("4")).to_string_unsigned_bin().c_str(), "0");
+
+  EXPECT_STREQ(get_bit_unsigned(p, ADELint("6")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit_unsigned(n, ADELint("6")).to_string_unsigned_bin().c_str(), "01");
+
+  EXPECT_STREQ(get_bit_unsigned(p, ADELint("8")).to_string_unsigned_bin().c_str(), "0");
+  EXPECT_STREQ(get_bit_unsigned(n, ADELint("8")).to_string_unsigned_bin().c_str(), "01");
+}
+
 
 
 /**************************************************************************** 
