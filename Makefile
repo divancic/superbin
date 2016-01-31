@@ -46,7 +46,7 @@ libSuperBin.a: SuperBin.o
 	$(AR) $(ARFLAGS) $@ SuperBin.o
 	rm SuperBin.o
 
-SuperBinTest: SuperBinTest.h SuperBinTest.cpp SuperBin.o libgtest.a
+SuperBinTest: SuperBinTest.cpp SuperBin.o libgtest.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) SuperBinTest.cpp -o $@ SuperBin.o libgtest.a -lpthread
 
 SuperBin.o: SuperBin.h SuperBin.cpp

@@ -45,8 +45,35 @@ See [SuperBin - Getting it](https://github.com/divancic/superbin#getting-it) abo
 As with the **SuperBin** there are no special requirements. Just include **ADELint.cpp** in your project and **ADELint.h** as a header file from where you are going to be using it. **NOTE: You do not have to include SuperBin.h!!!**
 
 ### Examples
+ 
+Basic example:
 
-TBD.
+```cpp
+#include <iostream>
+
+#include "ADELint.h"
+
+using namespace dlib;
+using namespace std;
+
+int
+main(int argc, char *argv[]) {
+  ADELint a, b, c;
+
+  a = ADELint("17");
+  b = ADELint("13");
+  c = add(a, b);
+
+  cout << "Result is: " << to_string_signed_dec(c) << endl;
+
+  return 0;
+}
+```
+
+If you save the above code in a file named example.cpp, you would compile it like this:
+g++ SuperBin.cpp ADELint.cpp example.cpp -std=c++11 -o example
+
+
 
 ### Tests
 
