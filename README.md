@@ -71,7 +71,9 @@ main(int argc, char *argv[]) {
 ```
 
 If you save the above code in a file named example.cpp, you would compile it like this:
-g++ SuperBin.cpp ADELint.cpp example.cpp -std=c++11 -o example
+```bash
+$ g++ SuperBin.cpp ADELint.cpp example.cpp -std=c++11 -o example
+```
 
 
 
