@@ -86,7 +86,6 @@ See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
 ### Bonuses
 
 * +10001011010100101110100101101001101100 is astronomical unit, a distance from Earth to the sun (in meters)
-
 * +10001110111100111100001001010 is the speed of light (in meters per second)
 
     Therefore, the it takes sunlight +111110011 seconds (8 minutes and 20 seconds) to travel from the Sun to the Earth.
@@ -95,5 +94,4 @@ See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
 * +10011000110111111110011000 is the exact length of the Equator (in meters).
 
 * +10101011110010 is the depth of the deepest known point in Earth's oceans (Mariana Trench) (in meters)
-
 * +10001010010000 is the elevation of Mount Everest (in meters).
