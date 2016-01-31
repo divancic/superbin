@@ -93,27 +93,27 @@ class ADELint : public SuperBin {
   // COMPARISON (TRUE = -1 | FALSE = 0)
   ADELint equal(const ADELint &rhs) const;
   ADELint not_equal(const ADELint &rhs) const;
-  ADELint less_then(const ADELint &rhs) const;
+  ADELint less_than(const ADELint &rhs) const;
   ADELint less_or_equal(const ADELint &rhs) const;
-  ADELint greater_then(const ADELint &rhs) const;
+  ADELint greater_than(const ADELint &rhs) const;
   ADELint greater_or_equal(const ADELint &rhs) const;
 
   friend ADELint equal(
       const ADELint &lhs, const ADELint &rhs);
   friend ADELint not_equal(
       const ADELint &lhs, const ADELint &rhs);
-  friend ADELint less_then(
+  friend ADELint less_than(
       const ADELint &lhs, const ADELint &rhs);
   friend ADELint less_or_equal(
       const ADELint &lhs, const ADELint &rhs);
-  friend ADELint greater_then(
+  friend ADELint greater_than(
       const ADELint &lhs, const ADELint &rhs);
   friend ADELint greater_or_equal(
       const ADELint &lhs, const ADELint &rhs);
 
 
 
-  // LOGICAL (TRUE = -1 | FALSE = 0)
+  // LOGICAL
   ADELint lnot(void) const;
   ADELint land(const ADELint &rhs) const;
   ADELint lor(const ADELint &rhs) const;

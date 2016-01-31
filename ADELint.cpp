@@ -227,7 +227,7 @@ ADELint::not_equal(const ADELint &rhs) const {
 }
 
 ADELint
-ADELint::less_then(const ADELint &rhs) const {
+ADELint::less_than(const ADELint &rhs) const {
   return ADELint(SuperBin::lt(rhs));
 }
 
@@ -237,7 +237,7 @@ ADELint::less_or_equal(const ADELint &rhs) const {
 }
 
 ADELint
-ADELint::greater_then(const ADELint &rhs) const {
+ADELint::greater_than(const ADELint &rhs) const {
   return ADELint(SuperBin::gt(rhs));
 }
 
@@ -257,8 +257,8 @@ not_equal(const ADELint &lhs, const ADELint &rhs) {
 }
 
 ADELint
-less_then(const ADELint &lhs, const ADELint &rhs) {
-  return lhs.less_then(rhs);
+less_than(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.less_than(rhs);
 }
 
 ADELint
@@ -267,8 +267,8 @@ less_or_equal(const ADELint &lhs, const ADELint &rhs) {
 }
 
 ADELint
-greater_then(const ADELint &lhs, const ADELint &rhs) {
-  return lhs.greater_then(rhs);
+greater_than(const ADELint &lhs, const ADELint &rhs) {
+  return lhs.greater_than(rhs);
 }
 
 ADELint
