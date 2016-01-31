@@ -24,7 +24,7 @@ WTF?! Go see examples.
 
 ## Examples
 
-TBD
+Coming soon...
 
 ## Tests
 
@@ -76,7 +76,7 @@ $ g++ SuperBin.cpp ADELint.cpp example.cpp -std=c++11 -o example
 ```
 **NOTE:** -std=c++11
 
-For detailed example check out [ADELintExample.cpp](https://github.com/divancic/superbin/blob/master/examples/ADELintExample.cpp)
+For a more detailed example check out [ADELintExample.cpp](https://github.com/divancic/superbin/blob/master/examples/ADELintExample.cpp)
 
 ### Tests
 
