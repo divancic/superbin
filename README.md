@@ -70,7 +70,7 @@ main(int argc, char *argv[]) {
 }
 ```
 
-If you save the above code in a file named example.cpp, and you have **SuperBin.cpp**, **SuperBin.h**, **ADELint.cpp** and **ADELint.h** present in your local directory, you would get the binary like this:
+If you save the above code in a file named example.cpp, and you have **SuperBin.cpp**, **SuperBin.h**, **ADELint.cpp** and **ADELint.h** present in your local directory, you would get the binary by invoking the compiler like this:
 ```bash
 $ g++ SuperBin.cpp ADELint.cpp example.cpp -std=c++11 -o example
 ```
