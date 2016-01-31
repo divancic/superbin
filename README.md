@@ -90,8 +90,6 @@ See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
 
     Therefore, the it takes sunlight +111110011 seconds (8 minutes and 20 seconds) to travel from the Sun to the Earth.
 
-
 * +10011000110111111110011000 is the exact length of the Equator (in meters).
-
 * +10101011110010 is the depth of the deepest known point in Earth's oceans (Mariana Trench) (in meters)
 * +10001010010000 is the elevation of Mount Everest (in meters).
