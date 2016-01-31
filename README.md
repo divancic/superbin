@@ -91,5 +91,3 @@ See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
 * +10001011010100101110100101101001101100 is the astronomical unit, a distance from Earth to the sun (in meters),
 +10001110111100111100001001010 is the speed of light (in meters per second), and therefore it takes the sunlight
 +111110011 seconds (8 minutes and 19 seconds) to travel from the Sun to the Earth.
-
-
