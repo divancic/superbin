@@ -38,7 +38,7 @@ As stated in the text above, I started working on SuperBin to be used as ADEL in
 
 ### Getting it
 
-See [SuperBin - Getting it](https://github.com/divancic/superbin#getting-it) above. If you choose the **file-by-file** aproach in adition to **SuperBin.cpp** and **SuperBin.h** you also need [**ADELint.cpp**](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.cpp) and [**ADELint.h**](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.h).
+See [SuperBin - Getting it](https://github.com/divancic/superbin#getting-it) above. If you choose the **file-by-file** aproach in adition to **SuperBin.cpp** and **SuperBin.h** you also need [ADELint.cpp](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.cpp) and [ADELint.h](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.h).
 
 ## Getting Started
 
