@@ -10,9 +10,9 @@ The class stores the numbers internally in a binary format so all operations are
 
 Well, that's easy. :-)
 
-* via **git clone**: git clone http://github.com/divancic/superbin
+* via **git clone**: git clone https://github.com/divancic/superbin
 * by clicking on **Download ZIP** (see above): https://github.com/divancic/superbin/archive/master.zip
-* or on a **file-by-file basis** (you really only need two files: SuperBin.cpp and SuperBin.h)
+* or on a **file-by-file basis** (you really only need two files: [SuperBin.cpp](https://raw.githubusercontent.com/divancic/superbin/master/SuperBin.cpp) and [SuperBin.h](https://raw.githubusercontent.com/divancic/superbin/master/SuperBin.h))
 
 ## Getting Started
 
