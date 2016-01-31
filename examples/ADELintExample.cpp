@@ -66,7 +66,7 @@ main(int argc, char *argv[]) {
   cout << "a - b = " << to_string_signed_dec(sub(a, b)) << endl;
   cout << "a * b = " << to_string_signed_dec(mul(a, b)) << endl;
   cout << "a / b = " << to_string_signed_dec(div(a, b)) << endl;
-  cout << "a \% b = " << to_string_signed_dec(mod(a, b)) << endl;
+  cout << "a mod b = " << to_string_signed_dec(mod(a, b)) << endl;
 
   // comparison
   cout << endl << "COMPARISON:" << endl;
