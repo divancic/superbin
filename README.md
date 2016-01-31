@@ -16,13 +16,15 @@ Well, that's easy. :-)
 
 ## Getting Started
 
-No special requirements here. Just include **SuperBin.cpp** in your project (Makefile) and **SuperBin.h** as a header file from where you are going to be using it.
+No special requirements here. Just include **SuperBin.cpp** in your project and **SuperBin.h** as a header file from where you are going to be using it.
 
 ## Examples
 
 TBD
 
 ## Tests
+
+Tests are **basic** and **ugly** (but that is mainly because they are written by me ;-)). I used [Google Test](https://github.com/google/googletest). If you are thinking of extending this library and use it in your endeavors, I strongly suggest you use Google Test. It is an excellent thing that may make your life easier.
 
 ## ADELint
 
