@@ -18,6 +18,10 @@ Well, that's easy. :-)
 
 No special requirements here. Just include **SuperBin.cpp** in your project and **SuperBin.h** as a header file from where you are going to be using it.
 
+## Docs
+
+WTF?! Go see examples.
+
 ## Examples
 
 TBD
@@ -30,8 +34,20 @@ Tests are **basic** and **ugly** (but that is mainly because they are written by
 
 ### Introduction
 
-### Getting
+As stated in the text above, I started working on SuperBin to be used as ADEL integer. However, in some point I decided it would be wiser to distinguish C++ class which represent a large numbers and can be used as a built-in type (well, almost) to a class which is used by ADEL and has some special methods and their parameters (e.g. generic type class would return a boolean when comparing two large numbers, but class targeted to ADEL has to return ADELint which represents either true or false depending on a value). Therefore ADELint was born as a subclass of SuperBin. It simply inherits SuperBin publicly and defines its own methods. That's it.
 
-### Usage
+### Getting it
+
+See [SuperBin - Getting it](https://github.com/divancic/superbin#getting-it) above. If you choose the **file-by-file** aproach in adition to **SuperBin.cpp** and **SuperBin.h** you also need [**ADELint.cpp**](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.cpp) and [**ADELint.h**](https://raw.githubusercontent.com/divancic/superbin/master/ADELint.h).
+
+## Getting Started
+
+As with the **SuperBin** there are no special requirements. Just include **ADELint.cpp** in your project and **ADELint.h** as a header file from where you are going to be using it. **NOTE: You do not have to include SuperBin.h!!!**
+
+### Examples
+
+TBD.
 
 ### Tests
+
+See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
