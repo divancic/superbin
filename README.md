@@ -85,7 +85,7 @@ See [SuperBin - Tests](https://github.com/divancic/superbin#tests).
 
 ### Bonuses
 
-* +10001011010100101110100101101001101100 is distance from Earth to the sun (in meters), it is called an astronomical unit (AU)
+* +10001011010100101110100101101001101100 is astronomical unit, a distance from Earth to the sun (in meters)
 
 * +10001110111100111100001001010 is the speed of light (in meters per second)
 
