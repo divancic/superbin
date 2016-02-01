@@ -34,7 +34,7 @@ Tests are **basic** and **ugly** (but that is mainly because they are written by
 
 ### Introduction
 
-As stated in the text above, I started working on SuperBin to be used as ADEL integer. However, in some point I decided it would be wiser to distinguish C++ class which represent a large numbers and can be used as a built-in type (well, almost) to a class which is used by ADEL and has some special methods and their parameters (e.g. generic type class would return a boolean when comparing two large numbers, but class targeted to ADEL has to return ADELint which represents either true or false depending on a value). Therefore ADELint was born as a subclass of SuperBin. It simply inherits SuperBin publicly and defines its own methods. That's it.
+As stated in the text above, I started working on SuperBin to be used as ADEL (Assembler DEscription Language) integer. However, in some point I decided it would be wiser to distinguish C++ class which represent a large numbers and can be used as a built-in type (well, almost) to a class which is used by ADEL and has some special methods and their parameters (e.g. generic type class would return a boolean when comparing two large numbers, but class targeted to ADEL has to return ADELint which represents either true or false depending on a value). Therefore ADELint was born as a subclass of SuperBin. It simply inherits SuperBin publicly and defines its own methods. That's it.
 
 ### Getting it
 
