@@ -2,7 +2,7 @@
 CPPLINT				= cpplint
 CPPLINT_FLAGS	+= --verbose=0 --filter=-legal/copyright
 
-CXX						= clang++
+CXX						= g++
 CPPFLAGS			+=
 CXXFLAGS			+= -std=c++11 -Wall -g -I$(GTEST_DIR)/include
 #CXXFLAGS			+= -Wpedantic -Wextra 
@@ -24,7 +24,7 @@ ifneq ($(wildcard $(GTEST_DIR)/.*),)
 	@echo "NOTE: google test found, building SuperBin tests."
 	@echo "If you want just SuperBin library do a:"
 	@echo "    make libSuperBin.a"
-	make SuperBinTest ADELintTest
+	make SuperBinTest #ADELintTest
 else
 	@echo "NOTE: google test not found, building SuperBin library only."
 	@echo "If you want tests too fetch google test like this:"
@@ -36,7 +36,7 @@ ADELintTest: ADELintTest.cpp ADELint.o SuperBin.o libgtest.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) ADELintTest.cpp -o $@ ADELint.o SuperBin.o libgtest.a -lpthread
 
 libADELint.a: ADELint.o
-	$(AR) $(ARFLAGS) $@ libADELint.o
+	$(AR) $(ARFLAGS) $@ ADELint.o
 	rm ADELint.o
 
 ADELint.o: ADELint.h ADELint.cpp

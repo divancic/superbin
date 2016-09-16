@@ -1,0 +1,7 @@
+.*
+*.o
+*.a
+SuperBinTest
+ADELintTest
+googletest
+!.gitignore
