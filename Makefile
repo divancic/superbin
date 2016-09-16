@@ -8,6 +8,8 @@ CXXFLAGS			+= -std=c++11 -Wall -g -I$(GTEST_DIR)/include
 #CXXFLAGS			+= -Wpedantic -Wextra 
 #CXXFLAGS			+= -Wno-vla-extension -Wno-unused-variable
 
+CTAGS					= ctags
+
 GTEST_DIR			= googletest/googletest
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h																\
 								$(GTEST_DIR)/include/gtest/internal/*.h												\
@@ -15,7 +17,7 @@ GTEST_SOURCES = $(GTEST_DIR)/src/*.cc																					\
 								$(GTEST_DIR)/src/*.h																					\
 								$(GTEST_HEADERS)
 
-.PHONY: all clean SuperBinTest ADELintTest
+.PHONY: all clean tags SuperBinTest ADELintTest
 
 all:
 ifneq ($(wildcard $(GTEST_DIR)/.*),)
@@ -58,6 +60,9 @@ libgtest.a: $(GTEST_SOURCES)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest-all.cc
 	$(AR) $(ARFLAGS) $@ gtest-all.o
 	rm gtest-all.o
+
+tags:
+	$(CTAGS) -f .git/tags *.cpp *.h
 
 clean:
 	rm -f libgtest.a
