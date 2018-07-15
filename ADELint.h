@@ -9,8 +9,12 @@ namespace dlib {
 
 // FORWARD DECLARATIONS: needed because of default parameters
 // in friend functions (friends cannot have defaults inside a
-// class)
+// class) + makes these functions available in dlib namespace
 class ADELint;
+std::string to_string_signed_bin(const ADELint &op);
+std::string to_string_signed_oct(const ADELint &op);
+std::string to_string_signed_dec(const ADELint &op);
+std::string to_string_signed_hex(const ADELint &op);
 std::string to_string_unsigned_bin(const ADELint &op, int no_of_bits = 0);
 std::string to_string_unsigned_oct(const ADELint &op, int no_of_bits = 0);
 std::string to_string_unsigned_hex(const ADELint &op, int no_of_bits = 0);
