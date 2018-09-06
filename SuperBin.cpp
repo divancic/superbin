@@ -541,7 +541,7 @@ SuperBin::setbs(
 
   // cast the binary representation if index_m out of range
   // (if index_m = 7 -> 8th bit requested -> number has to have 9 bits)
-  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+  if (index_m+1 >= result.m_number.size()) { result = result.cast(index_m + 2); }
 
   // set requested bits on a copy
   for (unsigned int i = index_l; i <= index_m; ++i) {
@@ -559,7 +559,7 @@ SuperBin::setb(
     unsigned int index) const {
   SuperBin result(*this);
 
-  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+  if (index+1 >= result.m_number.size()) { result = result.cast(index + 2); }
 
   result.m_number[result.m_number.size() - 1 - index] = '1';
 
@@ -577,7 +577,7 @@ SuperBin::clearbs(
 
   SuperBin result(*this);
 
-  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+  if (index_m+1 >= result.m_number.size()) { result = result.cast(index_m + 2); }
 
   for (unsigned int i = index_l; i <= index_m; ++i) {
     result.m_number[result.m_number.size() - 1 - i] = '0';
@@ -594,7 +594,7 @@ SuperBin::clearb(
     unsigned int index) const {
   SuperBin result(*this);
 
-  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+  if (index+1 >= result.m_number.size()) { result = result.cast(index + 2); }
 
   result.m_number[result.m_number.size() - 1 - index] = '0';
 
@@ -612,7 +612,7 @@ SuperBin::notbs(
 
   SuperBin result(*this);
 
-  if (index_m >= result.m_number.size()) { result = result.cast(index_m + 2); }
+  if (index_m+1 >= result.m_number.size()) { result = result.cast(index_m + 2); }
 
   for (unsigned int i = index_l; i <= index_m; ++i) {
     result.m_number[result.m_number.size() - 1 - i] =
@@ -630,7 +630,7 @@ SuperBin::notb(
     unsigned int index) const {
   SuperBin result(*this);
 
-  if (index >= result.m_number.size()) { result = result.cast(index + 2); }
+  if (index+1 >= result.m_number.size()) { result = result.cast(index + 2); }
 
   result.m_number[result.m_number.size() - 1 - index] =
     result.m_number[result.m_number.size() - 1 - index] == '0' ? '1' : '0';
